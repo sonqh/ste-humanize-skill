@@ -26,7 +26,7 @@ More in [`examples/before-after.md`](examples/before-after.md).
 4. Rewrites paragraph by paragraph in short active sentences, with the writer's specific details kept.
 5. Returns the rewrite alone, plus one `Kept as-is:` line when it left a longer phrase on purpose.
 
-When the two sources disagree, SKILL.md has a precedence table. The short version: meaning first, then STE structure, then voice, then brevity.
+When the two sources disagree, SKILL.md has a precedence table. The short version: meaning first, then STE structure, then voice, then shape (bullets for parallel parts, technical terms kept as the field uses them), then brevity.
 
 ## Install
 

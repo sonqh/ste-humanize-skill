@@ -1,7 +1,7 @@
 ---
 name: ste-humanize
 description: "Rewrite English so a reader cannot misread it and still hears a person behind it. Combines the sentence discipline of ASD-STE100 (one meaning per word, active voice, short sentences, one instruction per sentence) with the AI-tell removal of the humanizer skill (no not-X-but-Y, no one-line closers, no dashes everywhere, no stock AI words). Use for docs, READMEs, PR descriptions, design notes, replies, tool descriptions, error messages, and any prose Claude writes for a person. Triggers: humanize, make this clear, plain rewrite, STE rewrite, remove AI tells, write this for a human, rewrite so nobody misreads it. Not for fiction, marketing, or copy where voice is the point."
-version: 0.1.0
+version: 0.2.0
 license: MIT
 ---
 
@@ -32,7 +32,8 @@ Pick the mode from the text type. Do not announce it unless the user asks for th
 1. Meaning. Every fact, condition, qualifier, and hedge in the source survives.
 2. Structure (STE). Short sentences, active voice, one instruction per sentence, no semicolons, no dropped words.
 3. Voice (humanizer). No staging, no inflation, no decoration, no chatbot residue. Keep the writer's specific details and real asides.
-4. Brevity. Shorter only when it does not cost 1, 2, or 3.
+4. Shape. Parallel parts become bullets. Technical terms stay as the field uses them.
+5. Brevity. Shorter only when it does not cost 1 to 4.
 
 The two sources agree more than they disagree. Where they do disagree, this is how to read them together:
 
@@ -109,7 +110,7 @@ Apply section A and B on one sighting. Patterns marked *weak alone* need company
 2. Read the whole text once for meaning. Write down, for yourself, every hedge and every condition. These must survive.
 3. Run the linters for a mechanical first pass. `scripts/ste-lint.py FILE` checks semicolons, sentence length, phrasal verbs, nominalization, marketing adjectives, synonym rotation, passive voice, and compound tenses. `scripts/tells-lint.py FILE` checks dashes, not-X-but-Y, stock AI words, bold labels on list items, chatbot residue, and Title Case headings. Neither linter flags hedges, and neither one checks meaning.
 4. Mark every finding, strongest first: section A tells and STE structure first, then section B, then word choice.
-5. Rewrite paragraph by paragraph. State each point in a short active sentence. Vary sentence length. If a rewrite would drop a condition or upgrade a hedge to a fact, keep the longer phrasing and flag it.
+5. Rewrite paragraph by paragraph. State each point in a short active sentence. Split parallel ideas into bullets. Keep technical terms as the field uses them. If a rewrite would drop a condition or upgrade a hedge to a fact, keep the longer phrasing and flag it.
 6. Read the result aloud. Ask two questions. Can a reader with no back-channel misread any sentence? Does any sentence still sound like a chatbot? Fix both.
 7. Run both linters again. Advisory findings do not fail. Hard findings do, unless you can name the precision they protect.
 8. If the input already complies, say so. Do not force edits onto clean text.
@@ -145,6 +146,29 @@ When the user gives a writing sample, read it first and match its sentence lengt
 Without a sample, take the voice from the kind of text. A design note or a reply keeps the writer's opinion and the odd specific detail. A reference page or an error message stays neutral. In both cases the sentences stay short and active.
 
 Keep what carries the writer's voice unless it hurts the meaning: a specific unusual detail, mixed feelings stated plainly, a real aside, a first-person choice the writer can explain.
+
+## Shape: bullets first
+
+Prefer a bullet list over a paragraph whenever the content has parallel parts: options, steps, findings, risks, decisions, rules. A reader scans a list faster than prose, and a list forces one idea per line.
+
+- One idea per bullet. One or two short sentences. No bold label and no colon at the start.
+- Lead each bullet with the point. Put the reason or the example after it.
+- Use a numbered list only when order matters.
+- Keep prose for one connected argument, a lead sentence, or a transition. Two or three sentences per paragraph.
+- Do not nest more than one level. If a bullet needs sub-bullets, it is probably a section.
+- Do not turn a table into bullets. A table is better when items share the same attributes.
+
+When the source is a long paragraph with three or more parallel ideas, split it into bullets. When the source is a list of fragments with no claim in them, merge them into sentences.
+
+## Technical terms and other languages
+
+Keep established technical terms as they are. Do not translate them word by word, and do not swap them for a plainer word that loses the meaning. "Source of truth", "idempotent", "pure function", "lockfile", "managed block", "adapter", "schema", "diff", "hook", "MCP server" stay in English in any language. The same holds for product names, file names, commands, flags, and config keys.
+
+- A term the reader may not know gets a short definition once, on first use. After that, use the term alone.
+- Pick one term per concept and reuse it. Do not alternate between the English term and a translation.
+- When the text is not in English, apply every structural rule (short sentences, active voice, one instruction per sentence, no semicolons, no dashes, no bold labels) in that language. The humanizer patterns apply in that language too: "không phải X mà là Y" is the same tell as "not X but Y".
+- Translate only ordinary words. "Thư mục" for directory is fine. "Nguồn chân lý" for source of truth is not, because readers in the field use the English term.
+- In Strict mode, keep the exact identifier, error code, or API name the system uses, even when a plainer word exists.
 
 ## Boundaries
 
