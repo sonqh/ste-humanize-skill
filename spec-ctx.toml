@@ -1,0 +1,35 @@
+# spec-ctx configuration. Every key is optional. A missing key takes its default.
+
+[scan]
+# Main specs. Markdown files with requirement and scenario headers.
+specs = ["openspec/specs/**/*.md"]
+# Active and archived OpenSpec changes.
+changes = ["openspec/changes/**/*.md"]
+# Decision records.
+decisions = ["decisions/*.md"]
+# Source files that carry code tags. A code tag is a comment with a REQ ID.
+code = ["scripts/**"]
+# Test files that carry Covers tags and scenario IDs.
+tests = ["tests/**"]
+# Paths that the scan skips.
+ignore = []
+
+[ids]
+# Capability codes. check reports a REQ whose code is not in this list. An empty list turns the rule off.
+caps = ["TELLS", "STE", "SKILL"]
+[ids.paths]
+TELLS = "tells-lint"
+STE = "ste-lint"
+SKILL = "skill-contract"
+# Pattern of the task number in a tasks.md checkbox.
+task_pattern = '\d+\.\d+'
+
+[bundle]
+# Default character budget of a bundle.
+budget = 8000
+# Default depth of related entries in a bundle.
+depth = 1
+
+[verify]
+# Seconds before task done stops a Verify command.
+timeout_s = 600
