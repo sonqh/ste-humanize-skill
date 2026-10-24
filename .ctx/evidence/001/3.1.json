@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-24T03:53:43.746Z",
+  "files": {
+    "scripts/ste-lint.py": "c25fefde6276a5828494711f0403aa79d00c5ec4339193ab2236d2372131865b",
+    "tests/test_ste_lint.py": "572608a48ca7cab7d26ef000d5bab6fa55dd8a925028ff7deacfb11e19fa80d2"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-STE-001",
+    "REQ-STE-002",
+    "REQ-STE-003"
+  ],
+  "task": "001/3.1",
+  "tool_version": "0.1.0",
+  "verify": {
+    "command": "python3 -m unittest tests.test_ste_lint -v",
+    "exit": 0,
+    "stderr_tail": "SCN-STE-003-1 ... ok\ntest_hedge_protected (tests.test_ste_lint.SteLintTests.test_hedge_protected)\nSCN-STE-002-2 ... ok\ntest_json_shape (tests.test_ste_lint.SteLintTests.test_json_shape)\nSCN-STE-003-3 ... ok\ntest_long_sentence (tests.test_ste_lint.SteLintTests.test_long_sentence)\nSCN-STE-002-1 ... ok\ntest_messages_bounded (tests.test_ste_lint.SteLintTests.test_messages_bounded)\nSCN-STE-001-2 ... ok\ntest_summary_line (tests.test_ste_lint.SteLintTests.test_summary_line)\nSCN-STE-003-2 ... ok\ntest_table_matches_record (tests.test_ste_lint.SteLintTests.test_table_matches_record)\nSCN-STE-001-1 ... ok\ntest_unknown_rule_and_selftest (tests.test_ste_lint.SteLintTests.test_unknown_rule_and_selftest)\nSCN-STE-003-1 CLI exits ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 1.458s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

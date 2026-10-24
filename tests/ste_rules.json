@@ -1,0 +1,26 @@
+[
+  {
+    "id": "semicolon",
+    "level": "advisory-free"
+  },
+  {
+    "id": "phrasal-verb",
+    "level": "advisory-free"
+  },
+  {
+    "id": "marketing-adjective",
+    "level": "advisory-free"
+  },
+  {
+    "id": "nominalization",
+    "level": "advisory-free"
+  },
+  {
+    "id": "passive-voice",
+    "level": "advisory"
+  },
+  {
+    "id": "present-perfect",
+    "level": "advisory"
+  }
+]

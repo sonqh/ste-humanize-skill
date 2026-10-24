@@ -39,6 +39,7 @@ MODAL_PERFECT_PREFIX = re.compile(
     r"(?:\s+not|n['’]t)?\s+$", re.I,
 )
 
+# REQ-STE-001 REQ-STE-002
 RULES = [
     ("semicolon", "advisory-free",
      re.compile(r";"),
@@ -746,6 +747,7 @@ def _non_negative_int(value):
     return n
 
 
+# REQ-STE-003
 def main(argv):
     parser = argparse.ArgumentParser(
         prog="ste-lint.py", allow_abbrev=False,

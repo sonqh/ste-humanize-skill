@@ -10,7 +10,7 @@
 
 ## 3. ste-lint
 
-- [ ] 3.1 Write `tests/ste_rules.json` from the current `RULES` table. Tag `RULES` and `main()` in `scripts/ste-lint.py`. Write `tests/test_ste_lint.py` for REQ-STE-001 to 003. [REQ-STE-001, REQ-STE-002, REQ-STE-003] Verify: `python3 -m unittest tests.test_ste_lint -v`
+- [x] 3.1 Write `tests/ste_rules.json` from the current `RULES` table. Tag `RULES` and `main()` in `scripts/ste-lint.py`. Write `tests/test_ste_lint.py` for REQ-STE-001 to 003. [REQ-STE-001, REQ-STE-002, REQ-STE-003] Verify: `python3 -m unittest tests.test_ste_lint -v`
 
 ## 4. Skill contract
 
