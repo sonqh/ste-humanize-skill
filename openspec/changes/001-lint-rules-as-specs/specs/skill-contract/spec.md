@@ -21,8 +21,8 @@ What `SKILL.md` promises an agent that loads it. Tests read the file and check t
 - **THEN** the five items appear in that order
 
 ### Requirement: REQ-SKILL-003 Output format
-`SKILL.md` SHALL require the rewrite alone as output, plus at most one `Kept as-is:` line when a longer phrase was kept on purpose. It SHALL forbid a preamble before the rewrite.
+`SKILL.md` SHALL require the rewritten text and nothing else as output, plus at most one `Kept as-is:` line when a longer phrase was kept on purpose. It SHALL forbid a preamble before the rewrite.
 
 #### Scenario: SCN-SKILL-003-1 Format section
 - **WHEN** the test reads the `## Output format` section
-- **THEN** it contains `Kept as-is:` and the word `alone`
+- **THEN** it contains `Kept as-is:` and the phrase `nothing else`
