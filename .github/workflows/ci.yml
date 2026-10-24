@@ -1,0 +1,45 @@
+name: ci
+# scripts/ci-local.sh runs the same steps before a push. It is the primary gate.
+on:
+  push:
+    branches: [main]
+  pull_request:
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  reach:
+    runs-on: ubuntu-latest
+    outputs:
+      ok: ${{ steps.reach.outputs.ok }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: reach
+        run: bash scripts/ci-reach.sh >> "$GITHUB_OUTPUT"
+  specs:
+    needs: reach
+    if: needs.reach.outputs.ok == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: sonqh/spec-ctx@main
+        with:
+          specctx: bash scripts/specctx.sh
+          strict: "true"
+          markdown: "CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md"
+  specs-skipped:
+    needs: reach
+    if: needs.reach.outputs.ok != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/ci-reach.sh
+  code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python3 -m unittest discover -s tests
+      - run: python3 scripts/tells-lint.py --selftest
+      - run: python3 scripts/ste-lint.py --selftest

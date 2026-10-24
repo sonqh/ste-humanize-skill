@@ -1,0 +1,41 @@
+import os
+import re
+import unittest
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SKILL = os.path.join(ROOT, "SKILL.md")
+
+
+def section(name):
+    with open(SKILL, encoding="utf-8") as fh:
+        text = fh.read()
+    m = re.search(r"^## " + re.escape(name) + r"\s*$(.*?)(?=^## |\Z)", text, re.M | re.S)
+    assert m, f"missing section: {name}"
+    return m.group(1)
+
+
+class SkillContractTests(unittest.TestCase):
+    def test_two_modes(self):
+        """SCN-SKILL-001-1"""
+        # Covers: REQ-SKILL-001
+        body = section("Two modes")
+        labels = re.findall(r"^\*\*([A-Za-z]+)\.\*\*", body, re.M)
+        self.assertEqual(labels, ["Strict", "Human"])
+
+    def test_precedence_order(self):
+        """SCN-SKILL-002-1"""
+        # Covers: REQ-SKILL-002
+        body = section("Order of precedence when rules conflict")
+        items = re.findall(r"^\d+\.\s+(\w+)", body, re.M)
+        self.assertEqual(items, ["Meaning", "Structure", "Voice", "Shape", "Brevity"])
+
+    def test_output_format(self):
+        """SCN-SKILL-003-1"""
+        # Covers: REQ-SKILL-003
+        body = section("Output format")
+        self.assertIn("Kept as-is:", body)
+        self.assertIn("nothing else", body)
+
+
+if __name__ == "__main__":
+    unittest.main()

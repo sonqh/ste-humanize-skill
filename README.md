@@ -73,6 +73,21 @@ Neither linter flags hedges. Neither one checks that a rewrite kept the original
 
 The repo's own SKILL.md does not lint clean, because it quotes the patterns it forbids. Lint it with `--baseline 40` and read the findings as examples.
 
+## Develop
+
+Specs live in `openspec/`. The engine is spec-ctx. `scripts/specctx.sh` names its install source.
+
+```bash
+git config core.hooksPath .githooks    # turn on the hooks
+python3 -m unittest discover -s tests  # run the tests
+bash scripts/ci-local.sh               # run the CI steps on this machine
+```
+
+- The `pre-commit` hook runs `specctx gate --strict` and the tests.
+- The `pre-push` hook runs `scripts/ci-local.sh`. `SPECCTX_SKIP_PUSH_GATE=1` skips it and says so.
+- CI skips the spec-ctx job while the spec-ctx repository is private. It prints a notice. Run `scripts/ci-local.sh` instead.
+- Tests use `unittest` only. They add no dependency.
+
 ## Scope
 
 Built for: documentation, READMEs, design notes, PR descriptions, changelogs, replies in threads, tool descriptions, error messages, agent-to-agent instructions.

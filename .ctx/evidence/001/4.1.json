@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-24T03:54:43.491Z",
+  "files": {
+    "tests/test_skill_contract.py": "48ec3d394ee8d189dedc257d7c71baaae10eb9f4d6c12715287069d4b9a87964"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-001",
+    "REQ-SKILL-002",
+    "REQ-SKILL-003"
+  ],
+  "task": "001/4.1",
+  "tool_version": "0.1.0",
+  "verify": {
+    "command": "python3 -m unittest tests.test_skill_contract -v",
+    "exit": 0,
+    "stderr_tail": "test_output_format (tests.test_skill_contract.SkillContractTests.test_output_format)\nSCN-SKILL-003-1 ... ok\ntest_precedence_order (tests.test_skill_contract.SkillContractTests.test_precedence_order)\nSCN-SKILL-002-1 ... ok\ntest_two_modes (tests.test_skill_contract.SkillContractTests.test_two_modes)\nSCN-SKILL-001-1 ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.004s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

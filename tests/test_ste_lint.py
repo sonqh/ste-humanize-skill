@@ -94,7 +94,7 @@ class SteLintTests(unittest.TestCase):
                                      "baseline", "words", "per_100_words"})
 
     def test_unknown_rule_and_selftest(self):
-        """SCN-STE-003-1 CLI exits"""
+        """SCN-STE-003-3 CLI exits"""
         # Covers: REQ-STE-003
         r = run(["--disable", "not-a-rule"], text="Hello.\n")
         self.assertEqual(r.returncode, 2)
