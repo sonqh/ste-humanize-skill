@@ -2,7 +2,7 @@
 
 ## 1. Install check
 
-- [ ] 1.1 Confirm the fresh install: `spec-ctx.toml` with the three codes, the three skills in both skill folders, `openspec/config.yaml` with schema `spec-driven-ids`. Record the exact commands in `docs/verification/001.md`. [REQ-SKILL-001] Verify: `test -d .claude/skills/specctx-bootstrap && test -d .agents/skills/specctx-done && grep -q spec-driven-ids openspec/config.yaml`
+- [x] 1.1 Confirm the fresh install: `spec-ctx.toml` with the three codes, the three skills in both skill folders, `openspec/config.yaml` with schema `spec-driven-ids`. Record the exact commands in `docs/verification/001.md`. [REQ-SKILL-001] Verify: `test -d .claude/skills/specctx-bootstrap && test -d .agents/skills/specctx-done && grep -q spec-driven-ids openspec/config.yaml`
 
 ## 2. tells-lint
 

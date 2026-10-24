@@ -1,0 +1,16 @@
+{
+  "at": "2026-10-24T03:51:35.925Z",
+  "files": {},
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-001"
+  ],
+  "task": "001/1.1",
+  "tool_version": "0.1.0",
+  "verify": {
+    "command": "test -d .claude/skills/specctx-bootstrap && test -d .agents/skills/specctx-done && grep -q spec-driven-ids openspec/config.yaml",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
