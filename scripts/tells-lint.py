@@ -50,6 +50,7 @@ DEEP_SAYINGS = [
     r"\bthe heart of the matter\b", r"\bis the (?:language|currency|architecture) of\b",
 ]
 
+# REQ-TELLS-001 REQ-TELLS-002
 RULES = {
     # hard rules
     "dash": ("hard", re.compile(r"—|–|(?<=\S) -- (?=\S)|\s--\s")),
@@ -136,6 +137,7 @@ def selftest():
     print("selftest ok")
 
 
+# REQ-TELLS-003
 def main(argv):
     ap = argparse.ArgumentParser(add_help=True)
     ap.add_argument("files", nargs="*")

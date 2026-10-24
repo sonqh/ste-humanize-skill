@@ -6,7 +6,7 @@
 
 ## 2. tells-lint
 
-- [ ] 2.1 Tag `RULES` and `main()` in `scripts/tells-lint.py`. Write `tests/test_tells_lint.py` with one test per scenario of REQ-TELLS-001 to 003, each marked `# Covers:` and naming its SCN. [REQ-TELLS-001, REQ-TELLS-002, REQ-TELLS-003] Verify: `python3 -m unittest tests.test_tells_lint -v`
+- [x] 2.1 Tag `RULES` and `main()` in `scripts/tells-lint.py`. Write `tests/test_tells_lint.py` with one test per scenario of REQ-TELLS-001 to 003, each marked `# Covers:` and naming its SCN. [REQ-TELLS-001, REQ-TELLS-002, REQ-TELLS-003] Verify: `python3 -m unittest tests.test_tells_lint -v`
 
 ## 3. ste-lint
 

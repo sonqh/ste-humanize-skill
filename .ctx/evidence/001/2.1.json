@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-24T03:53:05.134Z",
+  "files": {
+    "scripts/tells-lint.py": "ac3d96e4c1e55c2fac629058ff122e326200e82e6e00de30b84b5a89f95f2a47",
+    "tests/test_tells_lint.py": "d0364f12568c5ff6ee37815f639adad32da6bf96f84b0c88fbca2b81dcfc5388"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-TELLS-001",
+    "REQ-TELLS-002",
+    "REQ-TELLS-003"
+  ],
+  "task": "001/2.1",
+  "tool_version": "0.1.0",
+  "verify": {
+    "command": "python3 -m unittest tests.test_tells_lint -v",
+    "exit": 0,
+    "stderr_tail": "SCN-TELLS-002-2 ... ok\ntest_advisory_table (tests.test_tells_lint.TellsLintTests.test_advisory_table)\nSCN-TELLS-002-1 ... ok\ntest_baseline (tests.test_tells_lint.TellsLintTests.test_baseline)\nSCN-TELLS-003-1 ... ok\ntest_bold_label_colon_inside (tests.test_tells_lint.TellsLintTests.test_bold_label_colon_inside)\nSCN-TELLS-001-2 ... ok\ntest_dash_as_glue (tests.test_tells_lint.TellsLintTests.test_dash_as_glue)\nSCN-TELLS-001-3 ... ok\ntest_hard_table (tests.test_tells_lint.TellsLintTests.test_hard_table)\nSCN-TELLS-001-1 ... ok\ntest_json_shape (tests.test_tells_lint.TellsLintTests.test_json_shape)\nSCN-TELLS-003-2 ... ok\ntest_unknown_rule (tests.test_tells_lint.TellsLintTests.test_unknown_rule)\nSCN-TELLS-003-3 ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.269s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
