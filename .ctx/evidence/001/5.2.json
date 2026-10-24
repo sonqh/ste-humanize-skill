@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-24T03:57:35.441Z",
+  "files": {
+    "tests/test_skill_contract.py": "48ec3d394ee8d189dedc257d7c71baaae10eb9f4d6c12715287069d4b9a87964"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-001"
+  ],
+  "task": "001/5.2",
+  "tool_version": "0.1.0",
+  "verify": {
+    "command": "npx -y github:sonqh/spec-ctx#997ea1979506 gate --strict --markdown \"CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md\" && npx -y @fission-ai/openspec@latest validate --all --strict",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "f82366c37b2f9fdc159b9e34240927caf7b3b88f9446c7360ad616112ba625f0"
+  }
+}

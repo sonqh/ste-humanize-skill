@@ -19,7 +19,7 @@
 ## 5. Close
 
 - [x] 5.1 Add `.githooks/pre-commit` and `.githooks/pre-push` that run `specctx gate --strict` and the unittest suite, a `scripts/ci-local.sh`, and a CI workflow that calls the spec-ctx action when the repo is reachable. README gains a `Develop` section. Both selftests print the same counts as before this change. [REQ-TELLS-003, REQ-STE-003] Verify: `bash scripts/ci-local.sh`
-- [ ] 5.2 Write `docs/verification/001.md`. Run the gate. [REQ-SKILL-001] Verify: `npx -y github:sonqh/spec-ctx#997ea1979506 gate --strict && npx -y @fission-ai/openspec@latest validate --all --strict`
+- [x] 5.2 Write `docs/verification/001.md`. Run the gate. [REQ-SKILL-001] Verify: `npx -y github:sonqh/spec-ctx#997ea1979506 gate --strict --markdown "CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md" && npx -y @fission-ai/openspec@latest validate --all --strict`
 
 ## Workflow follow-up
 
