@@ -33,7 +33,7 @@ The `RULES` table SHALL hold exactly these advisory rules: `sales-word`, `title-
 - **THEN** the run prints the finding and exits 0
 
 ### Requirement: REQ-TELLS-003 CLI contract
-The script SHALL accept `FILE...` or stdin, `--baseline N` (default 0), `--disable <rule,rule>`, `--json`, and `--selftest`. It SHALL exit 1 when hard findings exceed the baseline, else 0. `--json` SHALL print one object with `file`, `findings` (each with `line`, `rule`, `level`, `match`), and the hard count. `--selftest` SHALL exit 0 and print `selftest ok`. An unknown rule in `--disable` SHALL exit 2 and name it.
+The script SHALL accept `FILE...` or stdin, `--baseline N` (default 0), `--disable <rule,rule>`, `--json`, and `--selftest`. It SHALL exit 1 when hard findings exceed the baseline, else 0. `--json` SHALL print a list with one object per file, each with `file` and `findings` (each finding with `rule`, `level`, `line`, `match`). `--selftest` SHALL exit 0 and print `selftest ok`. An unknown rule in `--disable` SHALL exit 2 and name it.
 
 #### Scenario: SCN-TELLS-003-1 Baseline
 - **WHEN** a file has 3 hard findings and `--baseline 3` is given
@@ -41,7 +41,7 @@ The script SHALL accept `FILE...` or stdin, `--baseline N` (default 0), `--disab
 
 #### Scenario: SCN-TELLS-003-2 JSON shape
 - **WHEN** `--json` runs on a file with one finding
-- **THEN** stdout parses as JSON with the fields above
+- **THEN** stdout parses as a JSON list with one object that has `file` and a `findings` list with one entry of `rule`, `level`, `line`, `match`
 
 #### Scenario: SCN-TELLS-003-3 Unknown rule
 - **WHEN** `--disable not-a-rule` is given

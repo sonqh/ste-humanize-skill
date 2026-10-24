@@ -33,11 +33,15 @@ The linter SHALL report `long-sentence` when a sentence exceeds the word cap (25
 - **THEN** `semicolon` does not fire
 
 ### Requirement: REQ-STE-003 CLI contract
-The script SHALL accept `FILE...` or stdin, `--baseline N`, `--disable <rules>`, `--json`, and `--selftest`. It SHALL exit 1 when hard findings exceed the baseline, else 0. The last two lines of human output SHALL be the violation summary and the hedge note. `--selftest` SHALL exit 0 and print `selftest OK`.
+The script SHALL accept `FILE...` or stdin, `--baseline N`, `--disable <rules>`, `--json`, and `--selftest`. It SHALL exit 1 when hard findings exceed the baseline, else 0. The last two lines of human output SHALL be the violation summary and the hedge note. `--selftest` SHALL exit 0 and print `selftest OK`. An unknown rule in `--disable` SHALL exit 2 and list the known rules. `--json` SHALL print one object with `violations`, `count`, `hard_count`, `baseline`, `words`, `per_100_words`.
 
 #### Scenario: SCN-STE-003-1 Disable
 - **WHEN** `--disable synonym-rotation` is given on a file whose only hard finding is that rule
 - **THEN** the run exits 0
+
+#### Scenario: SCN-STE-003-3 JSON shape
+- **WHEN** `--json` runs on any file
+- **THEN** stdout parses as one object with the six keys above
 
 #### Scenario: SCN-STE-003-2 Summary line
 - **WHEN** the linter runs on any file
