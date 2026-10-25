@@ -1,6 +1,7 @@
 import importlib.util
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -52,6 +53,27 @@ class TellsLintTests(unittest.TestCase):
         self.assertIn("dash", {f["rule"] for f in tells.lint(text)})
         self.assertEqual(run_file(text).returncode, 1)
 
+    def test_contrast_across_dash(self):
+        """SCN-TELLS-001-4"""
+        # Covers: REQ-TELLS-001
+        hits = [f for f in tells.lint("It's not just a linter \u2014 it's a gate.\n")
+                if f["rule"] == "not-x-its-y"]
+        self.assertEqual(len(hits), 1)
+        for sep in (",", ".", ":", ";", " -", "\u2013"):
+            text = f"It's not a tool{sep} it's a mirror.\n"
+            self.assertIn("not-x-its-y", {f["rule"] for f in tells.lint(text)}, sep)
+        self.assertNotIn("not-x-its-y", {f["rule"] for f in tells.lint("It's not here. The tool works.\n")})
+
+    def test_inflected_stock_word(self):
+        """SCN-TELLS-001-5"""
+        # Covers: REQ-TELLS-001
+        hits = [f for f in tells.lint("The team leverages the cache.\n") if f["rule"] == "stock-word"]
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0]["match"], "leverages")
+        for w in ("leveraged", "leveraging", "delves", "tapestries", "deep dives", "aligned with"):
+            self.assertIn("stock-word", {f["rule"] for f in tells.lint(f"We saw {w} here.\n")}, w)
+        self.assertNotIn("stock-word", {f["rule"] for f in tells.lint("Use a lever.\n")})
+
     def test_advisory_table(self):
         """SCN-TELLS-002-1"""
         # Covers: REQ-TELLS-002
@@ -90,6 +112,30 @@ class TellsLintTests(unittest.TestCase):
         r = run(["--disable", "not-a-rule"], text="Hello.\n")
         self.assertEqual(r.returncode, 2)
         self.assertIn("not-a-rule", r.stderr + r.stdout)
+
+    def test_help_strings(self):
+        """SCN-TELLS-003-4"""
+        # Covers: REQ-TELLS-003
+        out = run(["--help"]).stdout.split("\n")
+        start = next(i for i, l in enumerate(out) if l.startswith("positional arguments"))
+        entries, cur = [], None
+        for l in out[start:]:
+            if l.startswith("  ") and l.strip():
+                if l[2] != " ":
+                    cur = [l.strip()]
+                    entries.append(cur)
+                elif cur is not None:
+                    cur.append(l.strip())
+        self.assertGreaterEqual(len(entries), 6)
+        for e in entries:
+            self.assertTrue(len(e) > 1 or re.search(r"\S\s{2,}\S", e[0]), e)
+
+    def test_empty_input(self):
+        """SCN-TELLS-003-5"""
+        # Covers: REQ-TELLS-003
+        r = run([], text="")
+        self.assertEqual(r.returncode, 2)
+        self.assertIn("no input", r.stderr + r.stdout)
 
 
 if __name__ == "__main__":

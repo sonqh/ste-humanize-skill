@@ -28,6 +28,29 @@ STOCK_WORDS = [
     "game-changer", "game changer", "cutting-edge", "cutting edge",
 ]
 
+# REQ-TELLS-001: stock words that take verb or noun inflections.
+STOCK_VERBS = {"align with", "bolster", "delve", "enhance", "garner", "leverage",
+               "showcase", "underscore"}
+STOCK_NOUNS = {"deep dive", "game-changer", "game changer", "interplay",
+               "tapestry", "testament"}
+
+
+def stock_pattern(word):
+    """Return a regex for one stock word with its inflections."""
+    if word in STOCK_VERBS:
+        head, sep, tail = word.partition(" ")
+        if head.endswith("e"):
+            core = re.escape(head[:-1]) + r"(?:e|es|ed|ing)"
+        else:
+            core = re.escape(head) + r"(?:s|es|ed|ing)?"
+        return core + (r"\s+" + re.escape(tail) if sep else "")
+    if word in STOCK_NOUNS:
+        if word.endswith("y"):
+            return re.escape(word[:-1]) + r"(?:y|ies)"
+        return re.escape(word) + r"(?:s|es)?"
+    return re.escape(word)
+
+
 SALES_WORDS = [
     "nestled", "breathtaking", "renowned", "must-visit", "stunning",
     "diverse array", "in the heart of", "profound",
@@ -56,11 +79,11 @@ RULES = {
     "dash": ("hard", re.compile(r"—|–|(?<=\S) -- (?=\S)|\s--\s")),
     "not-x-but-y": ("hard", re.compile(
         r"\b(?:not|isn'?t|aren'?t|wasn'?t|it'?s not)\s+(?:just|only|merely|simply|about)?\s*[^.?!;:]{1,60}?[,;]?\s+but\s+(?:rather\s+)?(?:also\s+)?", re.I)),
-    "not-x-its-y": ("hard", re.compile(r"\b(?:it'?s|this is|that'?s) not [^.?!]{1,60}?[,.] (?:it'?s|this is|that'?s)\b", re.I)),
+    "not-x-its-y": ("hard", re.compile(r"\b(?:it'?s|this is|that'?s) not [^.?!]{1,60}?(?:[,.:;]|\s-(?=\s)|\s*[—–])\s*(?:it'?s|it is|this is|that'?s)\b", re.I)),
     "chat-residue": ("hard", re.compile("|".join(CHAT_RESIDUE), re.I)),
     "run-up": ("hard", re.compile("|".join(RUN_UP), re.I)),
     "deep-saying": ("hard", re.compile("|".join(DEEP_SAYINGS), re.I)),
-    "stock-word": ("hard", re.compile(r"\b(?:" + "|".join(re.escape(w) for w in STOCK_WORDS) + r")\b", re.I)),
+    "stock-word": ("hard", re.compile(r"\b(?:" + "|".join(stock_pattern(w) for w in STOCK_WORDS) + r")\b", re.I)),
     "bold-label": ("hard", re.compile(r"^\s*(?:[-*+]|\d+[.)])\s+\*\*[^*\n]+?(?::\*\*|\*\*\s*:)", re.M)),
     "emoji-heading": ("hard", re.compile(r"^#{1,6}\s*[\U0001F300-\U0001FAFF☀-➿]", re.M)),
     # advisory rules
@@ -134,17 +157,34 @@ def selftest():
     missing = want - f_bad
     assert not missing, f"selftest: missing {missing}"
     assert not f_good, f"selftest: false positive on hedge text: {f_good}"
+    for text, rule in [
+        ("It's not a tool: it's a mirror.", "not-x-its-y"),
+        ("It's not a tool; it is a mirror.", "not-x-its-y"),
+        ("It's not just a linter — it's a gate.", "not-x-its-y"),
+        ("It's not just a linter - it's a gate.", "not-x-its-y"),
+        ("The team leverages the cache and leveraged it, leveraging more.", "stock-word"),
+        ("Two deep dives and a tapestry of testaments.", "stock-word"),
+    ]:
+        assert rule in {f["rule"] for f in lint(text)}, f"selftest: {rule} missed {text!r}"
+    for text, rule in [
+        ("It's not here. The tool works.", "not-x-its-y"),
+        ("It's not a well-known fact, so we check.", "not-x-its-y"),
+        ("Use a lever to lift the load.", "stock-word"),
+    ]:
+        assert rule not in {f["rule"] for f in lint(text)}, f"selftest: {rule} false positive on {text!r}"
     print("selftest ok")
 
 
 # REQ-TELLS-003
 def main(argv):
     ap = argparse.ArgumentParser(add_help=True)
-    ap.add_argument("files", nargs="*")
-    ap.add_argument("--json", action="store_true")
-    ap.add_argument("--baseline", type=int, default=0)
-    ap.add_argument("--disable", default="")
-    ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("files", nargs="*", help="Files to check. Read stdin if none.")
+    ap.add_argument("--json", action="store_true", help="Print the findings as JSON.")
+    ap.add_argument("--baseline", type=int, default=0, metavar="N",
+                    help="Allow N hard findings. Default 0.")
+    ap.add_argument("--disable", default="", metavar="RULES",
+                    help="Turn off rules. Give names with commas.")
+    ap.add_argument("--selftest", action="store_true", help="Run the built-in checks and exit.")
     a = ap.parse_args(argv)
     if a.selftest:
         selftest()
@@ -164,7 +204,11 @@ def main(argv):
                 print(f"cannot read {p}: {e}", file=sys.stderr)
                 return 2
     else:
-        sources.append(("<stdin>", sys.stdin.read()))
+        data = sys.stdin.read()
+        if not data.strip():
+            print("no input", file=sys.stderr)
+            return 2
+        sources.append(("<stdin>", data))
     hard = 0
     report = []
     for name, text in sources:
