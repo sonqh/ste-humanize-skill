@@ -16,7 +16,7 @@ ignore = []
 
 [ids]
 # Capability codes. check reports a REQ whose code is not in this list. An empty list turns the rule off.
-caps = ["TELLS", "STE", "SKILL"]
+caps = ["TELLS", "STE", "SKILL", "LINT"]
 [ids.paths]
 TELLS = "tells-lint"
 STE = "ste-lint"
