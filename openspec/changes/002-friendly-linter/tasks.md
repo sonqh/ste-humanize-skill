@@ -4,9 +4,9 @@ Every Verify runs from the repo root. Write `specctx` for `bash scripts/specctx.
 
 ## 1. Linter fixes
 
-- [ ] 1.1 In `scripts/tells-lint.py`: `not-x-its-y` matches across `,`, `.`, `:`, `;`, em dash, en dash, and ` - `. `stock-word` matches verb inflections (`s`, `es`, `d`, `ed`, `ing`) and noun plurals. Add one matching and one non-matching selftest case per fix. Add argparse help strings in Strict mode. No file and empty stdin exits 2 with `no input`. Add tests for SCN-TELLS-001-4, -5, SCN-TELLS-003-4, -5. The human and JSON output on real input does not change. [REQ-TELLS-001] [REQ-TELLS-003] Verify: `python3 scripts/tells-lint.py --selftest && python3 -m unittest tests.test_tells_lint -v`
-- [ ] 1.2 Write `scripts/lint.py` per 002/D1. Import both scripts as modules. One format, one JSON shape, `--only`, exit codes. Write `tests/test_lint_cli.py` with one test per scenario of REQ-LINT-001 and REQ-LINT-002. [REQ-LINT-001] [REQ-LINT-002] Verify: `python3 -m unittest tests.test_lint_cli -v && python3 scripts/lint.py --help > /dev/null`
-- [ ] 1.3 Add `LINT` to `caps` in `spec-ctx.toml`. [REQ-LINT-001] Verify: `bash scripts/specctx.sh check --strict`
+- [x] 1.1 In `scripts/tells-lint.py`: `not-x-its-y` matches across `,`, `.`, `:`, `;`, em dash, en dash, and ` - `. `stock-word` matches verb inflections (`s`, `es`, `d`, `ed`, `ing`) and noun plurals. Add one matching and one non-matching selftest case per fix. Add argparse help strings in Strict mode. No file and empty stdin exits 2 with `no input`. Add tests for SCN-TELLS-001-4, -5, SCN-TELLS-003-4, -5. The human and JSON output on real input does not change. [REQ-TELLS-001] [REQ-TELLS-003] Verify: `python3 scripts/tells-lint.py --selftest && python3 -m unittest tests.test_tells_lint -v`
+- [x] 1.2 Write `scripts/lint.py` per 002/D1. Import both scripts as modules. One format, one JSON shape, `--only`, exit codes. Write `tests/test_lint_cli.py` with one test per scenario of REQ-LINT-001 and REQ-LINT-002. [REQ-LINT-001] [REQ-LINT-002] Verify: `python3 -m unittest tests.test_lint_cli -v && python3 scripts/lint.py --help > /dev/null`
+- [x] 1.3 Add `LINT` to `caps` in `spec-ctx.toml`. [REQ-LINT-001] Verify: `bash scripts/specctx.sh check --strict`
 
 ## 2. Skill and README
 
