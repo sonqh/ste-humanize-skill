@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-25T01:56:59.020Z",
+  "bundle_chars": 1326,
+  "files": {
+    "tests/test_lint_cli.py": "f3ca3af36e872da529f93fbf4abf342635f659ca67789f3f9c8a1c6ed3df6c2e"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-LINT-003"
+  ],
+  "started_at": "2026-10-25T01:56:49.466Z",
+  "task": "002/3.2",
+  "tool_version": "0.1.0",
+  "verify": {
+    "command": "python3 -m unittest tests.test_lint_cli -v && python3 -c \"import yaml\" 2>/dev/null || true; grep -q \"id: ste-humanize-lint\" .pre-commit-hooks.yaml && grep -q \"using: composite\" action.yml",
+    "exit": 0,
+    "stderr_tail": "SCN-LINT-003-2 ... ok\ntest_baseline_and_advisory (tests.test_lint_cli.LintCliTests.test_baseline_and_advisory)\nExit codes: baseline and advisory findings. ... ok\ntest_both_sources (tests.test_lint_cli.LintCliTests.test_both_sources)\nSCN-LINT-001-1 ... ok\ntest_disable_and_unknown_rule (tests.test_lint_cli.LintCliTests.test_disable_and_unknown_rule)\n--disable filters both sources and rejects unknown names. ... ok\ntest_empty_input (tests.test_lint_cli.LintCliTests.test_empty_input)\nSCN-LINT-001-3 ... ok\ntest_hook_id (tests.test_lint_cli.LintCliTests.test_hook_id)\nSCN-LINT-003-1 ... ok\ntest_json_shape (tests.test_lint_cli.LintCliTests.test_json_shape)\nSCN-LINT-002-1 ... ok\ntest_only_one_source (tests.test_lint_cli.LintCliTests.test_only_one_source)\nSCN-LINT-001-2 ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.430s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

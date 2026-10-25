@@ -15,9 +15,9 @@ Every Verify runs from the repo root. Write `specctx` for `bash scripts/specctx.
 
 ## 3. Distribution
 
-- [ ] 3.1 Write `.gitattributes` with `export-ignore` per 002/D6. Add a test for SCN-SKILL-004-3 in `tests/test_skill_contract.py`. [REQ-SKILL-004] Verify: `git archive HEAD | tar -t | grep -q "^SKILL.md" && ! git archive HEAD | tar -t | grep -q "^openspec/" && python3 -m unittest tests.test_skill_contract -v`
-- [ ] 3.2 Write `.pre-commit-hooks.yaml` and `action.yml` per 002/D7. Add a `lint` job to `.github/workflows/ci.yml` that uses `./` with `files: "README.md docs/**/*.md"`. Add tests for SCN-LINT-003-1 and -2. [REQ-LINT-003] Verify: `python3 -m unittest tests.test_lint_cli -v && python3 -c "import yaml" 2>/dev/null || true; grep -q "id: ste-humanize-lint" .pre-commit-hooks.yaml && grep -q "using: composite" action.yml`
-- [ ] 3.3 Write `docs/verification/002.md`. Note that spec-ctx must re-record its lint goldens against this commit. Full gate. [REQ-SKILL-004] Verify: `bash scripts/ci-local.sh`
+- [x] 3.1 Write `.gitattributes` with `export-ignore` per 002/D6. Add a test for SCN-SKILL-004-3 in `tests/test_skill_contract.py`. [REQ-SKILL-004] Verify: `git archive HEAD | tar -t | grep -q "^SKILL.md" && ! git archive HEAD | tar -t | grep -q "^openspec/" && python3 -m unittest tests.test_skill_contract -v`
+- [x] 3.2 Write `.pre-commit-hooks.yaml` and `action.yml` per 002/D7. Add a `lint` job to `.github/workflows/ci.yml` that uses `./` with `files: "README.md docs/**/*.md"`. Add tests for SCN-LINT-003-1 and -2. [REQ-LINT-003] Verify: `python3 -m unittest tests.test_lint_cli -v && python3 -c "import yaml" 2>/dev/null || true; grep -q "id: ste-humanize-lint" .pre-commit-hooks.yaml && grep -q "using: composite" action.yml`
+- [x] 3.3 Write `docs/verification/002.md`. Note that spec-ctx must re-record its lint goldens against this commit. Full gate. [REQ-SKILL-004] Verify: `bash scripts/ci-local.sh`
 
 ## Workflow follow-up
 

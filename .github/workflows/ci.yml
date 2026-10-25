@@ -34,6 +34,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: bash scripts/ci-reach.sh
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          files: "README.md docs/**/*.md"
   code:
     runs-on: ubuntu-latest
     steps:

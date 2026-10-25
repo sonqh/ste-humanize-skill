@@ -1,0 +1,27 @@
+name: ste-humanize lint
+description: Check markdown files for AI tells and structural STE rules.
+inputs:
+  files:
+    description: Space-separated paths or globs of the files to check.
+    required: false
+    default: "**/*.md"
+  baseline:
+    description: Number of hard findings to allow.
+    required: false
+    default: "0"
+runs:
+  using: composite
+  steps:
+    - name: Lint
+      shell: bash
+      env:
+        LINT_FILES: ${{ inputs.files }}
+        LINT_BASELINE: ${{ inputs.baseline }}
+      run: |
+        shopt -s globstar nullglob
+        files=( $LINT_FILES )
+        if [ "${#files[@]}" -eq 0 ]; then
+          echo "no files matched: $LINT_FILES"
+          exit 0
+        fi
+        python3 "$GITHUB_ACTION_PATH/scripts/lint.py" --baseline "$LINT_BASELINE" "${files[@]}"

@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-25T01:56:28.837Z",
+  "bundle_chars": 3101,
+  "files": {
+    "tests/test_skill_contract.py": "12e9766b0732de6a9699fbe14127ecb07d4408a54e7eda80cb5a4fa1abe2f28b"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-004"
+  ],
+  "started_at": "2026-10-25T01:55:20.271Z",
+  "task": "002/3.1",
+  "tool_version": "0.1.0",
+  "verify": {
+    "command": "git archive HEAD | tar -t | grep -q \"^SKILL.md\" && ! git archive HEAD | tar -t | grep -q \"^openspec/\" && python3 -m unittest tests.test_skill_contract -v",
+    "exit": 0,
+    "stderr_tail": "test_clean_archive (tests.test_skill_contract.SkillContractTests.test_clean_archive)\nSCN-SKILL-004-3 ... ok\ntest_output_format (tests.test_skill_contract.SkillContractTests.test_output_format)\nSCN-SKILL-003-1 ... ok\ntest_precedence_order (tests.test_skill_contract.SkillContractTests.test_precedence_order)\nSCN-SKILL-002-1 ... ok\ntest_readme_lints_clean (tests.test_skill_contract.SkillContractTests.test_readme_lints_clean)\nSCN-SKILL-004-2 ... ok\ntest_two_modes (tests.test_skill_contract.SkillContractTests.test_two_modes)\nSCN-SKILL-001-1 ... ok\ntest_word_cap (tests.test_skill_contract.SkillContractTests.test_word_cap)\nSCN-SKILL-004-1 ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.074s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

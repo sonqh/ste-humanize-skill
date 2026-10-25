@@ -1,0 +1,6 @@
+- id: ste-humanize-lint
+  name: ste-humanize lint
+  description: Check markdown for AI tells and structural STE rules.
+  entry: scripts/lint.py
+  language: script
+  types: [markdown]

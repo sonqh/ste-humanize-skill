@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -82,6 +83,34 @@ class LintCliTests(unittest.TestCase):
         r = run(["--disable", "not-a-rule"], text="Hello.\n")
         self.assertEqual(r.returncode, 2)
         self.assertIn("not-a-rule", r.stderr)
+
+    def test_hook_id(self):
+        """SCN-LINT-003-1"""
+        # Covers: REQ-LINT-003
+        with open(os.path.join(ROOT, ".pre-commit-hooks.yaml"), encoding="utf-8") as fh:
+            text = fh.read()
+        self.assertEqual(len(re.findall(r"^- id:", text, re.M)), 1)
+        self.assertRegex(text, r"(?m)^- id: ste-humanize-lint\s*$")
+        self.assertRegex(text, r"(?m)^\s+entry: .*scripts/lint\.py")
+
+    def test_action_inputs(self):
+        """SCN-LINT-003-2"""
+        # Covers: REQ-LINT-003
+        with open(os.path.join(ROOT, "action.yml"), encoding="utf-8") as fh:
+            lines = fh.read().splitlines()
+        inputs, block = set(), None
+        for line in lines:
+            if re.match(r"^\S", line):
+                block = line.split(":")[0]
+            elif block == "inputs":
+                m = re.match(r"^  (\w+):\s*$", line)
+                if m:
+                    inputs.add(m.group(1))
+        self.assertTrue({"files", "baseline"} <= inputs, inputs)
+        self.assertIn("  using: composite", lines)
+        with open(os.path.join(ROOT, ".github", "workflows", "ci.yml"), encoding="utf-8") as fh:
+            ci = fh.read()
+        self.assertIn("uses: ./", ci)
 
 
 if __name__ == "__main__":
