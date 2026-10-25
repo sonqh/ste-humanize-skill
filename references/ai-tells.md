@@ -4,7 +4,7 @@ This file holds the patterns the humanizer side of `ste-humanize` checks, with a
 
 Why these patterns exist: a language model writes what is most likely to come next, so by default it makes the choice that fits the widest range of readers. A person chooses for one reader and one subject, so their choices are uneven and specific. Every pattern below is one form of the default choice.
 
-Two rules follow. Every sentence you keep must add something the reader did not already have. A tell counts in proportion to how rarely a careful writer would make it on purpose. Patterns 1 to 5 justify an edit on one sighting. A pattern marked *weak alone* needs company before you act.
+Two rules follow. Every sentence you keep must add something the reader did not already have. A tell counts in proportion to how rarely a careful writer would make it on purpose. Patterns 1 to 5 justify an edit on one sighting. A pattern marked *weak alone* needs company before you act. In Strict mode apply only patterns 22 and 26: a tool description must not open with chatbot residue and must not repeat what the caller knows.
 
 ## A. Staging instead of stating
 
@@ -51,7 +51,7 @@ After: Next.js caches data at several layers: request memoization, the data cach
 
 Watch for: This isn't (mainly) about, I'm not saying, To be clear, Don't get me wrong, This is not to say, Some might say... but, A tempting approach would be, One might be tempted to, You might think... but.
 
-Problem: the text answers an objection that appears nowhere else. Remove the defense. Keep an objection the text attributes or answers in full.
+Problem: the text answers an objection that appears nowhere else. Remove the defense. Keep an objection the text attributes, answers in full, or a reader would raise.
 
 Before: Session tokens rotate every 24 hours. A tempting approach would be to rotate them by restarting the auth service on a cron job, but that would drop every active session. Rotation happens in place.
 After: Session tokens rotate every 24 hours, in place, and clients refresh without a restart.
@@ -60,7 +60,7 @@ After: Session tokens rotate every 24 hours, in place, and clients refresh witho
 
 ### 6. Forced triads
 
-Problem: ideas arrive in threes to sound complete. Check that each item adds a distinct idea. Keep three real items when the meaning needs three.
+Problem: ideas arrive in threes to sound complete. Check that each item adds a distinct idea. Keep three real items when the meaning needs three. Otherwise merge items or develop one.
 
 Before: The event features keynote sessions, panel discussions, and networking opportunities. Attendees can expect innovation, inspiration, and industry insights.
 After: The event includes talks and panels. There is also time for informal networking between sessions.
@@ -104,7 +104,7 @@ After: You do not need a configuration file. The system preserves the results au
 
 Watch for: actually, additionally, align with, bolstered, crucial, deep dive, delve, enduring, enhance, garner, gate (figurative), highlight (verb), interplay, intricate, key (adjective), landscape (abstract), leverage, meticulous, pivotal, quietly, robust (figurative), seamless, showcase, tapestry, testament, underscore (verb), valuable, vibrant.
 
-Problem: models use these far more often than people do, especially in groups. A formal word outside this list is not a tell by itself.
+Problem: models use these far more often than people do, especially in groups. Replace each with the plain word or cut it. A formal word outside this list is not a tell by itself.
 
 Before: Additionally, a distinctive feature of Somali cuisine is the incorporation of camel meat. An enduring testament to Italian colonial influence is the widespread adoption of pasta in the local culinary landscape.
 After: Somali cuisine also includes camel meat, which is considered a delicacy. Pasta dishes, introduced during Italian colonization, remain common.
@@ -212,7 +212,7 @@ Problem: the text describes itself instead of its subject. Keep a source credit 
 
 Watch for: a reply that restates the problem, walks through the diagnosis, and lays out the evidence before it reaches the decision; the answer sitting in the last line.
 
-Problem: in a reply the reader already has the context. Lead with the decision. Keep only the reasoning that would change whether the reader agrees.
+Problem: in a reply the reader already has the context. Lead with the decision. Keep only the one fact the reader lacks and the reasoning that would change whether the reader agrees.
 
 ## When not to act
 

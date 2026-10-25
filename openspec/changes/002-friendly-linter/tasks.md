@@ -10,8 +10,8 @@ Every Verify runs from the repo root. Write `specctx` for `bash scripts/specctx.
 
 ## 2. Skill and README
 
-- [ ] 2.1 Trim `SKILL.md` under 1800 words per 002/D5. Move the numbered humanizer patterns into `references/ai-tells.md` and merge with what is there. Keep the table and one pointer sentence. [REQ-SKILL-004] Verify: `test $(wc -w < SKILL.md) -lt 1800 && python3 -m unittest tests.test_skill_contract -v`
-- [ ] 2.2 Rewrite `README.md` per 002/D4. Move the full table to `examples/before-after.md`. Keep one pair of at most 6 lines that lints clean. Install notes Node 22.20 for `npx skills add` and says what the git clone brings. Lint section shows `lint.py` only. Move `Develop` to `docs/CONTRIBUTING.md`. Drop the `--baseline 40` sentence. Remove the README exemption from `CLAUDE.md`. [REQ-SKILL-004] Verify: `python3 scripts/lint.py README.md docs/CONTRIBUTING.md && python3 scripts/tells-lint.py README.md && python3 scripts/ste-lint.py --disable synonym-rotation README.md && test $(grep -c "^## Develop" README.md) -eq 0 && ! grep -q "README.md. is exempt" CLAUDE.md`
+- [x] 2.1 Trim `SKILL.md` under 1800 words per 002/D5. Move the numbered humanizer patterns into `references/ai-tells.md` and merge with what is there. Keep the table and one pointer sentence. [REQ-SKILL-004] Verify: `test $(wc -w < SKILL.md) -lt 1800 && python3 -m unittest tests.test_skill_contract -v`
+- [x] 2.2 Rewrite `README.md` per 002/D4. Move the full table to `examples/before-after.md`. Keep one pair of at most 6 lines that lints clean. Install notes Node 22.20 for `npx skills add` and says what the git clone brings. Lint section shows `lint.py` only. Move `Develop` to `docs/CONTRIBUTING.md`. Drop the `--baseline 40` sentence. Remove the README exemption from `CLAUDE.md`. [REQ-SKILL-004] Verify: `python3 scripts/lint.py README.md docs/CONTRIBUTING.md && python3 scripts/tells-lint.py README.md && python3 scripts/ste-lint.py --disable synonym-rotation README.md && test $(grep -c "^## Develop" README.md) -eq 0 && ! grep -q "README.md. is exempt" CLAUDE.md`
 
 ## 3. Distribution
 

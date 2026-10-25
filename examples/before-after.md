@@ -99,3 +99,12 @@ Input:
 This skill:
 
 > The text already complies. No changes.
+
+## 7. Quick table
+
+Two pairs in table form. Both come from the README, which now holds a shorter pair.
+
+| Before | After |
+|---|---|
+| "Let's dive into what this tool does. It's not just a sync utility, it's a robust, seamless configuration layer that has been designed to leverage your existing setup across the various agents that have been configured, ensuring consistency. That is the real win." | "This tool is a configuration layer. It reads the setup you already have and writes it to each agent you configured. Each agent then reads the same rules." |
+| "Oops! An error may have occurred while processing your request due to a possible mismatch in the expected data format, which could be caused by an outdated client version. Please reach out to support." | "Your request may have failed. The cause may be a data format that does not match what the server expects. An outdated client can cause this mismatch. Check your client version. If the error continues, contact support." |

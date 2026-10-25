@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-25T01:55:05.338Z",
+  "bundle_chars": 2899,
+  "files": {
+    "tests/test_skill_contract.py": "40a733634829ffa35dea8fda64e762cdc8d9a176273b941d02e0c61acce9319a"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-004"
+  ],
+  "started_at": "2026-10-25T01:54:27.152Z",
+  "task": "002/2.2",
+  "tool_version": "0.1.0",
+  "verify": {
+    "command": "python3 scripts/lint.py README.md docs/CONTRIBUTING.md && python3 scripts/tells-lint.py README.md && python3 scripts/ste-lint.py --disable synonym-rotation README.md && test $(grep -c \"^## Develop\" README.md) -eq 0 && ! grep -q \"README.md. is exempt\" CLAUDE.md",
+    "exit": 0,
+    "stderr_tail": "0 hard finding(s), baseline 0",
+    "stdout_sha256": "01405f1d8ec1461340fc2cf2dca29b51d3cd55d2c6b6c0cffd1c4b38ba09178c"
+  }
+}

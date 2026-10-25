@@ -1,5 +1,7 @@
 import os
 import re
+import subprocess
+import sys
 import unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,6 +37,23 @@ class SkillContractTests(unittest.TestCase):
         body = section("Output format")
         self.assertIn("Kept as-is:", body)
         self.assertIn("nothing else", body)
+
+    def test_word_cap(self):
+        """SCN-SKILL-004-1"""
+        # Covers: REQ-SKILL-004
+        with open(SKILL, encoding="utf-8") as fh:
+            self.assertLess(len(fh.read().split()), 1800)
+
+    def test_readme_lints_clean(self):
+        """SCN-SKILL-004-2"""
+        # Covers: REQ-SKILL-004
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "lint.py"),
+                            os.path.join(ROOT, "README.md")], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        with open(os.path.join(ROOT, "README.md"), encoding="utf-8") as fh:
+            text = fh.read()
+        self.assertNotIn("\n## Develop", text)
+        self.assertTrue(os.path.exists(os.path.join(ROOT, "examples", "before-after.md")))
 
 
 if __name__ == "__main__":

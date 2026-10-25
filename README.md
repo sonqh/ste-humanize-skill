@@ -2,51 +2,23 @@
 
 A Claude Code skill that rewrites English so nobody misreads it and it still sounds like a person wrote it.
 
-It combines two disciplines:
-
-- The sentence rules of [ASD-STE100](https://www.asd-ste100.org/) (Simplified Technical English), the controlled language the aerospace industry built so a maintenance step cannot be misread. Short sentences, active voice, one instruction per sentence, one meaning per word, no dropped words.
-- The AI-tell removal of the `humanizer` skill, based on Wikipedia's ["Signs of AI writing"](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing). No "not X but Y", no one-line closers, no dashes as glue, no stock AI words, no bold labels on every list item, no chatbot residue.
-
-STE alone makes text flat. The humanizer alone leaves long sentences. Together they produce text a non-native reader, a downstream agent, and a tired colleague all read the same way.
-
-## Before and after
-
-| Before | After |
-|---|---|
-| "Let's dive into what this tool does. It's not just a sync utility, it's a robust, seamless configuration layer that has been designed to leverage your existing setup across the various agents that have been configured, ensuring consistency. That is the real win." | "This tool is a configuration layer. It reads the setup you already have and writes it to each agent you configured. Each agent then reads the same rules." |
-| "Oops! An error may have occurred while processing your request due to a possible mismatch in the expected data format, which could be caused by an outdated client version. Please reach out to support." | "Your request may have failed. The cause may be a data format that does not match what the server expects. An outdated client can cause this mismatch. Check your client version. If the error continues, contact support." |
-
-More in [`examples/before-after.md`](examples/before-after.md).
-
-## What it does
-
-1. Picks a mode. **Strict** for tool descriptions, error messages, and agent instructions: full STE, no voice. **Human** for docs, READMEs, PR descriptions, and replies: STE structure plus the full humanizer pass.
-2. Reads the text for meaning and lists every hedge and condition that must survive.
-3. Runs two linters for a mechanical first pass.
-4. Rewrites paragraph by paragraph in short active sentences, with the writer's specific details kept.
-5. Returns the rewrite alone, plus one `Kept as-is:` line when it left a longer phrase on purpose.
-
-When the two sources disagree, SKILL.md has a precedence table. The short version: meaning first, then STE structure, then voice, then shape (bullets for parallel parts, technical terms kept as the field uses them), then brevity.
-
 ## Install
 
-With the [skills CLI](https://skills.sh/):
+With the [skills CLI](https://skills.sh/). It needs Node 22.20 or newer.
 
 ```bash
 npx skills add sonqh/ste-humanize-skill
 ```
 
-Or clone into your global skills folder:
+Or clone it into your skills folder.
 
 ```bash
 git clone https://github.com/sonqh/ste-humanize-skill ~/.claude/skills/ste-humanize
 ```
 
-Codex and other agents that read `~/.agents/skills`:
-
-```bash
-git clone https://github.com/sonqh/ste-humanize-skill ~/.agents/skills/ste-humanize
-```
+- The clone brings the whole repository: the skill, the tests, the specs in `openspec/`, and the maintainer hooks.
+- The zip on the GitHub release page holds the skill only.
+- Codex and other agents that read `~/.agents/skills` use the same clone, with that path.
 
 ## Use
 
@@ -57,49 +29,44 @@ Rewrite this error message so an agent cannot misread it
 Show the diff
 ```
 
-You get the rewritten text back. Add "show the diff" or "which rules did it break" to see the rule table.
+- You get the rewritten text back.
+- Add "show the diff" or "which rules did it break" to see the rule table.
+- The skill picks a mode. Strict is for tool descriptions, error messages, and agent instructions. Human is for docs, READMEs, PR descriptions, and replies.
 
-## Linters
+One example:
 
-Both scripts are stdlib-only Python and exit 1 when hard findings exceed `--baseline` (default 0).
-
-```bash
-python scripts/ste-lint.py FILE        # semicolons, length, phrasal verbs, nominalization, passive, tenses
-python scripts/tells-lint.py FILE      # dashes, not-X-but-Y, stock words, bold labels, chat residue
-python scripts/tells-lint.py --selftest
+```text
+Before: It's not just a sync tool, it's a robust, seamless layer. That is the real win.
+After:  The tool writes your setup to each agent. Each agent then reads the same rules.
 ```
 
-Neither linter flags hedges. Neither one checks that a rewrite kept the original meaning. A clean run means the regex checks found nothing.
+More pairs are in [`examples/before-after.md`](examples/before-after.md).
 
-The repo's own SKILL.md does not lint clean, because it quotes the patterns it forbids. Lint it with `--baseline 40` and read the findings as examples.
+## Lint
 
-## Develop
-
-Specs live in `openspec/`. The engine is spec-ctx. `scripts/specctx.sh` names its install source.
+One command checks both rule sets: the structural STE rules and the AI tells.
 
 ```bash
-git config core.hooksPath .githooks    # turn on the hooks
-python3 -m unittest discover -s tests  # run the tests
-bash scripts/ci-local.sh               # run the CI steps on this machine
+python3 scripts/lint.py FILE
 ```
 
-- The `pre-commit` hook runs `specctx gate --strict` and the tests.
-- The `pre-push` hook runs `scripts/ci-local.sh`. `SPECCTX_SKIP_PUSH_GATE=1` skips it and says so.
-- CI skips the spec-ctx job while the spec-ctx repository is private. It prints a notice. Run `scripts/ci-local.sh` instead.
-- Tests use `unittest` only. They add no dependency.
+- Each finding prints as `file:line:col rule [level] match`.
+- Hard findings fail the run when they exceed `--baseline N` (default 0). Advisory findings never fail it.
+- `--only tells` or `--only ste` runs one rule set.
+- `--disable rule,rule` turns rules off.
+- `--json` prints the findings as JSON.
+- The linter flags no hedges and checks no meaning. A clean run means the regex checks found nothing.
 
 ## Scope
 
-Built for: documentation, READMEs, design notes, PR descriptions, changelogs, replies in threads, tool descriptions, error messages, agent-to-agent instructions.
-
-Not built for: fiction, marketing, persuasive copy, or text where voice is the point.
-
-This skill does not reproduce ASD's 900-word dictionary. The standard is free to obtain but not free to redistribute. It applies the principle (plainest common word, used the same way every time). For certified STE documentation, use the real standard.
+- Built for documentation, READMEs, design notes, PR descriptions, changelogs, replies in threads, tool descriptions, error messages, and agent-to-agent instructions.
+- Not built for fiction, marketing, persuasive copy, or text where voice is the point.
+- It does not reproduce ASD's 900-word dictionary. It applies the principle: the plainest common word, used the same way every time. For certified STE documentation, use the real standard.
 
 ## Credits
 
 - STE rules, `ste-lint.py`, and the STE examples come from [danyuchn/asd-ste100-skill](https://github.com/danyuchn/asd-ste100-skill) by Dustin Yuchen Teng, MIT.
-- The AI-tell patterns come from the `humanizer` skill, MIT, which adapts Wikipedia's "Signs of AI writing".
+- The AI-tell patterns come from the `humanizer` skill, MIT, which adapts Wikipedia's ["Signs of AI writing"](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing).
 
 ## License
 

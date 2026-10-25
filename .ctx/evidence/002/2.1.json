@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-25T01:54:19.835Z",
+  "bundle_chars": 2899,
+  "files": {},
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-004"
+  ],
+  "started_at": "2026-10-25T01:51:48.215Z",
+  "task": "002/2.1",
+  "tool_version": "0.1.0",
+  "verify": {
+    "command": "test $(wc -w < SKILL.md) -lt 1800 && python3 -m unittest tests.test_skill_contract -v",
+    "exit": 0,
+    "stderr_tail": "test_output_format (tests.test_skill_contract.SkillContractTests.test_output_format)\nSCN-SKILL-003-1 ... ok\ntest_precedence_order (tests.test_skill_contract.SkillContractTests.test_precedence_order)\nSCN-SKILL-002-1 ... ok\ntest_two_modes (tests.test_skill_contract.SkillContractTests.test_two_modes)\nSCN-SKILL-001-1 ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.002s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
