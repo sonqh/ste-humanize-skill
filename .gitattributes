@@ -1,0 +1,14 @@
+# Maintainer paths stay out of git archive and release zips.
+/openspec/ export-ignore
+/tests/ export-ignore
+/.ctx/ export-ignore
+/.claude/ export-ignore
+/.agents/ export-ignore
+/.github/ export-ignore
+/.githooks/ export-ignore
+/decisions/ export-ignore
+/docs/ export-ignore
+/spec-ctx.toml export-ignore
+/AGENTS.md export-ignore
+/CLAUDE.md export-ignore
+/.gitattributes export-ignore

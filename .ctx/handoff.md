@@ -6,6 +6,7 @@ as_of: none
 done:
 reopened:
 - 001/3.1 tests edited after review (at 2026-10-24T03:55:29.199Z)
+- 002/2.2 tests/test_skill_contract.py gained the SCN-SKILL-004-3 test in task 3.1, so the file hash changed (at 2026-10-25T01:56:13.263Z)
 open_questions:
 resolved:
 - REQ-TELLS-003 and SCN-TELLS-003-2 say --json prints one object with file, findings, and the hard count. The script prints a JSON list of {file, findings} objects and no hard count. Fixing the script is a behavior change. Fix the spec to match the script, or approve a script change? (task 001/2.1, 2026-10-24) answer: spec changed in 89ffb68

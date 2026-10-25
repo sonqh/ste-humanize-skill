@@ -55,6 +55,26 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("\n## Develop", text)
         self.assertTrue(os.path.exists(os.path.join(ROOT, "examples", "before-after.md")))
 
+    def test_clean_archive(self):
+        """SCN-SKILL-004-3"""
+        # Covers: REQ-SKILL-004
+        # --worktree-attributes reads .gitattributes from disk, so the test
+        # passes before the file is committed.
+        try:
+            r = subprocess.run(["git", "archive", "--worktree-attributes", "HEAD"],
+                               cwd=ROOT, capture_output=True)
+        except OSError:
+            self.skipTest("git not available")
+        if r.returncode != 0:
+            self.skipTest("not a git checkout")
+        import io
+        import tarfile
+        names = tarfile.open(fileobj=io.BytesIO(r.stdout)).getnames()
+        for want in ("SKILL.md", "references", "scripts", "examples"):
+            self.assertTrue(any(n == want or n.startswith(want + "/") for n in names), want)
+        for bad in ("openspec", "tests", ".ctx", ".claude"):
+            self.assertFalse(any(n == bad or n.startswith(bad + "/") for n in names), bad)
+
 
 if __name__ == "__main__":
     unittest.main()
