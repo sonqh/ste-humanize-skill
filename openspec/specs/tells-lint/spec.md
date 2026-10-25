@@ -6,7 +6,7 @@
 ## Requirements
 
 ### Requirement: REQ-TELLS-001 Hard rules
-The `RULES` table SHALL hold exactly these hard rules: `dash`, `not-x-but-y`, `not-x-its-y`, `chat-residue`, `run-up`, `deep-saying`, `stock-word`, `bold-label`, `emoji-heading`. A hard finding SHALL count toward the baseline. Each rule SHALL have one matching and one non-matching example in the selftest.
+The `RULES` table SHALL hold exactly these hard rules: `dash`, `not-x-but-y`, `not-x-its-y`, `chat-residue`, `run-up`, `deep-saying`, `stock-word`, `bold-label`, `emoji-heading`. A hard finding SHALL count toward the baseline. `not-x-its-y` SHALL match across a comma, period, colon, semicolon, em dash, en dash, or spaced hyphen. `stock-word` SHALL match the inflections of each verb and the plural of each noun in its list. Each rule SHALL have one matching and one non-matching selftest example.
 
 #### Scenario: SCN-TELLS-001-1 Table matches
 - **WHEN** the test reads `RULES` from the script
@@ -20,6 +20,14 @@ The `RULES` table SHALL hold exactly these hard rules: `dash`, `not-x-but-y`, `n
 - **WHEN** a line contains an em dash between two words
 - **THEN** `dash` fires and the run exits 1 at baseline 0
 
+#### Scenario: SCN-TELLS-001-4 Contrast across a dash
+- **WHEN** a line reads `It's not just a linter — it's a gate.`
+- **THEN** `not-x-its-y` fires once
+
+#### Scenario: SCN-TELLS-001-5 Inflected stock word
+- **WHEN** a line reads `The team leverages the cache.`
+- **THEN** `stock-word` fires once with the match `leverages`
+
 ### Requirement: REQ-TELLS-002 Advisory rules
 The `RULES` table SHALL hold exactly these advisory rules: `sales-word`, `title-case-heading`, `stacked-qualifier`, `serves-as`, `closer`, `repeated-closer`. An advisory finding SHALL print with its rule name and SHALL not count toward the baseline.
 
@@ -32,7 +40,7 @@ The `RULES` table SHALL hold exactly these advisory rules: `sales-word`, `title-
 - **THEN** the run prints the finding and exits 0
 
 ### Requirement: REQ-TELLS-003 CLI contract
-The script SHALL accept `FILE...` or stdin, `--baseline N` (default 0), `--disable <rule,rule>`, `--json`, and `--selftest`. It SHALL exit 1 when hard findings exceed the baseline, else 0. `--json` SHALL print a list with one object per file, each with `file` and `findings` (each finding with `rule`, `level`, `line`, `match`). `--selftest` SHALL exit 0 and print `selftest ok`. An unknown rule in `--disable` SHALL exit 2 and name it.
+The script SHALL accept `FILE...` or stdin, `--baseline N` (default 0), `--disable <rule,rule>`, `--json`, and `--selftest`, each with a help string. It SHALL exit 1 when hard findings exceed the baseline, else 0. `--json` SHALL print a list of `{file, findings}` with `rule`, `level`, `line`, `match` per finding. `--selftest` SHALL exit 0 and print `selftest ok`. An unknown rule in `--disable` SHALL exit 2 and name it. No file and empty stdin SHALL exit 2 with `no input`.
 
 #### Scenario: SCN-TELLS-003-1 Baseline
 - **WHEN** a file has 3 hard findings and `--baseline 3` is given
@@ -45,3 +53,11 @@ The script SHALL accept `FILE...` or stdin, `--baseline N` (default 0), `--disab
 #### Scenario: SCN-TELLS-003-3 Unknown rule
 - **WHEN** `--disable not-a-rule` is given
 - **THEN** the run exits 2 and the message contains `not-a-rule`
+
+#### Scenario: SCN-TELLS-003-4 Help strings
+- **WHEN** `--help` runs
+- **THEN** every flag line has a description after it
+
+#### Scenario: SCN-TELLS-003-5 Empty input
+- **WHEN** the script runs with no file and empty stdin
+- **THEN** it exits 2 and prints `no input`
