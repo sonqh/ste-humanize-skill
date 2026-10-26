@@ -2,3 +2,6 @@
 .DS_Store
 .ctx/index.json
 __pycache__/
+
+# The push gate appends to this file on every run.
+.ctx/gate-log.jsonl
