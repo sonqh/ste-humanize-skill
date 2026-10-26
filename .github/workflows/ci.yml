@@ -8,32 +8,15 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  reach:
-    runs-on: ubuntu-latest
-    outputs:
-      ok: ${{ steps.reach.outputs.ok }}
-    steps:
-      - uses: actions/checkout@v4
-      - id: reach
-        run: bash scripts/ci-reach.sh >> "$GITHUB_OUTPUT"
   specs:
-    needs: reach
-    if: needs.reach.outputs.ok == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: sonqh/spec-ctx@main
+      - uses: sonqh/spec-ctx@v0
         with:
           specctx: bash scripts/specctx.sh
           strict: "true"
           markdown: "CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md"
-  specs-skipped:
-    needs: reach
-    if: needs.reach.outputs.ok != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash scripts/ci-reach.sh
   lint:
     runs-on: ubuntu-latest
     steps:

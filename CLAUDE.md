@@ -4,7 +4,7 @@ A Claude Code skill that rewrites English with ASD-STE100 structure and no AI te
 
 ## First thing in every session
 
-Run the `specctx-bootstrap` skill. The engine is spec-ctx, called as `npx -y github:sonqh/spec-ctx#997ea1979506` until the npm package exists. Write it as `specctx` below.
+Run the `specctx-bootstrap` skill. The engine is [spec-ctx](https://www.npmjs.com/package/spec-ctx), called through `bash scripts/specctx.sh`, the one place that names its version. Write it as `specctx` below.
 
 ```bash
 specctx status
