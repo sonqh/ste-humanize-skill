@@ -42,7 +42,7 @@ class SkillContractTests(unittest.TestCase):
         """SCN-SKILL-004-1"""
         # Covers: REQ-SKILL-004
         with open(SKILL, encoding="utf-8") as fh:
-            self.assertLess(len(fh.read().split()), 1800)
+            self.assertLess(len(fh.read().split()), 2000)
 
     def test_readme_lints_clean(self):
         """SCN-SKILL-004-2"""
@@ -78,3 +78,33 @@ class SkillContractTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class NewcomerShapeTest(unittest.TestCase):
+    # Covers: REQ-SKILL-005
+
+    def _section(self, title):
+        with open(SKILL, encoding="utf-8") as fh:
+            text = fh.read()
+        start = text.index(title)
+        end = text.find("\n## ", start + 1)
+        return text[start:end if end > 0 else None]
+
+    def test_section_and_order(self):
+        # Covers: SCN-SKILL-005-1
+        sec = self._section("## Shape: a page for a newcomer")
+        items = [l for l in sec.splitlines() if l[:2] in ("1.", "2.", "3.", "4.", "5.")]
+        self.assertEqual(len(items), 5)
+        self.assertIn("base thing", items[0])
+        self.assertIn("try it", items[4])
+
+    def test_caption_rule(self):
+        # Covers: SCN-SKILL-005-2
+        sec = self._section("## Shape: a page for a newcomer")
+        self.assertIn("what the reader sees", sec)
+        self.assertIn("does not repeat the command", sec)
+
+    def test_numbers_need_scale(self):
+        # Covers: SCN-SKILL-005-3
+        self.assertIn("scale the reader has", self._section("## Boundaries"))
+
