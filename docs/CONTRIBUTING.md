@@ -13,3 +13,10 @@ bash scripts/ci-local.sh               # run the CI steps on this machine
 - CI skips the spec-ctx job while the spec-ctx repository is private. It prints a notice. Run `scripts/ci-local.sh` instead.
 - Tests use `unittest` only. They add no dependency.
 - Every markdown file follows the skill itself, Human mode. Lint it with `python3 scripts/lint.py FILE`. `SKILL.md` and `references/` quote the patterns they forbid, so they are exempt.
+
+## Release
+
+- The plugin version lives in two places: `version` in the front matter of `SKILL.md` and `version` in `.claude-plugin/plugin.json`. A test fails when they differ.
+- Plugin users get an update only when this version changes. Raise it in both files when the skill text or a linter changes.
+- Run `claude plugin validate --strict .` before you push a release. It checks both manifests.
+

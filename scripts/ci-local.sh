@@ -5,7 +5,7 @@ cd "$(dirname "$0")/.."
 log=$(mktemp)
 trap 'rm -f "$log"' EXIT
 steps=(
-  'bash scripts/specctx.sh gate --strict --markdown "CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md"'
+  'bash scripts/specctx.sh gate --strict --markdown ".claude/CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md"'
   'python3 -m unittest discover -s tests'
   'python3 scripts/tells-lint.py --selftest'
   'python3 scripts/ste-lint.py --selftest'

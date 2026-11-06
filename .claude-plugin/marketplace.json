@@ -1,0 +1,14 @@
+{
+  "name": "sonqh",
+  "owner": { "name": "Son Quach", "url": "https://github.com/sonqh" },
+  "description": "Skills by Son Quach.",
+  "plugins": [
+    {
+      "name": "ste-humanize",
+      "source": "./",
+      "description": "Rewrite English with ASD-STE100 structure and no AI tells.",
+      "category": "writing",
+      "tags": ["writing", "docs", "lint"]
+    }
+  ]
+}
