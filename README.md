@@ -4,6 +4,22 @@ A Claude Code skill that rewrites English so nobody misreads it and it still sou
 
 ## Install
 
+In Claude Code 2.1.275 or newer, install the plugin in one step.
+
+```
+/plugin install ste-humanize --marketplace sonqh/ste-humanize-skill
+```
+
+On an older Claude Code, add the marketplace first.
+
+```
+/plugin marketplace add sonqh/ste-humanize-skill
+/plugin install ste-humanize@sonqh
+```
+
+- The plugin namespaces the skill, so you call it as `/ste-humanize:ste-humanize`. Claude also picks it up from a request such as "humanize this".
+- `/plugin update ste-humanize@sonqh` gets a new version. The update applies after a restart.
+
 With the [skills CLI](https://skills.sh/). It needs Node 22.20 or newer.
 
 ```bash

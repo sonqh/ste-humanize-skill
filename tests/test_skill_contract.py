@@ -114,6 +114,44 @@ class AudienceFitTest(unittest.TestCase):
         self.assertIn("Independent rules", sec)
 
 
+class PluginMarketplaceTest(unittest.TestCase):
+    # Covers: REQ-SKILL-007
+
+    def _json(self, name):
+        import json
+        with open(os.path.join(ROOT, ".claude-plugin", name), encoding="utf-8") as fh:
+            return json.load(fh)
+
+    def _front(self, key):
+        with open(SKILL, encoding="utf-8") as fh:
+            head = fh.read().split("---", 2)[1]
+        return re.search(r"^" + key + r":\s*(\S+)\s*$", head, re.M).group(1)
+
+    def test_names_match(self):
+        # Covers: SCN-SKILL-007-1
+        plugin = self._json("plugin.json")
+        entries = self._json("marketplace.json")["plugins"]
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(plugin["name"], self._front("name"))
+        self.assertEqual(entries[0]["name"], plugin["name"])
+        self.assertEqual(entries[0]["source"], "./")
+
+    def test_versions_match(self):
+        # Covers: SCN-SKILL-007-2
+        version = self._json("plugin.json")["version"]
+        self.assertEqual(version, self._front("version"))
+        self.assertRegex(version, r"^\d+\.\d+\.\d+$")
+
+    def test_validate_passes(self):
+        # Covers: SCN-SKILL-007-3
+        import shutil
+        if shutil.which("claude") is None:
+            self.skipTest("claude CLI not on the path")
+        r = subprocess.run(["claude", "plugin", "validate", "--strict", "."], cwd=ROOT,
+                           capture_output=True, text=True, timeout=120)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+
 if __name__ == "__main__":
     unittest.main()
 

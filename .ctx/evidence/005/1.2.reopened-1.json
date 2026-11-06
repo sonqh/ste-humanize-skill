@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-06T07:20:37.341Z",
+  "bundle_chars": 1851,
+  "files": {
+    "tests/test_skill_contract.py": "a226c3a7bca6a82b79419a91a734b38c0dc6c5ae6f3095d77c2684e1e8184bc2"
+  },
+  "kind": "command",
+  "reason": "The record claimed an npx skills add run that did not happen.",
+  "reqs": [
+    "REQ-SKILL-007"
+  ],
+  "started_at": "2026-11-06T07:20:31.553Z",
+  "task": "005/1.2",
+  "tool_version": "0.1.1",
+  "verify": {
+    "command": "bash scripts/ci-local.sh",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "6bbe273727cb9a99ab37ca67ac7f5d4d36e7f77ac0a43bf6bd4fe66eb263a62d"
+  }
+}

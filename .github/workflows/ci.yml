@@ -16,7 +16,7 @@ jobs:
         with:
           specctx: bash scripts/specctx.sh
           strict: "true"
-          markdown: "CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md"
+          markdown: ".claude/CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md"
   lint:
     runs-on: ubuntu-latest
     steps:
