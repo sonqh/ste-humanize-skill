@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-06T07:09:10.545Z",
+  "files": {
+    "tests/test_skill_contract.py": "58169b0718604a429b23f32deb40e1532a10a4e04cca790cd165c52c1800946f"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-004",
+    "REQ-SKILL-006"
+  ],
+  "task": "004/1.1",
+  "tool_version": "0.1.1",
+  "verify": {
+    "command": "python3 -m unittest tests.test_skill_contract -v && test $(wc -w < SKILL.md) -lt 2400",
+    "exit": 0,
+    "stderr_tail": "test_caption_rule (tests.test_skill_contract.NewcomerShapeTest.test_caption_rule) ... ok\ntest_numbers_need_scale (tests.test_skill_contract.NewcomerShapeTest.test_numbers_need_scale) ... ok\ntest_section_and_order (tests.test_skill_contract.NewcomerShapeTest.test_section_and_order) ... ok\ntest_clean_archive (tests.test_skill_contract.SkillContractTests.test_clean_archive)\nSCN-SKILL-004-3 ... ok\ntest_output_format (tests.test_skill_contract.SkillContractTests.test_output_format)\nSCN-SKILL-003-1 ... ok\ntest_precedence_order (tests.test_skill_contract.SkillContractTests.test_precedence_order)\nSCN-SKILL-002-1 ... ok\ntest_readme_lints_clean (tests.test_skill_contract.SkillContractTests.test_readme_lints_clean)\nSCN-SKILL-004-2 ... ok\ntest_two_modes (tests.test_skill_contract.SkillContractTests.test_two_modes)\nSCN-SKILL-001-1 ... ok\ntest_word_cap (tests.test_skill_contract.SkillContractTests.test_word_cap)\nSCN-SKILL-004-1 ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.051s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

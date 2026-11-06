@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-06T07:09:31.147Z",
+  "bundle_chars": 2253,
+  "files": {
+    "tests/test_skill_contract.py": "58169b0718604a429b23f32deb40e1532a10a4e04cca790cd165c52c1800946f"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-006"
+  ],
+  "started_at": "2026-11-06T07:09:26.017Z",
+  "task": "004/1.2",
+  "tool_version": "0.1.1",
+  "verify": {
+    "command": "bash scripts/ci-local.sh",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "7533636f807110aa93554b6277ff6e4a94bd4bcf2f44b8df6434a128762a5908"
+  }
+}
