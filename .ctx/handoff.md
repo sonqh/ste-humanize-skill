@@ -9,6 +9,8 @@ reopened:
 - 002/2.2 tests/test_skill_contract.py gained the SCN-SKILL-004-3 test in task 3.1, so the file hash changed (at 2026-10-25T01:56:13.263Z)
 - 002/1.2 tests/test_lint_cli.py gained the SCN-LINT-003 tests in task 3.2, so the file hash changed (at 2026-10-25T01:57:44.601Z)
 - 002/1.3 tests/test_lint_cli.py gained the SCN-LINT-003 tests in task 3.2, so the file hash changed (at 2026-10-25T01:57:50.058Z)
+- 004/1.1 Independent review found conflicts with Boundaries and File mode and loose phrases. SKILL.md and the tests change. (at 2026-11-06T07:08:42.952Z)
+- 004/1.2 SKILL.md and the record changed after the review. (at 2026-11-06T07:09:25.241Z)
 open_questions:
 resolved:
 - REQ-TELLS-003 and SCN-TELLS-003-2 say --json prints one object with file, findings, and the hard count. The script prints a JSON list of {file, findings} objects and no hard count. Fixing the script is a behavior change. Fix the spec to match the script, or approve a script change? (task 001/2.1, 2026-10-24) answer: spec changed in 89ffb68

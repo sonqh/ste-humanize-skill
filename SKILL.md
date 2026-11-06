@@ -25,10 +25,10 @@ Pick the mode from the text type. Do not announce it unless the user asks for th
 
 ## Order of precedence when rules conflict
 
-1. Meaning. Every fact, condition, qualifier, and hedge in the source survives.
+1. Meaning. Every fact the reader needs survives, and so does every condition, exception, qualifier, and hedge in the source. Audience fit may drop a source-level detail the reader does not need, such as a file name.
 2. Structure (STE). Short sentences, active voice, one instruction per sentence, no semicolons, no dropped words.
 3. Voice (humanizer). No staging, no inflation, no decoration, no chatbot residue. Keep the writer's specific details and real asides.
-4. Shape. Parallel parts become bullets. Technical terms stay as the field uses them.
+4. Shape. Parallel parts become bullets. Technical terms the reader needs stay as the field uses them.
 5. Brevity. Shorter only when it does not cost 1 to 4.
 
 Where the two sources disagree:
@@ -69,7 +69,7 @@ STE word-use rules (one word, one meaning, one part of speech) depend on ASD's 9
 
 ## Process
 
-1. Pick the mode. Read the whole text once for meaning. Note every hedge and condition. These must survive.
+1. Pick the mode. In Human mode, name the reader and what they already know. Read the whole text once for meaning. Note every hedge, condition, and exception. These must survive.
 2. Run `python3 scripts/lint.py FILE` for a mechanical first pass. It flags no hedges and checks no meaning.
 3. Mark every finding, strongest first: staging and STE structure, then inflation, then word choice.
 4. Rewrite paragraph by paragraph in short active sentences. Split parallel ideas into bullets. If a rewrite would drop a condition or upgrade a hedge to a fact, keep the longer phrasing and flag it.
@@ -96,7 +96,7 @@ Mode: Human. 9 findings.
 
 Follow the table with one line on anything you did not change on purpose, and why.
 
-**File mode.** When the user names a file, write only the final text to the file. Change prose only. Keep code, commands, paths, YAML front matter, data, and link targets unchanged. Then give a short summary.
+**File mode.** When the user names a file, write only the final text to the file. Change prose only. In Human mode, you may also remove an identifier or a code map from the prose when it fails audience fit. Do not change a code block, command, YAML front matter, data, or link target. Then give a short summary that lists each identifier you removed.
 
 **Embedded mode.** When another task uses this skill for a document, PR, or commit message, return only the final text.
 
@@ -106,11 +106,22 @@ When the user gives a writing sample, match its sentence length, word choice, pu
 
 Without a sample, take the voice from the text type. A design note or a reply keeps the writer's opinion and specific details. A reference page or an error message stays neutral. Keep what carries the writer's voice unless it hurts the meaning: an unusual detail, mixed feelings stated plainly, a real aside, a first-person choice the writer can explain.
 
+## Audience fit
+
+Apply this section in Human mode only. Before you choose which technical details to keep, decide who reads the text and what they already know. If you cannot tell who reads it, keep the identifiers. A contributor who changes the code, a user of the feature, and a reviewer of a decision need different details.
+
+- Explain behavior, examples, conditions, and limits in terms the reader already has. Say what the feature does, when it does it, and where it stops.
+- Keep a file name, function name, or internal identifier only when the reader needs it to complete a task. Examples of such a task: run a command, set a config key, open the code to change it, or search a log.
+- Always keep a command, flag, config key, or error string that the reader must type or match. Keep it exact.
+- Apply the same test to appendices and collapsed sections. A reader who opens one reads every line in it. A code map for readers who never open the code serves no reader need.
+- When you have the code, verify each claim against the source code. Then explain the behavior in plain language. Add a source link for traceability. The link text names what the reader finds there, for example "where retries stop". Do not use the file path as link text. Do not invent a link or a claim that you cannot verify.
+- Simplify the explanation. Keep the behavior exact. Every condition and exception in the source survives the rewrite.
+
 ## Shape: bullets first
 
 Prefer a bullet list over a paragraph when the content has parallel parts: options, steps, findings, risks, decisions, rules.
 
-- One idea per bullet, in one or two short sentences. No bold label. Numbered only when order matters.
+- One idea or one event per bullet. Sentences that describe one event stay together in one bullet. Independent rules get separate bullets. No bold label. Numbered only when order matters.
 - Lead with the point. Put the reason or the example after it.
 - Keep prose for one connected argument or a transition.
 - Nest one level at most. A bullet that needs sub-bullets is probably a section.
@@ -132,17 +143,17 @@ Explain each term on first use, inside the sentence that uses it. A caption for 
 
 ## Technical terms and other languages
 
-Keep established technical terms as they are. Do not translate them word by word or swap them for a plainer word that loses meaning. "Source of truth", "idempotent", "lockfile", "schema", "hook" stay in English in any language. So do product names, file names, commands, flags, and config keys.
+Keep established technical terms as they are. Do not translate them word by word or swap them for a plainer word that loses meaning. "Source of truth", "idempotent", "lockfile", "schema", "hook" stay in English in any language. When a product name, file name, command, flag, or config key stays in the text, keep it exact. Do not translate or paraphrase it. `## Audience fit` decides whether a source-level identifier stays at all.
 
 - Define a term the reader may not know once, on first use. After that, use the term alone.
 - Pick one term per concept. Do not alternate with a translation.
 - In another language, apply every structural rule and humanizer pattern in that language. "Không phải X mà là Y" is the same tell as "not X but Y".
 - Translate only ordinary words. "Thư mục" for directory is fine. "Nguồn chân lý" for source of truth is not.
-- In Strict mode, keep the exact identifier, error code, or API name the system uses.
+- In Strict mode, keep the exact identifier, error code, or API name the system uses. Audience fit does not remove identifiers in Strict mode.
 
 ## Boundaries
 
-- Do not add a fact, cause, mechanism, name, or number the source did not give. Do not turn "could be caused by X" into "X is the cause".
+- Do not add a fact, cause, mechanism, name, or number the source did not give. One exception: in Human mode, you may explain behavior that you verified in the source code, and you may link to that code. Do not turn "could be caused by X" into "X is the cause".
 - Do not drop a safety condition or exception to shorten a sentence. Flag the trade-off.
 - Do not certify STE compliance. For aircraft documentation, use the real standard.
 - Do not make empty content useful. A hollow paragraph comes out short, clean, and still hollow. Say so.

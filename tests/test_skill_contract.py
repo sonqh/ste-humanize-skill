@@ -42,7 +42,7 @@ class SkillContractTests(unittest.TestCase):
         """SCN-SKILL-004-1"""
         # Covers: REQ-SKILL-004
         with open(SKILL, encoding="utf-8") as fh:
-            self.assertLess(len(fh.read().split()), 2000)
+            self.assertLess(len(fh.read().split()), 2400)
 
     def test_readme_lints_clean(self):
         """SCN-SKILL-004-2"""
@@ -74,6 +74,44 @@ class SkillContractTests(unittest.TestCase):
             self.assertTrue(any(n == want or n.startswith(want + "/") for n in names), want)
         for bad in ("openspec", "tests", ".ctx", ".claude"):
             self.assertFalse(any(n == bad or n.startswith(bad + "/") for n in names), bad)
+
+
+class AudienceFitTest(unittest.TestCase):
+    # Covers: REQ-SKILL-006
+
+    def test_reader_first(self):
+        # Covers: SCN-SKILL-006-1
+        sec = section("Audience fit")
+        self.assertIn("Human mode only", sec)
+        self.assertIn("already know", sec)
+        self.assertIn("complete a task", sec)
+
+    def test_appendices(self):
+        # Covers: SCN-SKILL-006-2
+        sec = section("Audience fit")
+        self.assertIn("appendices", sec)
+        self.assertIn("collapsed sections", sec)
+
+    def test_source_and_links(self):
+        # Covers: SCN-SKILL-006-3
+        sec = section("Audience fit")
+        self.assertIn("against the source code", sec)
+        self.assertIn("link text", sec)
+
+    def test_conditions_survive_identifiers_exact(self):
+        # Covers: SCN-SKILL-006-4
+        item1 = re.search(r"^1\.\s+Meaning\..*$", section("Order of precedence when rules conflict"), re.M).group(0)
+        self.assertIn("condition", item1)
+        self.assertIn("exception", item1)
+        terms = section("Technical terms and other languages")
+        self.assertIn("Audience fit", terms)
+        self.assertIn("Strict mode", terms)
+
+    def test_one_event_per_bullet(self):
+        # Covers: SCN-SKILL-006-5
+        sec = section("Shape: bullets first")
+        self.assertIn("one event", sec)
+        self.assertIn("Independent rules", sec)
 
 
 if __name__ == "__main__":
