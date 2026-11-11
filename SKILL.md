@@ -1,19 +1,19 @@
 ---
 name: ste-humanize
-description: "Rewrite English so a reader cannot misread it and still hears a person behind it. Combines ASD-STE100 sentence discipline with AI-tell removal (no not-X-but-Y, no one-line closers, no dash glue, no stock AI words). Use for docs, READMEs, PR descriptions, replies, tool descriptions, error messages, and any prose written for a person. Triggers: humanize, make this clear, plain rewrite, STE rewrite, remove AI tells. Not for fiction, marketing, or copy where voice is the point."
-version: 0.3.0
+description: "Write or rewrite English so a reader cannot misread it and still hears a person behind it. Starts from the reader: what they know and what they do next. Combines ASD-STE100 sentence discipline with AI-tell removal (no not-X-but-Y, no one-line closers, no dash glue, no stock AI words). Use to write or rewrite docs, READMEs, PR descriptions, replies, tool descriptions, error messages, and any prose written for a person. Triggers: write a doc, humanize, make this clear, plain rewrite, STE rewrite, remove AI tells. Not for fiction, marketing, or copy where voice is the point."
+version: 0.4.0
 license: MIT
 ---
 
 # ste-humanize: clear enough for a machine, written for a person
 
-This skill does two jobs in one pass. First it applies the structural rules of ASD-STE100, the controlled English that aerospace built so a maintenance step cannot be misread. Then it removes the habits that make text read as machine-written.
+This skill starts from the reader. Then it does two jobs in one pass. First it applies the structural rules of ASD-STE100, the controlled English that aerospace built so a maintenance step cannot be misread. Then it removes the habits that make text read as machine-written.
 
-Keep what the text says. Do not drop a condition, a scope limit, or a hedge that carries real doubt.
+Keep what the source says. Do not drop a condition, a scope limit, or a hedge that carries real doubt.
 
 ## When to use this skill
 
-Use it when you write a document, README, design note, PR description, or reply for a person, or a tool description, error message, or instruction that another agent must parse. Use it when a draft reads dense, hedged, over-formatted, or like a chatbot. Do not use it for fiction, marketing, or any text where voice and persuasion are the point.
+Use it when you write or rewrite a document, README, design note, PR description, or reply for a person, or a tool description, error message, or instruction that another agent must parse. Use it when a draft reads dense, hedged, over-formatted, or like a chatbot. Do not use it for fiction, marketing, or any text where voice and persuasion are the point.
 
 ## Two modes
 
@@ -23,12 +23,42 @@ Pick the mode from the text type. Do not announce it unless the user asks for th
 
 **Human.** READMEs, docs, design notes, PR descriptions, chat replies, status updates, anything a person reads. Apply the STE structural rules in full, treat the STE word-use rules as a direction, and apply the full humanizer pass. The reader should notice they understood it on the first read, not that a standard was applied.
 
+## Two tasks
+
+The mode sets the rules. The task sets what you may leave out. Pick the task from the request.
+
+**Rewrite.** The user gives a text. The source is the truth. Keep every fact per precedence item 1. When the reader may not need an idea, do not remove it. Name it on a `Cut candidates:` line. The owner of the text decides.
+
+**Write.** The user asks for a new text from notes, code, a diff, or the conversation. That material is input. The reader brief decides which parts go in. Three limits stay:
+
+- A condition, exception, or limit of a behavior you describe always goes in.
+- A safety condition always goes in.
+- No fact goes in that the material does not give and that you did not verify.
+
+In Strict mode the reader is a tool or an agent, and it cannot ask. When in doubt, keep the detail.
+
+## Reader first
+
+Before the first sentence, answer a reader brief. Do not print it.
+
+1. Who reads this? Take the reader from the request, then from the kind of page. `references/doc-shapes.md` lists the usual reader and the opening of each kind of page. Read it for a Write task.
+2. What does the reader already know?
+3. What does the reader do or decide after reading?
+
+Then apply the brief:
+
+- Answer first. The first sentence gives the conclusion, the decision, or the action the reader must take. Reasons and background come after it. Each section opens with its own point.
+- Each part must help the reader with item 3. If it does not, leave it out of a Write. In a Rewrite it stays and becomes a cut candidate.
+- Background the reader already has gets one clause or none.
+- Stop when the reader can act. Leave out a template section that has nothing to say.
+- If neither the request nor the kind of page tells you the reader, ask. If you cannot ask, choose the most likely reader and report it on a `Reader:` line.
+
 ## Order of precedence when rules conflict
 
-1. Meaning. Every fact the reader needs survives, and so does every condition, exception, qualifier, and hedge in the source. Audience fit may drop a source-level detail the reader does not need, such as a file name.
+1. Meaning. Every fact the reader needs survives, and so does every condition, exception, qualifier, and hedge in the source. Audience fit may drop a source-level detail the reader does not need, such as a file name. In a Write task, the reader brief decides which facts the reader needs.
 2. Structure (STE). Short sentences, active voice, one instruction per sentence, no semicolons, no dropped words.
 3. Voice (humanizer). No staging, no inflation, no decoration, no chatbot residue. Keep the writer's specific details and real asides.
-4. Shape. Parallel parts become bullets. Technical terms the reader needs stay as the field uses them.
+4. Shape. The content picks the shape. Technical terms the reader needs stay as the field uses them.
 5. Brevity. Shorter only when it does not cost 1 to 4.
 
 Where the two sources disagree:
@@ -69,19 +99,23 @@ STE word-use rules (one word, one meaning, one part of speech) depend on ASD's 9
 
 ## Process
 
-1. Pick the mode. In Human mode, name the reader and what they already know. Read the whole text once for meaning. Note every hedge, condition, and exception. These must survive.
-2. Run `python3 scripts/lint.py FILE` for a mechanical first pass. It flags no hedges and checks no meaning.
+1. Pick the mode and the task. Answer the reader brief. For a Rewrite, read the whole text once and note every hedge, condition, and exception. These must survive. For a Write, list the points the reader needs, the answer first.
+2. Run `python3 scripts/lint.py FILE` on the source or the draft for a mechanical first pass. It flags no hedges and checks no meaning.
 3. Mark every finding, strongest first: staging and STE structure, then inflation, then word choice.
-4. Rewrite paragraph by paragraph in short active sentences. Split parallel ideas into bullets. If a rewrite would drop a condition or upgrade a hedge to a fact, keep the longer phrasing and flag it.
+4. Write or rewrite paragraph by paragraph in short active sentences. Pick the shape per `## Shape: fit the content`. If a rewrite would drop a condition or upgrade a hedge to a fact, keep the longer phrasing and flag it.
 5. Read the result aloud. Fix any sentence a reader could misread and any that still sounds like a chatbot.
 6. Run the linter again. Advisory findings do not fail. Hard findings do, unless you can name the precision they protect.
 7. If the input already complies, say so. Do not force edits onto clean text.
 
 ## Output format
 
-**Default: the rewritten text and nothing else.** No preamble, no mode announcement, no count of changes, no closing offer.
+**Default: the text and nothing else.** No preamble, no mode announcement, no count of changes, no closing offer.
 
-One permitted addition. When step 4 kept a longer phrasing on purpose, add one line after the text, prefixed `Kept as-is:`, naming the phrase and the precision it protects. Omit the line when there is nothing to report.
+Three permitted additions, each one line after the text. Omit a line when there is nothing to report.
+
+- `Kept as-is:` when step 4 kept a longer phrasing on purpose. Name the phrase and the precision it protects.
+- `Cut candidates:` in a Rewrite task, when a part does not help the reader. Name each part in a few words. Do not remove it.
+- `Reader:` when you chose the reader yourself. Name the reader in one clause.
 
 **On request: the rule table.** When the user asks to "show the diff", "explain the changes", or "which rules did it break", output this instead:
 
@@ -96,7 +130,7 @@ Mode: Human. 9 findings.
 
 Follow the table with one line on anything you did not change on purpose, and why.
 
-**File mode.** When the user names a file, write only the final text to the file. Change prose only. In Human mode, you may also remove an identifier or a code map from the prose when it fails audience fit. Do not change a code block, command, YAML front matter, data, or link target. Then give a short summary that lists each identifier you removed.
+**File mode.** When the user names a file, write only the final text to the file. Change prose only. In Human mode, you may also remove an identifier or a code map from the prose when it fails audience fit. Do not change a code block, command, YAML front matter, data, or link target. Then give a short summary that lists each identifier you removed, each cut candidate, and the reader you chose.
 
 **Embedded mode.** When another task uses this skill for a document, PR, or commit message, return only the final text.
 
@@ -108,7 +142,7 @@ Without a sample, take the voice from the text type. A design note or a reply ke
 
 ## Audience fit
 
-Apply this section in Human mode only. Before you choose which technical details to keep, decide who reads the text and what they already know. If you cannot tell who reads it, keep the identifiers. A contributor who changes the code, a user of the feature, and a reviewer of a decision need different details.
+Apply this section in Human mode only. The reader brief says who reads the text and what they already know. Choose the technical details from it. If you cannot tell who reads it, keep the identifiers. A contributor who changes the code, a user of the feature, and a reviewer of a decision need different details.
 
 - Explain behavior, examples, conditions, and limits in terms the reader already has. Say what the feature does, when it does it, and where it stops.
 - Keep a file name, function name, or internal identifier only when the reader needs it to complete a task. Examples of such a task: run a command, set a config key, open the code to change it, or search a log.
@@ -117,29 +151,32 @@ Apply this section in Human mode only. Before you choose which technical details
 - When you have the code, verify each claim against the source code. Then explain the behavior in plain language. Add a source link for traceability. The link text names what the reader finds there, for example "where retries stop". Do not use the file path as link text. Do not invent a link or a claim that you cannot verify.
 - Simplify the explanation. Keep the behavior exact. Every condition and exception in the source survives the rewrite.
 
-## Shape: bullets first
+## Shape: fit the content
 
-Prefer a bullet list over a paragraph when the content has parallel parts: options, steps, findings, risks, decisions, rules.
+The content picks the shape. A long paragraph is the first sign of a wrong shape.
 
-- One idea or one event per bullet. Sentences that describe one event stay together in one bullet. Independent rules get separate bullets. No bold label. Numbered only when order matters.
+| Content | Shape |
+|---|---|
+| 3 or more parallel parts: options, findings, risks, decisions, rules | Bullets |
+| Steps in an order | Numbered list |
+| Items that share the same attributes | Table |
+| Conditions with different results | Bullets, one condition each |
+| One line of reasoning, where each sentence needs the one before it | Prose, one topic per paragraph |
+| One or two points | A sentence |
+
+Look for these signs in a draft. The linter reports each one as advisory.
+
+- A paragraph of more than 6 sentences. Split it by topic, or move its parallel parts to a list.
+- A sentence that lists 5 or more items.
+- A sentence that walks through steps with "first", "then", "after that".
+
+Rules for bullets:
+
+- One idea or one event per bullet. Sentences that describe one event stay together in one bullet. Independent rules get separate bullets. No bold label.
 - Lead with the point. Put the reason or the example after it.
-- Keep prose for one connected argument or a transition.
 - Nest one level at most. A bullet that needs sub-bullets is probably a section.
-- Keep a table as a table when items share the same attributes.
 
-Split a long paragraph with three or more parallel ideas into bullets. Merge a list of fragments with no claim in them into sentences.
-
-## Shape: a page for a newcomer
-
-When the reader may not know the domain, order the page so each part needs only the one before it.
-
-1. What the base thing is, in one paragraph. Name it, say where it lives, say what it holds.
-2. The problem, in two or three bullets, in words the reader already has.
-3. What the tool does about it. A table of before and after works when the rows are parallel.
-4. Proof. A clip, a transcript, or a number with a scale the reader has.
-5. How to try it. Three commands or fewer.
-
-Explain each term on first use, inside the sentence that uses it. A caption for a clip or a screenshot says what the reader sees, then why it matters. It does not repeat the command.
+Do not cut reasoning into bullets. When bullets need "because", "so", or "but" to connect to each other, write prose. Merge a list of fragments with no claim in them into sentences.
 
 ## Technical terms and other languages
 
@@ -164,6 +201,7 @@ Keep established technical terms as they are. Do not translate them word by word
 ## Resources
 
 - `references/ste-rules.md` and `references/ai-tells.md`: the STE rule categories and the 26 humanizer patterns.
+- `references/doc-shapes.md`: the usual reader and the opening of each kind of page.
 - `scripts/lint.py`: one linter command. It wraps `scripts/ste-lint.py` and `scripts/tells-lint.py`. Python 3 stdlib only.
 
 ## Credits

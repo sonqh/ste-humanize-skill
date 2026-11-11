@@ -105,5 +105,55 @@ class SteLintTests(unittest.TestCase):
         self.assertIn("selftest OK", r.stdout)
 
 
+class ShapeAdvisoryTests(unittest.TestCase):
+    # Covers: REQ-STE-004
+
+    def _rules(self, text):
+        findings, _ = ste.lint(text)
+        return [f for f in findings if f["rule"] in ste.SHAPE_RULES]
+
+    def test_long_paragraph(self):
+        """SCN-STE-004-1"""
+        # Covers: REQ-STE-004
+        hits = self._rules("The agent read the log. " * 7 + "\n")
+        self.assertEqual([f["rule"] for f in hits], ["long-paragraph"])
+        self.assertEqual(hits[0]["match"], "7 sentences")
+        self.assertEqual(self._rules("The agent read the log. " * 6 + "\n"), [])
+
+    def test_inline_list(self):
+        """SCN-STE-004-2"""
+        # Covers: REQ-STE-004
+        hits = self._rules("It holds the name, the size, the owner, the mode, and the date.\n")
+        self.assertEqual([f["rule"] for f in hits], ["inline-list"])
+        self.assertEqual(self._rules("It holds the name, the size, the owner, and the date.\n"), [])
+        # two short lists joined by "and" are not one long list
+        self.assertEqual(self._rules(
+            "Strict is for tools, errors, and agents, and Human is for docs.\n"), [])
+
+    def test_buried_sequence(self):
+        """SCN-STE-004-3"""
+        # Covers: REQ-STE-004
+        hits = self._rules("First, open the file. Then read line 3. Finally, close the file.\n")
+        self.assertEqual([f["rule"] for f in hits], ["buried-sequence"])
+        self.assertEqual(self._rules(
+            "1. First, open the file.\n2. Then read line 3.\n3. Finally, close the file.\n"), [])
+        # code is not prose
+        self.assertEqual(self._rules(
+            "Run this.\n\n```\nfirst then finally a, b, c, d, and e\n```\n"), [])
+
+    def test_advisory_only(self):
+        """SCN-STE-004-4"""
+        # Covers: REQ-STE-004
+        text = "The agent read the log. " * 7 + "\n"
+        for f in self._rules(text):
+            self.assertEqual(f["level"], "advisory")
+        r = run_file(text)
+        self.assertEqual(r.returncode, 0)
+        self.assertIn("long-paragraph", r.stdout)
+        r = run_file(text, ["--disable", "long-paragraph"])
+        self.assertEqual(r.returncode, 0)
+        self.assertNotIn("long-paragraph", r.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()
