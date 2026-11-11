@@ -1,0 +1,43 @@
+{
+  "id": "long-strict-tool-description",
+  "mode": "Strict",
+  "task": "Rewrite",
+  "request": "Rewrite this tool description. An agent reads it to decide when and how to call the tool.",
+  "input": "Great news! This powerful tool, search_orders, lets you seamlessly look up orders in the order system, and it is really flexible so there are quite a few things to keep in mind when you use it, which we will go through below.\n\nBasically what the tool does is that it searches the orders that have been placed by customers and gives them back to you as a list. It should be noted that it is a read-only tool, so nothing is changed by calling it, and it can therefore be called as many times as needed without worrying about side effects, although please see the note about rate limits further down.\n\nIn terms of the parameters, there are four of them. The first one is customer_id, which is a string and is the id of the customer whose orders you want. The second one is status, which is optional, and can be one of open, shipped, cancelled, or refunded; if it is not given then orders of every status are returned. Then there is created_after, which is a timestamp and has to be in ISO 8601 format in UTC, for example 2026-01-31T00:00:00Z, and only orders created after that moment are returned. Finally there is limit, which is how many orders to return, where the default is 20 and the maximum is 100, and a value above 100 is not rejected but is silently reduced to 100, which has confused people before.\n\nOne thing that is really important and easy to miss is that at least one of customer_id or created_after has to be provided. If neither of them is given, the call fails with the error code ORD-400, because a search with no filter at all would scan the whole table. Giving only status is not enough and also fails with ORD-400.\n\nResults are sorted by creation time with the newest first. When there are more results than the limit, the response includes a field called next_cursor, and to get the next page the same call should be made again with the cursor parameter set to that value and all other parameters kept the same; if the other parameters are changed between pages the results may be inconsistent. When next_cursor is absent, there are no more pages.\n\nIt is also worth mentioning that the tool only covers recent orders. Orders older than 90 days are moved to the archive and are not returned by search_orders at all, not even if created_after is set to an earlier date, in which case the result is simply empty for that period and no error is raised. For those older orders the search_archive tool has to be used instead.\n\nAnother thing to be aware of is freshness. The search index is updated asynchronously, so a new order or a status change may take up to 5 minutes to appear in the results. If an order that was just created is not found, it could be that it has not been indexed yet, and it does not necessarily mean the order does not exist; in that situation the get_order tool can be used with the order id, because it reads from the primary database.\n\nRegarding rate limits, the tool allows 60 calls per minute per agent. When the limit is exceeded the call fails with HTTP 429 and a retry_after value in seconds is included in the response, and the caller should wait that long before trying again and should not retry immediately.\n\nEach order in the result has the fields id, customer_id, status, total, currency, and created_at. The total is given in minor units, so 1999 with currency USD means 19.99 dollars, which is a common source of mistakes. Line items are not included in the results; get_order should be used to fetch them.\n\nWe hope this helps and happy searching!",
+  "checks": {
+    "must_contain": [
+      "search_orders",
+      "customer_id",
+      "created_after",
+      "ISO 8601",
+      "\\b20\\b",
+      "\\b100\\b",
+      "refunded",
+      "ORD-400",
+      "next_cursor",
+      "90 days",
+      "search_archive",
+      "5 minutes",
+      "\\bmay\\b",
+      "get_order",
+      "429",
+      "retry_after",
+      "\\b60\\b",
+      "minor units",
+      "read-only|changes nothing|does not change"
+    ],
+    "must_not_contain": [
+      "Great news",
+      "powerful",
+      "seamless",
+      "happy searching",
+      "We hope"
+    ],
+    "max_words": 430,
+    "shape": "any",
+    "trailers": [
+      "Kept as-is:",
+      "Cut candidates:"
+    ]
+  }
+}

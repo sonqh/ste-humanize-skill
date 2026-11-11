@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-11T14:51:34.434Z",
+  "bundle_chars": 6079,
+  "files": {
+    "evals/eval.py": "b2edbd2505c2137cb951c7f8c887318ed5b192465af41285e723db88b0ba53d4",
+    "tests/test_eval.py": "8d4c4e40b8a8c25acce93e452e8feb10eb22705fe462df104ee7e8b978cc5d79"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-EVAL-002"
+  ],
+  "started_at": "2026-11-11T14:51:28.609Z",
+  "task": "008/2.1",
+  "tool_version": "0.1.1",
+  "verify": {
+    "command": "bash scripts/ci-local.sh",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "6bbe273727cb9a99ab37ca67ac7f5d4d36e7f77ac0a43bf6bd4fe66eb263a62d"
+  }
+}
