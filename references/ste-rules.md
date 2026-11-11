@@ -57,3 +57,22 @@ STE was designed to eliminate ambiguity for a reader who cannot ask a follow-up 
 - [Simplified Technical English — Wikipedia](https://en.wikipedia.org/wiki/Simplified_Technical_English)
 - [TechScribe — ASD-STE100 Simplified Technical English](https://www.techscribe.co.uk/techw/asd-simplified-technical-english.htm)
 - [SKYbrary — Simplified Technical English (STE)](https://skybrary.aero/articles/simplified-technical-english-ste)
+
+## The Rules This Skill Applies, With Examples
+
+`SKILL.md` lists each rule in one line. Read this section when a rule is unclear.
+
+- Active voice. "The agent deletes the file." Not "The file is deleted.", unless the actor is unknown or irrelevant.
+- No phrasal verbs. "Remove the panel." "Start the job." Not "Take off", "Spin up".
+- One instruction per sentence. "Open the file. Read line 3." Not "Open the file and read line 3, then check if it matches."
+- Sentence length. 20 words or fewer for instructions, 25 for description.
+- No semicolons. Split into two sentences.
+- Noun clusters. 3 words or fewer in one noun phrase.
+- No dropped words. Keep subject, verb, and article. "Files not backed up will be lost" does not say which files.
+- Keep modality. "The request may have failed." Not "The request failed." when the source said "may".
+- Simple tenses. "We received the report." Not "We have received the report.", unless the compound form carries meaning. "The job has completed" (output is ready now) differs from "the job completed" (at some past time). Keep the compound form where it carries current relevance, and note the departure.
+- Verb, not noun. "Analyze the log." Not "Perform an analysis of the log."
+- One topic per paragraph, 6 sentences or fewer.
+- Numbered list for 3 or more steps. Do not bury a sequence in one sentence.
+
+STE word-use rules (one word, one meaning, one part of speech) depend on ASD's 900-word dictionary, which this skill does not reproduce. Choose the plainest common word and use it the same way every time. Do not claim dictionary compliance.

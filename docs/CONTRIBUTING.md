@@ -14,6 +14,21 @@ bash scripts/ci-local.sh               # run the CI steps on this machine
 - Tests use `unittest` only. They add no dependency.
 - Every markdown file follows the skill itself, Human mode. Lint it with `python3 scripts/lint.py FILE`. `SKILL.md` and `references/` quote the patterns they forbid, so they are exempt.
 
+## Eval
+
+The eval measures what an agent writes with the skill. The scorer calls no model.
+
+```bash
+python3 evals/eval.py list                             # the fixtures
+python3 evals/eval.py prompt ID --skill PATH_TO_SKILL  # the prompt for one run
+python3 evals/eval.py score OUTPUTS_DIR                # read OUTPUTS_DIR/<id>.md
+```
+
+- Give each prompt to a new agent. Save its reply as `<id>.md` in one folder for each version of the skill.
+- Run the eval before and after a change in `SKILL.md` or `references/`. Compare the two scores.
+- `evals/runs/` holds the outputs of earlier runs.
+- CI does not run the eval. It runs the tests of the scorer.
+
 ## Release
 
 - The plugin version lives in two places: `version` in the front matter of `SKILL.md` and `version` in `.claude-plugin/plugin.json`. A test fails when they differ.

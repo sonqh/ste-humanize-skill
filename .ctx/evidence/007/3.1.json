@@ -1,0 +1,23 @@
+{
+  "at": "2026-11-11T14:31:50.888Z",
+  "bundle_chars": 8037,
+  "files": {
+    "evals/eval.py": "7fba3b2a4ebb6be9fb7eb9e7dc0a70aa2c757c51feba41938534802f68e2a36b",
+    "tests/test_eval.py": "56792eb9df1609f1e12e3d5fe6aaf491d483292e88a21d7ba4f1501984c35227",
+    "tests/test_skill_contract.py": "a4a12b2178bba71fa559c4fe51bf432d96222621ba71cac0dbe120cd53f00342"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-EVAL-002",
+    "REQ-SKILL-011"
+  ],
+  "started_at": "2026-11-11T14:31:45.602Z",
+  "task": "007/3.1",
+  "tool_version": "0.1.1",
+  "verify": {
+    "command": "bash scripts/ci-local.sh",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "6bbe273727cb9a99ab37ca67ac7f5d4d36e7f77ac0a43bf6bd4fe66eb263a62d"
+  }
+}

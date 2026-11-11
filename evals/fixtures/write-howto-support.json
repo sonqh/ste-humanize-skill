@@ -1,0 +1,29 @@
+{
+  "id": "write-howto-support",
+  "mode": "Human",
+  "task": "Write",
+  "request": "Write a how-to guide for support staff from these notes. They know the product. They do not read the code. They use the guide to answer a ticket about webhooks that stopped.",
+  "input": "webhook delivery = WebhookDispatcher in services/webhooks/dispatcher.go, uses the 'wh-out' Kafka topic. Rewritten in v4.1 after the old sync design blocked checkout (see RFC-88). Retries 5 times over 2h with backoff, then marks endpoint as 'failing'. After 3 days failing we auto-disable the endpoint and email the account owner. Customer can re-enable in Settings > Webhooks, and replay missed events from the last 7 days with the Replay button. Events older than 7 days are gone. Signature check failures on their side show as HTTP 401 in the delivery log, error code WH-401.",
+  "checks": {
+    "must_contain": [
+      "\\b5\\b",
+      "2 hours|2h\\b|two hours",
+      "3 days|three days",
+      "7 days|seven days",
+      "Settings\\s*>\\s*Webhooks",
+      "WH-401",
+      "Replay"
+    ],
+    "must_not_contain": [
+      "WebhookDispatcher",
+      "dispatcher\\.go",
+      "Kafka",
+      "wh-out",
+      "RFC-88",
+      "v4\\.1"
+    ],
+    "max_words": 200,
+    "shape": "any",
+    "trailers": []
+  }
+}

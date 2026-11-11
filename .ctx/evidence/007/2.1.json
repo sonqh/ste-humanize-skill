@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-11T14:31:44.974Z",
+  "bundle_chars": 5105,
+  "files": {
+    "evals/eval.py": "7fba3b2a4ebb6be9fb7eb9e7dc0a70aa2c757c51feba41938534802f68e2a36b",
+    "tests/test_eval.py": "56792eb9df1609f1e12e3d5fe6aaf491d483292e88a21d7ba4f1501984c35227"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-EVAL-001",
+    "REQ-EVAL-002"
+  ],
+  "started_at": "2026-11-11T14:31:43.880Z",
+  "task": "007/2.1",
+  "tool_version": "0.1.1",
+  "verify": {
+    "command": "python3 -m unittest tests.test_eval tests.test_skill_contract -v && python3 evals/eval.py list",
+    "exit": 0,
+    "stderr_tail": "test_clean_archive (tests.test_skill_contract.SkillContractTests.test_clean_archive)\nSCN-SKILL-004-3 ... ok\ntest_output_format (tests.test_skill_contract.SkillContractTests.test_output_format)\nSCN-SKILL-003-1 ... ok\ntest_precedence_order (tests.test_skill_contract.SkillContractTests.test_precedence_order)\nSCN-SKILL-002-1 ... ok\ntest_readme_lints_clean (tests.test_skill_contract.SkillContractTests.test_readme_lints_clean)\nSCN-SKILL-004-2 ... ok\ntest_two_modes (tests.test_skill_contract.SkillContractTests.test_two_modes)\nSCN-SKILL-001-1 ... ok\ntest_word_cap (tests.test_skill_contract.SkillContractTests.test_word_cap)\nSCN-SKILL-004-1 ... ok\ntest_header_and_names (tests.test_skill_contract.TwoTasksTest.test_header_and_names) ... ok\ntest_limits_of_a_write (tests.test_skill_contract.TwoTasksTest.test_limits_of_a_write) ... ok\ntest_rewrite_keeps_source (tests.test_skill_contract.TwoTasksTest.test_rewrite_keeps_source) ... ok\n\n----------------------------------------------------------------------\nRan 37 tests in 0.445s\n\nOK",
+    "stdout_sha256": "7918515ef07faf0189532a6b335ee3e546c6e6d1f529f944dc817a6a52487d47"
+  }
+}

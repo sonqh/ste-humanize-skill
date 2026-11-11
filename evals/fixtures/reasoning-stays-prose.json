@@ -1,0 +1,23 @@
+{
+  "id": "reasoning-stays-prose",
+  "mode": "Human",
+  "task": "Rewrite",
+  "request": "Rewrite this paragraph from our incident review.",
+  "input": "The outage started because the certificate expired at 02:00, which made the load balancer reject every new connection. Because the health checks use the same certificate, they failed too, so the autoscaler decided that every instance was unhealthy and replaced them all. The new instances pulled the same expired certificate, so the loop continued until an engineer uploaded a new one at 02:47. That is why the fix is to alert 14 days before expiry rather than to add more instances.",
+  "checks": {
+    "must_contain": [
+      "02:00",
+      "02:47",
+      "14 days",
+      "health check",
+      "autoscaler"
+    ],
+    "max_words": 115,
+    "shape": "prose",
+    "trailers": [
+      "Kept as-is:",
+      "Cut candidates:",
+      "Reader:"
+    ]
+  }
+}

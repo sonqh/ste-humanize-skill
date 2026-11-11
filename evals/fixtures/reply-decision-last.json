@@ -1,0 +1,22 @@
+{
+  "id": "reply-decision-last",
+  "mode": "Human",
+  "task": "Rewrite",
+  "request": "Rewrite this reply for the review thread. The reviewer already knows that the migration fails.",
+  "input": "Thanks for flagging this! So I dug into the failing migration and here's what I found. The migration adds a NOT NULL column to the orders table, and it turns out that 6 rows in production have no customer_id, which is why the constraint fails. I looked at whether we could backfill them but the customers were deleted in 2023 so there's nothing to backfill from. I also considered making the column nullable but that defeats the purpose of the change. Given all this, I think we should delete the 6 orphan rows first and then re-run the migration, unless finance still needs them for the 2023 audit, in which case we may have to archive them instead.",
+  "checks": {
+    "first_sentence": "delete|remove",
+    "must_contain": [
+      "\\b6\\b",
+      "audit",
+      "archiv",
+      "\\bmay\\b"
+    ],
+    "max_words": 110,
+    "shape": "any",
+    "trailers": [
+      "Kept as-is:",
+      "Cut candidates:"
+    ]
+  }
+}
