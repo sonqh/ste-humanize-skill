@@ -60,6 +60,8 @@ You get the text back and nothing else.
 
 ```
 Write a how-to guide for new users from these notes
+Write an ADR from this thread
+Rewrite this proposal for the director who approves the budget
 Rewrite this README section
 Humanize this PR description
 Rewrite this error message so an agent cannot misread it
@@ -67,6 +69,7 @@ Show the diff
 ```
 
 - The plugin namespaces the skill, so the command is `/ste-humanize:ste-humanize`. Claude also picks the skill up from a plain request such as "humanize this".
+- For a README, an ADR, or a technical proposal, the skill orders the page by the questions of its readers. The request or the cost of a proposal comes first. The title of an ADR states the decision.
 - For a new page, the skill starts from the reader. It works out who reads the page, what they already know, and what they do next. Name the reader in your request when you can. If the skill cannot tell who the reader is, it asks you.
 - In a rewrite, the skill removes no idea of yours. It names a part the reader may not need on a `Cut candidates:` line. You decide.
 - Add "show the diff" or "which rules did it break" to see each change in a table, with the rule behind it.

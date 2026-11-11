@@ -1,7 +1,7 @@
 ---
 name: ste-humanize
 description: "Write or rewrite English so a reader cannot misread it and still hears a person behind it. Starts from the reader: what they know and what they do next. Combines ASD-STE100 sentence discipline with AI-tell removal (no not-X-but-Y, no one-line closers, no dash glue, no stock AI words). Use to write or rewrite docs, READMEs, PR descriptions, replies, tool descriptions, error messages, and any prose written for a person. Triggers: write a doc, humanize, make this clear, plain rewrite, STE rewrite, remove AI tells. Not for fiction, marketing, or copy where voice is the point."
-version: 0.5.1
+version: 0.6.0
 license: MIT
 ---
 
@@ -18,7 +18,8 @@ This file holds the rules for every text. Read one more file only when its row a
 | When | Read |
 |---|---|
 | The mode is Human | `references/human.md`: voice, audience fit, and the AI tells |
-| The task is Write | `references/doc-shapes.md`: the usual reader and the opening of each kind of page |
+| The task is Write, or a Rewrite of a whole page | `references/doc-shapes.md`: the usual reader of each kind of page, and the reader questions |
+| The page is a README, an ADR, or a technical proposal | `references/page-guides.md`: the questions of its readers, in order |
 | The text is not in English, or it holds domain terms or identifiers | `references/terms.md` |
 | A sentence rule is unclear | `references/ste-rules.md`: each rule with an example |
 | An AI tell is unclear | `references/ai-tells.md`: the 26 patterns with examples |
@@ -35,7 +36,7 @@ Pick the mode from the text type. Do not announce it.
 
 The mode sets the rules. The task sets what you may leave out. Pick the task from the request.
 
-**Rewrite.** The user gives a text. The source is the truth. Keep every fact per precedence item 1. When the reader may not need an idea, do not remove it. Name it on a `Cut candidates:` line. The owner of the text decides.
+**Rewrite.** The user gives a text. The source is the truth. Keep every fact per precedence item 1. When the reader may not need an idea, do not remove it. Name it on a `Cut candidates:` line. The owner of the text decides. A Rewrite may move a part, so that the page follows the questions of its reader. It moves facts and removes none.
 
 **Write.** The user asks for a new text from notes, code, a diff, or the conversation. That material is input. The reader brief decides which parts go in. Three limits stay:
 
@@ -56,6 +57,7 @@ Then apply the brief:
 - Answer first. The first sentence gives the conclusion, the decision, or the action the reader must take. Reasons and background come after it. Each section opens with its own point.
 - Each part must help the reader with item 3. If it does not, leave it out of a Write. In a Rewrite it stays and becomes a cut candidate.
 - Background the reader already has gets one clause or none.
+- Order the page by the questions the reader brings, the most urgent first.
 - Stop when the reader can act. Leave out a template section that has nothing to say.
 - If neither the request nor the kind of page tells you the reader, ask. If you cannot ask, choose the most likely reader and report it on a `Reader:` line. When the request names the reader, add no `Reader:` line.
 

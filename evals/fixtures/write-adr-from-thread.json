@@ -1,0 +1,47 @@
+{
+  "id": "write-adr-from-thread",
+  "mode": "Human",
+  "task": "Write",
+  "request": "Write an ADR from this thread.",
+  "input": "#backend channel, export of the thread\n\nA: ok so we need to decide the job queue thing this week, the image resize jobs are still running inside the web request and people see timeouts\nB: +1. I looked at BullMQ, it's nice, great dashboard. but it needs Redis and we don't run Redis today. that's a new thing to operate, back up and get paged for\nA: we could use the managed Redis?\nB: we could, about $90 a month for the small one, it's not the money, it's one more system in the on-call runbook. we are 4 people\nC: what about SQS? no servers at all\nB: SQS is fine in prod but local dev gets ugly, you need localstack or a real AWS account per dev, and our integration tests run offline in CI on purpose\nC: fair. Kafka?\nA: lol no. Kafka for 2 jobs a second is a joke, we'd spend a month on it\nC: was half joking\nD: what about pg-boss? it's a job queue on top of Postgres, we already run Postgres, jobs sit in a table, you get retries and delayed jobs and it uses SKIP LOCKED so workers don't fight\nB: I like that there is no new infra. what's the ceiling though\nD: I ran a test on staging friday. 350 jobs per second sustained with 4 workers before the queue table started to lag. we do about 2 per second now, peak maybe 15 during the nightly import\nA: so we have like 20x headroom at peak. fine\nB: downsides?\nD: the jobs table bloats, completed jobs get archived and deleted but you need autovacuum tuned on that table or it grows. I'd add a weekly check. also it only has basic priorities, a number per job, no separate priority lanes. and if Postgres is down the queue is down, but then the app is down anyway\nC: long jobs? the video transcode takes like 25 minutes\nD: good point, pg-boss holds a job with an expiry, default 15 minutes. I would not put anything over 10 minutes in it. transcode should stay on the separate worker box like today, it has its own script\nA: ok. so pg-boss for everything except jobs longer than 10 minutes, those stay on the transcode worker\nB: and when do we look at this again? I don't want to be stuck on it at 300 jobs a second\nD: if we pass 200 jobs per second sustained, or if we need priority lanes, we decide again. that's well before the 350 limit\nA: agreed. also someone order pizza for thursday\nC: on it\nA: I'll write it up as an ADR. decision made today, 2026-10-14, all four agreed. D owns the migration of the resize job first, that's the one hurting users\nB: and note that we said no to BullMQ because of the extra system, not because it's bad. if we ever run Redis for another reason that changes\nA: yes good",
+  "checks": {
+    "early": [
+      {
+        "pattern": "pg-boss",
+        "within_words": 30
+      },
+      {
+        "pattern": "accepted",
+        "within_words": 60
+      }
+    ],
+    "must_contain": [
+      "pg-boss",
+      "BullMQ",
+      "SQS",
+      "Kafka",
+      "2026-10-14|14 October 2026",
+      "350",
+      "\\b200\\b",
+      "10 minutes",
+      "vacuum",
+      "priorit",
+      "Redis",
+      "local|offline",
+      "(?m)^#+ .*Decision",
+      "(?m)^#+ .*(Consequences|What follows)",
+      "(?m)^#+ .*(Context|problem)",
+      "\\bWe will\\b|\\bWe use\\b|\\bThe team will\\b"
+    ],
+    "must_not_contain": [
+      "pizza",
+      "lol",
+      "half joking",
+      "\\bA:",
+      "friday"
+    ],
+    "max_words": 502,
+    "shape": "bullets",
+    "trailers": []
+  }
+}

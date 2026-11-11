@@ -1,6 +1,6 @@
 {
   "name": "ste-humanize",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Write or rewrite English so a reader cannot misread it and still hears a person behind it. ASD-STE100 sentence discipline plus AI-tell removal, with two linters.",
   "author": {
     "name": "Son Quach",
