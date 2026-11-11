@@ -32,7 +32,7 @@ MODES = ("Strict", "Human")
 TASKS = ("Rewrite", "Write")
 SHAPES = ("bullets", "numbered", "prose", "any")
 CHECK_KEYS = {"must_contain", "must_not_contain", "first_sentence", "max_words",
-              "shape", "trailers"}
+              "shape", "trailers", "early"}
 TRAILERS = ("Kept as-is:", "Cut candidates:", "Reader:")
 PREAMBLE = re.compile(
     r"^(?:here(?:'s| is| are)|sure\b|certainly\b|of course\b|below is|i have |i've |okay\b)",
@@ -79,6 +79,15 @@ def load_fixture(path):
         raise FixtureError(f"{name}: unknown check(s): {', '.join(sorted(unknown))}")
     if checks.get("shape", "any") not in SHAPES:
         raise FixtureError(f"{name}: bad shape")
+    # REQ-EVAL-003
+    for item in checks.get("early", []):
+        if (not isinstance(item, dict) or set(item) != {"pattern", "within_words"}
+                or not isinstance(item["within_words"], int) or item["within_words"] < 1):
+            raise FixtureError(f"{name}: an early check needs pattern and within_words")
+        try:
+            re.compile(item["pattern"])
+        except re.error as e:
+            raise FixtureError(f"{name}: bad pattern {item['pattern']!r}: {e}")
     for key in ("must_contain", "must_not_contain"):
         for pattern in checks.get(key, []):
             try:
@@ -146,6 +155,12 @@ def score_output(fx, text):
         sentence = first_sentence(body)
         add("answer-first", re.search(checks["first_sentence"], sentence, re.I), sentence[:80])
     words = len(_prose(body).split())
+    # REQ-EVAL-003 the reader can act near the top: the pattern starts in the first N words
+    for item in checks.get("early", []):
+        m = re.search(item["pattern"], body, re.I)
+        at = len(body[:m.start()].split()) if m else None
+        add(f"early:{item['pattern']}", at is not None and at < item["within_words"],
+            "absent" if at is None else f"at word {at}, limit {item['within_words']}")
     if "max_words" in checks:
         add("max-words", words <= checks["max_words"], f"{words} of {checks['max_words']}")
     shape = checks.get("shape", "any")

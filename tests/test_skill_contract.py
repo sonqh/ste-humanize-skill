@@ -42,6 +42,9 @@ class SkillContractTests(unittest.TestCase):
         body = section("Output format")
         for want in ("Kept as-is:", "Cut candidates:", "Reader:", "nothing else"):
             self.assertIn(want, body)
+        # SCN-SKILL-003-2
+        self.assertIn("only when the request does not name the reader", body)
+        self.assertIn("add no `Reader:` line", section("Reader first"))
 
     def test_word_cap(self):
         """SCN-SKILL-004-1"""
@@ -232,6 +235,11 @@ class ReaderFirstTest(unittest.TestCase):
         sec = section("Reader first")
         self.assertIn("Answer first", sec)
         self.assertIn("reader can act", sec)
+
+    def test_act_first(self):
+        # Covers: SCN-SKILL-009-5
+        with open(DOC_SHAPES, encoding="utf-8") as fh:
+            self.assertIn("The first task comes before the reference", fh.read())
 
     def test_kinds_of_page(self):
         # Covers: SCN-SKILL-009-3
