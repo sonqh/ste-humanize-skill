@@ -1,0 +1,26 @@
+{
+  "id": "strict-error-message",
+  "mode": "Strict",
+  "task": "Rewrite",
+  "request": "Rewrite this error message. An agent parses it and decides what to do next.",
+  "input": "Oops! It looks like something went wrong while we were trying to upload your file — the upload may have been rejected because the file is larger than the 25 MB limit or the storage quota has been exceeded (error UPL-413). Please don't worry, you can try compressing the file and uploading again, but do not retry more than 3 times as the account could potentially be temporarily locked.",
+  "checks": {
+    "must_contain": [
+      "UPL-413",
+      "25 MB",
+      "\\bmay\\b",
+      "\\b3\\b",
+      "quota",
+      "lock"
+    ],
+    "must_not_contain": [
+      "Oops",
+      "worry"
+    ],
+    "max_words": 65,
+    "shape": "any",
+    "trailers": [
+      "Kept as-is:"
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 # Page shapes: who reads each kind of page
 
-Read this file for a Write task, or when a Rewrite must change the order of a page. It fills the reader brief when the request names no reader. A reader that the user names overrides the table.
+Read this file when the task is Write, or when a Rewrite must change the order of a page. It fills the reader brief when the request names no reader. A reader that the user names overrides the table.
 
 ## The usual reader of each page
 

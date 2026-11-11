@@ -1,0 +1,24 @@
+{
+  "id": "options-paragraph",
+  "mode": "Human",
+  "task": "Rewrite",
+  "request": "Rewrite this section of our design note.",
+  "input": "There are four ways we could handle the rate limit and each has trade-offs. We could retry with exponential backoff, which is simple but can take up to 30 seconds on a bad day, or we could queue the requests in Redis, which keeps the UI fast but needs a new worker and loses the queue if Redis restarts without persistence. Another option is to ask the vendor for a higher limit, which costs nothing to build but takes about two weeks and may be refused. Finally we could cache responses for 5 minutes, which removes most calls but only works for read requests, so writes would still hit the limit.",
+  "checks": {
+    "must_contain": [
+      "30 seconds",
+      "Redis",
+      "persistence",
+      "two weeks|2 weeks",
+      "\\bmay\\b",
+      "5 minutes",
+      "\\bread"
+    ],
+    "shape": "bullets",
+    "trailers": [
+      "Kept as-is:",
+      "Cut candidates:",
+      "Reader:"
+    ]
+  }
+}

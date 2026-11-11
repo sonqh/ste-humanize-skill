@@ -1,0 +1,26 @@
+{
+  "id": "write-pr-description",
+  "mode": "Human",
+  "task": "Write",
+  "request": "Write the PR description from these notes.",
+  "input": "branch fix/retry-cap. Bug: sync retried forever when the server returned 503, hammered the API, ticket SUP-2211, customer Acme saw 40k requests in an hour. Root cause: retry loop in sync/retry.ts had no max. Fix: cap at 5 attempts, backoff doubles from 1s, then stop and show 'Sync paused' in the status bar. 401 is not retried at all now (it was retried before, pointless). Changed files: sync/retry.ts, sync/status.ts, tests/retry.test.ts. Verify: npm test -- retry ; manual: set SYNC_FAKE_503=1 and watch it stop after 5. I spent a day chasing a red herring in the websocket layer first. Not in this PR: retry budget per account, will do later. Risk: users with flaky networks will see 'Sync paused' more often.",
+  "checks": {
+    "first_sentence": "\\b5\\b|cap|stop|limit",
+    "must_contain": [
+      "\\b5\\b",
+      "503",
+      "401",
+      "npm test -- retry",
+      "SYNC_FAKE_503",
+      "Sync paused",
+      "flaky|more often"
+    ],
+    "must_not_contain": [
+      "red herring",
+      "websocket"
+    ],
+    "max_words": 200,
+    "shape": "any",
+    "trailers": []
+  }
+}

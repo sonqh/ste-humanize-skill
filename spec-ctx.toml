@@ -8,7 +8,7 @@ changes = ["openspec/changes/**/*.md"]
 # Decision records.
 decisions = ["decisions/*.md"]
 # Source files that carry code tags. A code tag is a comment with a REQ ID.
-code = ["scripts/**"]
+code = ["scripts/**", "evals/*.py"]
 # Test files that carry Covers tags and scenario IDs.
 tests = ["tests/**"]
 # Paths that the scan skips.
@@ -16,11 +16,12 @@ ignore = []
 
 [ids]
 # Capability codes. check reports a REQ whose code is not in this list. An empty list turns the rule off.
-caps = ["TELLS", "STE", "SKILL", "LINT"]
+caps = ["TELLS", "STE", "SKILL", "LINT", "EVAL"]
 [ids.paths]
 TELLS = "tells-lint"
 STE = "ste-lint"
 SKILL = "skill-contract"
+EVAL = "eval"
 # Pattern of the task number in a tasks.md checkbox.
 task_pattern = '\d+\.\d+'
 

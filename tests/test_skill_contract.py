@@ -9,8 +9,12 @@ SKILL = os.path.join(ROOT, "SKILL.md")
 DOC_SHAPES = os.path.join(ROOT, "references", "doc-shapes.md")
 
 
-def section(name):
-    with open(SKILL, encoding="utf-8") as fh:
+HUMAN = os.path.join(ROOT, "references", "human.md")
+TERMS = os.path.join(ROOT, "references", "terms.md")
+
+
+def section(name, path=SKILL):
+    with open(path, encoding="utf-8") as fh:
         text = fh.read()
     m = re.search(r"^## " + re.escape(name) + r"\s*$(.*?)(?=^## |\Z)", text, re.M | re.S)
     assert m, f"missing section: {name}"
@@ -43,7 +47,7 @@ class SkillContractTests(unittest.TestCase):
         """SCN-SKILL-004-1"""
         # Covers: REQ-SKILL-004
         with open(SKILL, encoding="utf-8") as fh:
-            self.assertLess(len(fh.read().split()), 2800)
+            self.assertLess(len(fh.read().split()), 1900)
 
     def test_readme_lints_clean(self):
         """SCN-SKILL-004-2"""
@@ -73,7 +77,7 @@ class SkillContractTests(unittest.TestCase):
         names = tarfile.open(fileobj=io.BytesIO(r.stdout)).getnames()
         for want in ("SKILL.md", "references", "scripts", "examples"):
             self.assertTrue(any(n == want or n.startswith(want + "/") for n in names), want)
-        for bad in ("openspec", "tests", ".ctx", ".claude"):
+        for bad in ("openspec", "tests", ".ctx", ".claude", "evals"):
             self.assertFalse(any(n == bad or n.startswith(bad + "/") for n in names), bad)
 
 
@@ -82,20 +86,20 @@ class AudienceFitTest(unittest.TestCase):
 
     def test_reader_first(self):
         # Covers: SCN-SKILL-006-1
-        sec = section("Audience fit")
+        sec = section("Audience fit", HUMAN)
         self.assertIn("Human mode only", sec)
         self.assertIn("already know", sec)
         self.assertIn("complete a task", sec)
 
     def test_appendices(self):
         # Covers: SCN-SKILL-006-2
-        sec = section("Audience fit")
+        sec = section("Audience fit", HUMAN)
         self.assertIn("appendices", sec)
         self.assertIn("collapsed sections", sec)
 
     def test_source_and_links(self):
         # Covers: SCN-SKILL-006-3
-        sec = section("Audience fit")
+        sec = section("Audience fit", HUMAN)
         self.assertIn("against the source code", sec)
         self.assertIn("link text", sec)
 
@@ -104,7 +108,7 @@ class AudienceFitTest(unittest.TestCase):
         item1 = re.search(r"^1\.\s+Meaning\..*$", section("Order of precedence when rules conflict"), re.M).group(0)
         self.assertIn("condition", item1)
         self.assertIn("exception", item1)
-        terms = section("Technical terms and other languages")
+        terms = section("Technical terms and other languages", TERMS)
         self.assertIn("Audience fit", terms)
         self.assertIn("Strict mode", terms)
 
@@ -268,3 +272,45 @@ class ShapeFitsContentTest(unittest.TestCase):
         with open(SKILL, encoding="utf-8") as fh:
             headers = re.findall(r"^## (.*)$", fh.read(), re.M)
         self.assertNotIn("Shape: bullets first", headers)
+
+
+class RouterTest(unittest.TestCase):
+    # Covers: REQ-SKILL-011
+
+    def _skill(self):
+        with open(SKILL, encoding="utf-8") as fh:
+            return fh.read()
+
+    def test_every_reference_is_routed(self):
+        # Covers: SCN-SKILL-011-1
+        table = [l for l in section("What to read").splitlines() if l.startswith("|")]
+        self.assertGreaterEqual(len(table), 4)
+        routed = set(re.findall(r"`references/([\w-]+\.md)`", "\n".join(table)))
+        on_disk = set(os.listdir(os.path.join(ROOT, "references")))
+        self.assertEqual(routed, on_disk)
+
+    def test_no_dead_reference(self):
+        # Covers: SCN-SKILL-011-2
+        files = [SKILL] + [os.path.join(ROOT, "references", n)
+                           for n in os.listdir(os.path.join(ROOT, "references"))]
+        for path in files:
+            with open(path, encoding="utf-8") as fh:
+                for name in re.findall(r"`((?:references|scripts)/[\w./-]+)`", fh.read()):
+                    self.assertTrue(os.path.exists(os.path.join(ROOT, name)), f"{path}: {name}")
+
+    def test_reference_says_when_to_read_it(self):
+        # Covers: SCN-SKILL-011-3
+        for name in ("human.md", "terms.md", "doc-shapes.md"):
+            with open(os.path.join(ROOT, "references", name), encoding="utf-8") as fh:
+                head = "".join(fh.readlines()[:4])
+            self.assertIn("Read this file when", head, name)
+
+    def test_moved_sections_live_in_one_place(self):
+        # Covers: SCN-SKILL-011-4
+        headers = re.findall(r"^## (.*)$", self._skill(), re.M)
+        for moved in ("Voice", "Audience fit", "Humanizer patterns",
+                      "Technical terms and other languages"):
+            self.assertNotIn(moved, headers)
+        self.assertEqual(len(headers), len(set(headers)))
+        step1 = re.search(r"^1\.\s.*$", section("Process"), re.M).group(0)
+        self.assertIn("What to read", step1)
