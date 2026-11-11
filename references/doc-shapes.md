@@ -20,6 +20,7 @@ Rules that apply to every row:
 
 - One page serves one reader. When two readers need different things, write two pages or two sections, and say at the top of each who it is for.
 - A page that mixes two rows fails both readers. A how-to guide that stops to explain theory loses the user in the middle of the task. Link the concept page.
+- The first task comes before the reference. A README lets the reader install the tool and run one example near the top. The exit codes, the full list of flags, and the limits go after that part, under a heading such as Reference. A reader who only wants to start can stop there.
 - A template is a list of possible sections. Leave out a section that has nothing to say.
 - The title says what the page gives the reader. "Rotate an API key" tells more than "API keys".
 

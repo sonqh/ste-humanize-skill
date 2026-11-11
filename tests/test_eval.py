@@ -135,5 +135,34 @@ class ScorerTests(unittest.TestCase):
             self.assertEqual(run(["score", runs[0], "--only", "no-such"]).returncode, 2)
 
 
+class EarlyCheckTests(unittest.TestCase):
+    # Covers: REQ-EVAL-003
+
+    FX = {**FIXTURE, "checks": {"early": [{"pattern": "npm install", "within_words": 10}]}}
+
+    def _failed(self, text):
+        results, _ = ev.score_output(self.FX, text)
+        return {name for name, ok, _ in results if not ok}
+
+    def test_early_pattern(self):
+        """SCN-EVAL-003-1"""
+        # Covers: REQ-EVAL-003
+        self.assertEqual(self._failed("Run npm install first. Then start the tool.\n"), set())
+        late = "This tool does one thing. " * 3 + "Run npm install.\n"
+        self.assertEqual(self._failed(late), {"early:npm install"})
+        self.assertEqual(self._failed("Start the tool.\n"), {"early:npm install"})
+
+    def test_bad_early_check(self):
+        """SCN-EVAL-003-2"""
+        # Covers: REQ-EVAL-003
+        with tempfile.TemporaryDirectory() as d:
+            path = os.path.join(d, "t.json")
+            for bad in ([{"pattern": "x"}], [{"pattern": "(", "within_words": 5}], ["x"]):
+                with open(path, "w", encoding="utf-8") as fh:
+                    json.dump({**FIXTURE, "checks": {"early": bad}}, fh)
+                with self.assertRaises(ev.FixtureError):
+                    ev.load_fixture(path)
+
+
 if __name__ == "__main__":
     unittest.main()

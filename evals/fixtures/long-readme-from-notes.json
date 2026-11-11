@@ -19,7 +19,7 @@
       "--show",
       "--force",
       "\\b3\\b",
-      "overwrit",
+      "overwrit|replac",
       "64 KB",
       "\\.envsyncignore",
       "500",
@@ -47,8 +47,18 @@
       "CEO",
       "GUI"
     ],
-    "max_words": 560,
+    "max_words": 793,
     "shape": "any",
-    "trailers": []
+    "trailers": [],
+    "early": [
+      {
+        "pattern": "npm install -g envsync-cli",
+        "within_words": 120
+      },
+      {
+        "pattern": "envsync pull",
+        "within_words": 300
+      }
+    ]
   }
 }

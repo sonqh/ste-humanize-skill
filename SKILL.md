@@ -1,7 +1,7 @@
 ---
 name: ste-humanize
 description: "Write or rewrite English so a reader cannot misread it and still hears a person behind it. Starts from the reader: what they know and what they do next. Combines ASD-STE100 sentence discipline with AI-tell removal (no not-X-but-Y, no one-line closers, no dash glue, no stock AI words). Use to write or rewrite docs, READMEs, PR descriptions, replies, tool descriptions, error messages, and any prose written for a person. Triggers: write a doc, humanize, make this clear, plain rewrite, STE rewrite, remove AI tells. Not for fiction, marketing, or copy where voice is the point."
-version: 0.5.0
+version: 0.5.1
 license: MIT
 ---
 
@@ -27,7 +27,7 @@ This file holds the rules for every text. Read one more file only when its row a
 
 Pick the mode from the text type. Do not announce it.
 
-**Strict.** Tool descriptions, error messages, agent-to-agent instructions, procedures, safety text. The reader is a tool or an agent, and it cannot ask. Apply every rule in this file. Keep every identifier and every detail. Keep the tone flat. From the AI tells, remove only chatbot residue and text that explains again what the reader knows.
+**Strict.** Tool descriptions, error messages, agent-to-agent instructions, procedures, safety text. The reader is a tool or an agent that cannot ask what you meant. Apply every rule in this file. Keep every identifier and every detail. Keep the tone flat. From the AI tells, remove only chatbot residue and text that explains again what the reader knows.
 
 **Human.** READMEs, docs, design notes, PR descriptions, chat replies, status updates, anything a person reads. Apply every rule in this file and in `references/human.md`. The reader should notice that they understood the text on the first read, not that a standard was applied.
 
@@ -57,7 +57,7 @@ Then apply the brief:
 - Each part must help the reader with item 3. If it does not, leave it out of a Write. In a Rewrite it stays and becomes a cut candidate.
 - Background the reader already has gets one clause or none.
 - Stop when the reader can act. Leave out a template section that has nothing to say.
-- If neither the request nor the kind of page tells you the reader, ask. If you cannot ask, choose the most likely reader and report it on a `Reader:` line.
+- If neither the request nor the kind of page tells you the reader, ask. If you cannot ask, choose the most likely reader and report it on a `Reader:` line. When the request names the reader, add no `Reader:` line.
 
 ## Order of precedence when rules conflict
 
@@ -129,7 +129,7 @@ Three permitted additions, each one line after the text. Omit a line when there 
 
 - `Kept as-is:` when step 4 kept a longer phrasing on purpose. Name the phrase and the precision it protects.
 - `Cut candidates:` in a Rewrite task, when a part does not help the reader. Name each part in a few words. Do not remove it.
-- `Reader:` when you chose the reader yourself. Name the reader in one clause.
+- `Reader:` only when the request does not name the reader and you chose one. Name the reader in one clause.
 
 **On request: the rule table.** When the user asks to "show the diff", "explain the changes", or "which rules did it break", output a table with the columns Rule, Original, and Rewrite. Add one line with the mode and the count of findings. Add one line on anything you did not change on purpose, and why.
 
