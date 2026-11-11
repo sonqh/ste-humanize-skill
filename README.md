@@ -1,6 +1,6 @@
 # ste-humanize
 
-A Claude Code skill that rewrites English so nobody misreads it and it still sounds like a person wrote it.
+A Claude Code skill that writes and rewrites English so nobody misreads it and it still sounds like a person wrote it.
 
 ## Install
 
@@ -40,12 +40,16 @@ git clone https://github.com/sonqh/ste-humanize-skill ~/.claude/skills/ste-human
 
 ```
 /ste-humanize rewrite this README section
+/ste-humanize write a how-to guide for new users from these notes
 Humanize this PR description
 Rewrite this error message so an agent cannot misread it
 Show the diff
 ```
 
-- You get the rewritten text back.
+- You get the text back and nothing else.
+- For a new page, the skill starts from the reader. It asks who reads the page, what they already know, and what they do next. Name the reader in your request when you can.
+- The answer comes first. A list appears only where the content has parallel parts or steps.
+- In a rewrite, the skill removes no idea of yours. It names a part the reader may not need on a `Cut candidates:` line.
 - Add "show the diff" or "which rules did it break" to see the rule table.
 - The skill picks a mode. Strict is for tool descriptions, error messages, and agent instructions. Human is for docs, READMEs, PR descriptions, and replies.
 
@@ -71,6 +75,7 @@ python3 scripts/lint.py FILE
 - `--only tells` or `--only ste` runs one rule set.
 - `--disable rule,rule` turns rules off.
 - `--json` prints the findings as JSON.
+- Three advisory rules look at the shape: `long-paragraph`, `inline-list`, and `buried-sequence`.
 - The linter flags no hedges and checks no meaning. A clean run means the regex checks found nothing.
 
 ## Scope

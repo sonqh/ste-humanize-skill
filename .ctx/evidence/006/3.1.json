@@ -1,0 +1,23 @@
+{
+  "at": "2026-11-11T14:10:00.224Z",
+  "bundle_chars": 6847,
+  "files": {
+    "scripts/ste-lint.py": "b67cfe38f4821fd8a49d44e71219ed78f8aa56c24c170fabb8b692fdd0887c3a",
+    "tests/test_skill_contract.py": "5054dc0ef1023bdc4f1526d78f92ca61a787fb8ced617b18c29e735c34b41de6",
+    "tests/test_ste_lint.py": "c6c920a455704975df830b4d00288788d4cab490780e7e5cea73b2fb47b20b96"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-009",
+    "REQ-STE-004"
+  ],
+  "started_at": "2026-11-11T14:09:50.180Z",
+  "task": "006/3.1",
+  "tool_version": "0.1.1",
+  "verify": {
+    "command": "bash scripts/ci-local.sh",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "6bbe273727cb9a99ab37ca67ac7f5d4d36e7f77ac0a43bf6bd4fe66eb263a62d"
+  }
+}

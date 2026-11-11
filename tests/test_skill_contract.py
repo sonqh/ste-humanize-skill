@@ -6,6 +6,7 @@ import unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SKILL = os.path.join(ROOT, "SKILL.md")
+DOC_SHAPES = os.path.join(ROOT, "references", "doc-shapes.md")
 
 
 def section(name):
@@ -35,14 +36,14 @@ class SkillContractTests(unittest.TestCase):
         """SCN-SKILL-003-1"""
         # Covers: REQ-SKILL-003
         body = section("Output format")
-        self.assertIn("Kept as-is:", body)
-        self.assertIn("nothing else", body)
+        for want in ("Kept as-is:", "Cut candidates:", "Reader:", "nothing else"):
+            self.assertIn(want, body)
 
     def test_word_cap(self):
         """SCN-SKILL-004-1"""
         # Covers: REQ-SKILL-004
         with open(SKILL, encoding="utf-8") as fh:
-            self.assertLess(len(fh.read().split()), 2400)
+            self.assertLess(len(fh.read().split()), 2800)
 
     def test_readme_lints_clean(self):
         """SCN-SKILL-004-2"""
@@ -109,7 +110,7 @@ class AudienceFitTest(unittest.TestCase):
 
     def test_one_event_per_bullet(self):
         # Covers: SCN-SKILL-006-5
-        sec = section("Shape: bullets first")
+        sec = section("Shape: fit the content")
         self.assertIn("one event", sec)
         self.assertIn("Independent rules", sec)
 
@@ -159,8 +160,8 @@ if __name__ == "__main__":
 class NewcomerShapeTest(unittest.TestCase):
     # Covers: REQ-SKILL-005
 
-    def _section(self, title):
-        with open(SKILL, encoding="utf-8") as fh:
+    def _section(self, title, path=SKILL):
+        with open(path, encoding="utf-8") as fh:
             text = fh.read()
         start = text.index(title)
         end = text.find("\n## ", start + 1)
@@ -168,7 +169,7 @@ class NewcomerShapeTest(unittest.TestCase):
 
     def test_section_and_order(self):
         # Covers: SCN-SKILL-005-1
-        sec = self._section("## Shape: a page for a newcomer")
+        sec = self._section("## A page for a newcomer", DOC_SHAPES)
         items = [l for l in sec.splitlines() if l[:2] in ("1.", "2.", "3.", "4.", "5.")]
         self.assertEqual(len(items), 5)
         self.assertIn("base thing", items[0])
@@ -176,11 +177,94 @@ class NewcomerShapeTest(unittest.TestCase):
 
     def test_caption_rule(self):
         # Covers: SCN-SKILL-005-2
-        sec = self._section("## Shape: a page for a newcomer")
+        sec = self._section("## A page for a newcomer", DOC_SHAPES)
         self.assertIn("what the reader sees", sec)
         self.assertIn("does not repeat the command", sec)
+        self.assertIn("references/doc-shapes.md", self._section("## Reader first"))
 
     def test_numbers_need_scale(self):
         # Covers: SCN-SKILL-005-3
         self.assertIn("scale the reader has", self._section("## Boundaries"))
 
+
+def precedence_item_1():
+    return re.search(r"^1\.\s+Meaning\..*$",
+                     section("Order of precedence when rules conflict"), re.M).group(0)
+
+
+class TwoTasksTest(unittest.TestCase):
+    # Covers: REQ-SKILL-008
+
+    def test_header_and_names(self):
+        # Covers: SCN-SKILL-008-1
+        labels = re.findall(r"^\*\*([A-Za-z]+)\.\*\*", section("Two tasks"), re.M)
+        self.assertEqual(labels, ["Rewrite", "Write"])
+
+    def test_rewrite_keeps_source(self):
+        # Covers: SCN-SKILL-008-2
+        sec = section("Two tasks")
+        self.assertIn("Cut candidates:", sec)
+        self.assertIn("source is the truth", sec)
+
+    def test_limits_of_a_write(self):
+        # Covers: SCN-SKILL-008-3
+        sec = section("Two tasks")
+        self.assertIn("safety condition", sec)
+        self.assertIn("exception", sec)
+        self.assertIn("Write task", precedence_item_1())
+
+
+class ReaderFirstTest(unittest.TestCase):
+    # Covers: REQ-SKILL-009
+
+    def test_brief_of_three_questions(self):
+        # Covers: SCN-SKILL-009-1
+        sec = section("Reader first")
+        self.assertEqual(re.findall(r"^(\d+)\.\s", sec, re.M), ["1", "2", "3"])
+        self.assertIn("reader brief", sec)
+
+    def test_answer_first_and_stop_rule(self):
+        # Covers: SCN-SKILL-009-2
+        sec = section("Reader first")
+        self.assertIn("Answer first", sec)
+        self.assertIn("reader can act", sec)
+
+    def test_kinds_of_page(self):
+        # Covers: SCN-SKILL-009-3
+        self.assertIn("references/doc-shapes.md", section("Reader first"))
+        with open(DOC_SHAPES, encoding="utf-8") as fh:
+            rows = [l.split("|")[1].strip() for l in fh if l.startswith("|")]
+        for page in ("README", "How-to guide", "Reference page", "Design note",
+                     "PR description", "Runbook"):
+            self.assertIn(page, rows)
+
+    def test_process_names_the_brief(self):
+        # Covers: SCN-SKILL-009-4
+        step1 = re.search(r"^1\.\s.*$", section("Process"), re.M).group(0)
+        self.assertIn("reader brief", step1)
+        self.assertIn("task", step1)
+
+
+class ShapeFitsContentTest(unittest.TestCase):
+    # Covers: REQ-SKILL-010
+
+    def test_table_of_shapes(self):
+        # Covers: SCN-SKILL-010-1
+        cells = [l.split("|")[2].strip() for l in section("Shape: fit the content").splitlines()
+                 if l.startswith("|")]
+        for shape in ("Bullets", "Numbered list", "Table"):
+            self.assertIn(shape, cells)
+        self.assertTrue(any(c.startswith("Prose") for c in cells), cells)
+
+    def test_signs(self):
+        # Covers: SCN-SKILL-010-2
+        sec = section("Shape: fit the content")
+        self.assertIn("more than 6 sentences", sec)
+        self.assertIn("5 or more items", sec)
+
+    def test_reasoning_stays_prose(self):
+        # Covers: SCN-SKILL-010-3
+        self.assertIn("Do not cut reasoning into bullets", section("Shape: fit the content"))
+        with open(SKILL, encoding="utf-8") as fh:
+            headers = re.findall(r"^## (.*)$", fh.read(), re.M)
+        self.assertNotIn("Shape: bullets first", headers)

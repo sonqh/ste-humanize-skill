@@ -13,7 +13,7 @@ Usage:
     ste-lint.py --selftest
 
 Exit 1 when hard ("advisory-free") violations exceed the baseline (default 0).
-Advisory findings (passive voice, compound tenses) never fail the run.
+Advisory findings (passive voice, compound tenses, shape) never fail the run.
 Exit 2 on a usage error (unknown flag, bad value, unknown rule, unreadable file).
 """
 import argparse
@@ -79,6 +79,19 @@ SYNONYM_GROUPS = [
 ]
 
 MAX_WORDS = 25  # descriptions cap; instructions cap is 20 but undetectable without context
+
+# REQ-STE-004
+MAX_SENTENCES = 6  # STE paragraph cap
+MIN_LIST_ITEMS = 5
+MIN_SEQUENCE_WORDS = 3
+# Four or more items that each end in a comma, then "and" or "or": 5 items.
+# An item that starts with "and" or "or" ends a shorter list, so it does not count.
+INLINE_LIST = re.compile(
+    r"(?:(?!(?:and|or)\s)[^\s,.;:!?()][^,.;:!?()]*,\s+){%d,}(?:and|or)\s+\S"
+    % (MIN_LIST_ITEMS - 1), re.I)
+SEQUENCE_WORD = re.compile(
+    r"\b(first|second|third|then|next|after that|finally|lastly)\b", re.I)
+SHAPE_RULES = ("long-paragraph", "inline-list", "buried-sequence")
 
 CODE_FENCE = re.compile(r"^(```|~~~)")
 INLINE_CODE = re.compile(r"`[^`]*`")
@@ -184,6 +197,51 @@ def _long_sentence_findings(pieces, filename):
                          "rule": "long-sentence", "level": "advisory-free",
                          "match": f"{n} words",
                          "message": f"Sentence has {n} words (cap {MAX_WORDS}). Split it."})
+    return findings
+
+
+# REQ-STE-004
+def _shape_findings(pieces, filename):
+    """Flag a prose block whose shape hides its content. Advisory only.
+
+    pieces is the same list that _long_sentence_findings takes. One list item
+    or one table cell is one block, so a list never counts as a paragraph.
+    """
+    if not pieces:
+        return []
+    offsets, position = [], 0
+    for _, _, text in pieces:
+        offsets.append(position)
+        position += len(text) + 1
+    joined = " ".join(text for _, _, text in pieces)
+
+    def finding(start, rule, match, message):
+        index = bisect.bisect_right(offsets, start) - 1
+        lineno, source_column, _ = pieces[index]
+        return {"file": filename, "line": lineno,
+                "col": source_column + start - offsets[index] + 1,
+                "rule": rule, "level": "advisory", "match": match,
+                "message": message}
+
+    findings = []
+    starts = _sentence_starts(joined)
+    first = starts[0]
+    if len(starts) > MAX_SENTENCES:
+        findings.append(finding(
+            first, "long-paragraph", f"{len(starts)} sentences",
+            f"Paragraph has {len(starts)} sentences (cap {MAX_SENTENCES}). "
+            "Split it by topic, or put parallel parts in a list."))
+    for start, end in zip(starts, starts[1:] + [len(joined)]):
+        m = INLINE_LIST.search(joined, start, end)
+        if m:
+            findings.append(finding(
+                m.start(), "inline-list", " ".join(m.group(0).split())[:60],
+                f"{MIN_LIST_ITEMS} or more items in one sentence. Use a vertical list."))
+    words = {" ".join(w.lower().split()) for w in SEQUENCE_WORD.findall(joined)}
+    if len(words) >= MIN_SEQUENCE_WORDS:
+        findings.append(finding(
+            first, "buried-sequence", ", ".join(sorted(words)),
+            "Steps in a paragraph. Use a numbered list, one step per item."))
     return findings
 
 
@@ -356,6 +414,7 @@ def lint(text, filename="<stdin>"):
 
     def flush():
         findings.extend(_long_sentence_findings(block, filename))
+        findings.extend(_shape_findings(block, filename))
         block.clear()
 
     for lineno, raw_line in enumerate(lines, 1):
@@ -699,6 +758,16 @@ def selftest():
     # a long block stays linear: one short sentence per line, no blank lines
     findings, _ = lint("The agent read the log.\n" * 20000)
     assert not any(f["rule"] == "long-sentence" for f in findings)
+    # shape checks are advisory and see one prose block at a time
+    shape = ("First, open the file. Then read line 3. Finally, close the file. "
+             "It holds the name, the size, the owner, the mode, and the date. "
+             "One more. One more. One more.")
+    findings, _ = lint(shape)
+    assert {f["rule"] for f in findings} == set(SHAPE_RULES), findings
+    assert all(f["level"] == "advisory" for f in findings), findings
+    findings, _ = lint("1. First, open the file.\n2. Then read line 3.\n"
+                       "3. Finally, close the file.\n")
+    assert findings == [], findings
     # flags may appear between file paths
     with tempfile.TemporaryDirectory() as tmp:
         paths = [os.path.join(tmp, name) for name in ("a.md", "b.md")]
@@ -724,7 +793,7 @@ def selftest():
 
 
 RULE_IDS = {rule_id for rule_id, *_ in RULES} | {
-    "long-sentence", "synonym-rotation", "dangling-conjunction"}
+    "long-sentence", "synonym-rotation", "dangling-conjunction", *SHAPE_RULES}
 
 
 def _rule_list(value):

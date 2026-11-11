@@ -100,7 +100,27 @@ This skill:
 
 > The text already complies. No changes.
 
-## 7. Quick table
+## 7. A new page from notes (Write task, Human mode)
+
+The request: "Write a how-to guide for support staff from these notes." The reader is support staff. They know the product. They do not read the code. After they read, they answer a ticket about a failed export.
+
+Notes:
+
+> export job = ExportWorker in workers/export.ts, queue "exports". Added in v2.3 after the old cron design timed out on big tenants (see ADR-014). Max 50k rows per file, else it splits into parts. Link in the email expires after 24h, user can re-run from Reports > Exports. Fails if the tenant has no storage quota left, error EXP-402. We use S3 multipart under the hood.
+
+This skill:
+
+> # Answer a ticket about a failed export
+>
+> Ask the customer for the error code in the export email. Then follow the case that matches.
+>
+> - The code is `EXP-402`. The account has no storage space left. Ask the customer to free space or to buy more, then to run the export again.
+> - The download link does not open. The link stops 24 hours after the email. The customer can run the export again from Reports > Exports.
+> - The export came as several files. This is normal. One file holds 50,000 rows at most, and a larger export is split into parts.
+
+Notes: the action leads. The three cases are parallel, so they are bullets, one condition each. The limit of 50,000 rows and the 24 hours go in, because they are limits of a behavior the page describes. The worker name, the queue, the history, and the storage design stay out. Support staff need none of them to close the ticket. `EXP-402` stays exact, because the reader must match it. The request names the reader, so the output has no `Reader:` line.
+
+## 8. Quick table
 
 Two pairs in table form. Both come from the README, which now holds a shorter pair.
 
