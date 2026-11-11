@@ -1,6 +1,6 @@
 # Page shapes: who reads each kind of page
 
-Read this file when the task is Write, or when a Rewrite must change the order of a page. It fills the reader brief when the request names no reader. A reader that the user names overrides the table.
+Read this file when the task is Write, or when a Rewrite covers a whole page. It fills the reader brief when the request names no reader. A reader that the user names overrides the table. After the table, read `## Reader questions`. For a README, an ADR, or a technical proposal, read `references/page-guides.md` too.
 
 ## The usual reader of each page
 
@@ -11,6 +11,8 @@ Read this file when the task is Write, or when a Rewrite must change the order o
 | Reference page | A user who looks up one item | Find one fact and leave | What the item is. Then entries in one fixed form, in a table or a list | Narrative, lessons |
 | Concept page | A reader who wants to know why the thing works this way | Build a model, then choose | The idea in one or two sentences | Step lists |
 | Design note | A reviewer who must approve or challenge a decision | Decide | The decision and the recommendation. Then the options and the trade-offs | Detail the decision does not depend on |
+| ADR | A maintainer who meets the result of the decision later and asks why | Keep the decision, or replace it with a new one | A title that states the decision, then the status and the date | Steps of the implementation, the history of the meetings |
+| Technical proposal | A person who approves time or money and has little time | Say yes, say no, or ask one question | The request, the cost, and the date of the decision | Detail the approver does not need. Put it after the plan |
 | PR description | A reviewer who knows the codebase and not this change | Review, test, merge | What changes and why. Then how to verify it | A tour of each file. The diff shows it |
 | Runbook | An on-call person with little time | Stop an incident | The symptom and the first action | Background. Link it |
 | Release note | A user who must decide whether to upgrade | Upgrade, or wait | What changes for the user, breaking changes first | Internal refactors |
@@ -22,7 +24,21 @@ Rules that apply to every row:
 - A page that mixes two rows fails both readers. A how-to guide that stops to explain theory loses the user in the middle of the task. Link the concept page.
 - The first task comes before the reference. A README lets the reader install the tool and run one example near the top. The exit codes, the full list of flags, and the limits go after that part, under a heading such as Reference. A reader who only wants to start can stop there.
 - A template is a list of possible sections. Leave out a section that has nothing to say.
+- When the repository has a template for this kind of page, keep its headings and their order. Readers and tools find a part by its heading. Apply the reader rules to the title, to the summary, and inside each section.
 - The title says what the page gives the reader. "Rotate an API key" tells more than "API keys".
+
+## Reader questions
+
+A reader comes to a page with questions. Use them to order any document, and to rewrite one that has the wrong order.
+
+1. Write the questions the reader brings, in the words of the reader. Three to seven are enough.
+2. Put first the question that the reader must answer to act. Put last the questions that only some readers have.
+3. Give each question one section. The heading names what the reader looks for. "How to go back" tells more than "Considerations".
+4. The first sentence of a section answers its question. The detail comes after it.
+5. A part that answers no question on the list has no place. Leave it out of a Write. Name it as a cut candidate in a Rewrite.
+6. Test the page. Read only the title, the first paragraph, and the headings. The reader must be able to say what the page gives them or asks of them.
+
+A page can have two kinds of reader. The first reader is the one who acts or decides first. The questions of the first reader come first. The other reader gets sections with clear labels after them.
 
 ## A page for a newcomer
 

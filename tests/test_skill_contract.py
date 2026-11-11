@@ -7,6 +7,7 @@ import unittest
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SKILL = os.path.join(ROOT, "SKILL.md")
 DOC_SHAPES = os.path.join(ROOT, "references", "doc-shapes.md")
+PAGE_GUIDES = os.path.join(ROOT, "references", "page-guides.md")
 
 
 HUMAN = os.path.join(ROOT, "references", "human.md")
@@ -308,7 +309,7 @@ class RouterTest(unittest.TestCase):
 
     def test_reference_says_when_to_read_it(self):
         # Covers: SCN-SKILL-011-3
-        for name in ("human.md", "terms.md", "doc-shapes.md"):
+        for name in ("human.md", "terms.md", "doc-shapes.md", "page-guides.md"):
             with open(os.path.join(ROOT, "references", name), encoding="utf-8") as fh:
                 head = "".join(fh.readlines()[:4])
             self.assertIn("Read this file when", head, name)
@@ -322,3 +323,46 @@ class RouterTest(unittest.TestCase):
         self.assertEqual(len(headers), len(set(headers)))
         step1 = re.search(r"^1\.\s.*$", section("Process"), re.M).group(0)
         self.assertIn("What to read", step1)
+
+
+class PageGuidesTest(unittest.TestCase):
+    # Covers: REQ-SKILL-012
+
+    def _doc(self, name):
+        path = DOC_SHAPES if name == "Reader questions" else PAGE_GUIDES
+        return section(name, path)
+
+    def test_reader_questions(self):
+        # Covers: SCN-SKILL-012-1
+        sec = self._doc("Reader questions")
+        self.assertEqual(len(re.findall(r"^\d+\.\s", sec, re.M)), 6)
+        self.assertIn("cut candidate", sec)
+        self.assertIn("first paragraph, and the headings", sec)
+
+    def test_three_guides(self):
+        # Covers: SCN-SKILL-012-2
+        for name in ("README", "ADR", "Technical proposal"):
+            sec = self._doc(name)
+            self.assertIn("Readers:", sec, name)
+            self.assertGreaterEqual(len(re.findall(r"^\d+\.\s", sec, re.M)), 6, name)
+            self.assertIn("\nTest: ", sec, name)
+
+    def test_table_rows_and_template_rule(self):
+        # Covers: SCN-SKILL-012-3
+        with open(DOC_SHAPES, encoding="utf-8") as fh:
+            text = fh.read()
+        rows = [l.split("|")[1].strip() for l in text.splitlines() if l.startswith("|")]
+        self.assertIn("ADR", rows)
+        self.assertIn("Technical proposal", rows)
+        self.assertIn("keep its headings and their order", text)
+
+    def test_skill_names_the_questions(self):
+        # Covers: SCN-SKILL-012-4
+        self.assertIn("questions the reader brings", section("Reader first"))
+        tasks = section("Two tasks")
+        self.assertIn("A Rewrite may move a part", tasks)
+        self.assertIn("removes none", tasks)
+        routes = section("What to read")
+        self.assertIn("Rewrite of a whole page", routes)
+        self.assertIn("a README, an ADR, or a technical proposal", routes)
+

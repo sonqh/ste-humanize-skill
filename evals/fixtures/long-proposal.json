@@ -1,0 +1,57 @@
+{
+  "id": "long-proposal",
+  "mode": "Human",
+  "task": "Rewrite",
+  "request": "Rewrite this proposal. The reader is the engineering director, who approves the budget and has two minutes.",
+  "input": "Proposal: moving our CI\n\nHi, as discussed in the last few platform syncs, I have been looking at the state of our CI for a while and I wanted to write down my thoughts on where we are and where I think we should go. This is going to be a bit long, sorry in advance.\n\nSome history first. We set up Jenkins in 2019 when the company had three repositories. It has served us well. Today we have 41 repositories building on it, with about 300 jobs, and the two controller machines are looked after by whoever has time, which in practice has been me and one other engineer. Over the years we have collected 60-odd plugins, some of which are no longer maintained.\n\nThe pain points are well known. The median build time on the main application is 38 minutes, which means a developer gets maybe four or five full runs a day. About 12% of builds fail for reasons that have nothing to do with the code, mostly agents that run out of disk or lose their connection, and people have learned to just press retry. On top of that, the Jenkins LTS line we are on stops getting security fixes at the end of March, and upgrading to the next one breaks at least nine of our plugins, two of which have open CVEs today. If we do nothing, we either run an unpatched CI system that holds deployment credentials, or we spend an unknown amount of time on the upgrade anyway.\n\nTo see whether there is a better way, we ran a pilot. For five weeks, three repositories (the web app, the billing service, and the docs site) have built on GitHub Actions in parallel with Jenkins. On those three, the median build time went from 38 minutes to 14 minutes, mostly from better caching and parallel test shards, and the rate of failures unrelated to code went from 12% to 3%. Developers on those teams have told us they do not want to go back. I should be clear that three repositories is a small sample and they are among our simpler ones.\n\nThere are things I am less sure about. Two repositories run GPU tests, and those cannot run on hosted runners, so they need self-hosted runners, which we have not set up before; this part may not be ready in the same time frame as the rest, and it could turn out to need more work than we think. We also have about 40 secrets in Jenkins credentials, and we have not tested moving them; some are shared between jobs in ways nobody fully remembers. And the deployment pipelines are a separate topic: this proposal is only about build and test, deployments would stay on Jenkins for now and be looked at next quarter.\n\nOn cost, hosted runner minutes for all 41 repositories come to roughly $1,200 per month based on the pilot usage, compared to about $700 per month for the two Jenkins machines today, so about $500 per month more. The work itself I estimate at 6 weeks for 2 engineers to move all build and test jobs, not counting the GPU repositories if the runners slip.\n\nIf something goes badly, we would keep Jenkins running in read-only mode for 30 days after the last repository moves, so any repository can go back to its old job by reverting one pull request.\n\nI also looked briefly at GitLab CI and at CircleCI. GitLab CI would mean moving our code hosting too, which nobody wants. CircleCI was comparable in speed in a one-day test but would be a second vendor to manage next to GitHub, and the price was higher at about $1,900 per month for the same usage.\n\nSo what I am asking for is approval to move build and test for all repositories from Jenkins to GitHub Actions, with 2 engineers for 6 weeks and an extra $500 per month, and I would need a decision by 28 November so the work finishes before the Jenkins support date at the end of March with some room to spare. Happy to walk through any of this in person. Thanks for reading!",
+  "checks": {
+    "first_sentence": "approv|decision|decide",
+    "early": [
+      {
+        "pattern": "28 November|28 Nov|November 28",
+        "within_words": 90
+      },
+      {
+        "pattern": "6 weeks|six weeks",
+        "within_words": 90
+      },
+      {
+        "pattern": "\\$500",
+        "within_words": 90
+      }
+    ],
+    "must_contain": [
+      "\\b38\\b",
+      "\\b14\\b",
+      "12\\s?%|12 percent",
+      "3\\s?%|3 percent",
+      "\\b41\\b",
+      "March",
+      "CVE",
+      "GPU",
+      "\\bmay\\b|\\bcould\\b|\\bmight\\b",
+      "\\b40\\b",
+      "not tested|have not tested|untested",
+      "\\$1,200|1,200",
+      "\\$700|\\b700\\b",
+      "30 days",
+      "read-only",
+      "GitLab",
+      "CircleCI",
+      "\\$1,900|1,900",
+      "deploy",
+      "small sample|three repositories|3 repositories"
+    ],
+    "must_not_contain": [
+      "sorry in advance",
+      "Thanks for reading",
+      "Happy to walk"
+    ],
+    "max_words": 701,
+    "shape": "any",
+    "trailers": [
+      "Kept as-is:",
+      "Cut candidates:"
+    ]
+  }
+}
