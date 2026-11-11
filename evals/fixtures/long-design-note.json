@@ -1,0 +1,42 @@
+{
+  "id": "long-design-note",
+  "mode": "Human",
+  "task": "Rewrite",
+  "request": "Rewrite this design note. The reader is the tech lead who must approve or reject the proposal this week.",
+  "input": "Hi all, thanks for taking the time to read this, I know everyone is busy with the release. I wanted to write up where we landed after the last few weeks of looking into the login slowness, because there has been a lot of back and forth in the channel and I think it would help to have everything in one place. It's not just a performance problem, it's really a question about where session state should live in our architecture going forward.\n\nSo first some background. As most of you know, we have stored user sessions in Postgres since the first version of the product, in the sessions table. Every request that needs authentication reads that table, and every login writes to it. This was fine when we had a few thousand users. Over the last two quarters the table has grown a lot and the p95 login latency has gone up to 480 ms, which is well above our target of 150 ms. We looked at adding indexes and at partitioning the table, and both helped a little, but neither got us under 300 ms in the staging tests, and partitioning made the nightly cleanup job more complicated.\n\nWe then spent some time looking at alternatives. The first thing we tried was Memcached, because two people on the team have used it before and it is very simple to operate. It was fast in the tests. The issue is that Memcached has no persistence, so a restart of the cache node would log out every user at once, and we decided that was not acceptable for a product where people are often in the middle of a long form. So we rejected Memcached.\n\nThe second option was Redis. In the staging tests with Redis the p95 login latency came down to about 90 ms, which is comfortably under the target. Redis can persist data to disk, but it is important to note that this only protects us if we turn on AOF persistence; with the default snapshot settings we could still lose several minutes of sessions on a crash. So the proposal only makes sense with AOF enabled, and we should treat that as a hard condition and not a nice-to-have. We would set an idle timeout of 30 minutes on each session key, the same as today.\n\nThere is one exception that I want to call out clearly. Admin sessions should stay in Postgres. The compliance team requires that we keep a record of admin sessions for 1 year for the audit, and Redis is not the right place for records that must be retained that long. The number of admin sessions is small, so they do not contribute to the latency problem anyway.\n\nOn the risk side, I want to be honest about what we do not know. During a Redis failover, we may log out up to 2% of active users, based on the replication lag we measured; it could be less, but we have not been able to get it to zero. Also, we load tested the setup up to 20k concurrent sessions and it behaved well, but the latency numbers might not hold above 50k concurrent sessions, and we have not tested beyond 20k. We expect to reach 50k some time next year, so this needs another test before then.\n\nOn monitoring, we would add two alerts during the migration. The first fires when the rate of fallback reads to Postgres goes above 1% in the dual-write period, because that would mean Redis is missing sessions it should have. The second fires when Redis memory use passes 75%, since eviction would silently log people out. The on-call rotation does not change. I estimate about 6 engineering days for the work, most of it in the session middleware, and the mobile apps need no change because they only ever see the cookie.\n\nIn terms of cost, the managed Redis instance with a replica comes to about $340 per month, which is within the infrastructure budget that was already approved for this quarter.\n\nFor the migration itself, the plan is to write sessions to both stores for 14 days, and read from Redis with a fallback to Postgres. After 14 days with no fallback reads we stop writing user sessions to Postgres. If anything goes wrong at any point, we can go back by setting the flag SESSION_STORE=postgres and restarting the API pods, which takes a few minutes and does not need a deploy.\n\nTiming matters here as well. The Postgres major upgrade starts on 21 November and the schema is frozen from that date until the upgrade is complete, so if we want to do this migration this year, we need a decision before 21 November. Otherwise it waits until January.\n\nSo, to sum up, after weighing everything, my recommendation is that we move user session storage from Postgres to Redis, with AOF enabled, and keep admin sessions in Postgres. I think this is the right call and I would love to hear your thoughts. Let me know if you have any questions!",
+  "checks": {
+    "first_sentence": "Redis",
+    "must_contain": [
+      "480",
+      "90 ms",
+      "AOF",
+      "\\badmin",
+      "1 year|one year|12 months",
+      "2\\s?%|2 percent",
+      "\\bmay\\b",
+      "20k|20,000",
+      "50k|50,000",
+      "\\$340|340",
+      "14 days",
+      "SESSION_STORE=postgres",
+      "Memcached",
+      "21 Nov|November 21|21 November",
+      "30 minutes",
+      "\\bmight\\b|\\bmay not\\b",
+      "75\\s?%|75 percent",
+      "\\b6\\b.{0,20}days|six.{0,20}days",
+      "mobile"
+    ],
+    "must_not_contain": [
+      "love to hear",
+      "thanks for taking",
+      "Let me know"
+    ],
+    "max_words": 560,
+    "shape": "any",
+    "trailers": [
+      "Kept as-is:",
+      "Cut candidates:"
+    ]
+  }
+}

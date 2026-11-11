@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-11T14:51:01.891Z",
+  "bundle_chars": 8192,
+  "files": {
+    "evals/eval.py": "b2edbd2505c2137cb951c7f8c887318ed5b192465af41285e723db88b0ba53d4",
+    "tests/test_eval.py": "8d4c4e40b8a8c25acce93e452e8feb10eb22705fe462df104ee7e8b978cc5d79"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-EVAL-001",
+    "REQ-EVAL-002"
+  ],
+  "started_at": "2026-11-11T14:51:00.823Z",
+  "task": "008/1.1",
+  "tool_version": "0.1.1",
+  "verify": {
+    "command": "python3 -m unittest tests.test_eval -v && python3 evals/eval.py list",
+    "exit": 0,
+    "stderr_tail": "SCN-EVAL-001-2 ... ok\ntest_fixtures_load_and_cover (tests.test_eval.FixtureTests.test_fixtures_load_and_cover)\nSCN-EVAL-001-1 ... ok\ntest_long_fixtures (tests.test_eval.FixtureTests.test_long_fixtures)\nSCN-EVAL-001-3 ... ok\ntest_bad_output_fails_each_check (tests.test_eval.ScorerTests.test_bad_output_fails_each_check)\nSCN-EVAL-002-2 ... ok\ntest_cli (tests.test_eval.ScorerTests.test_cli)\nSCN-EVAL-002-4 ... ok\ntest_good_output_passes (tests.test_eval.ScorerTests.test_good_output_passes)\nSCN-EVAL-002-1 ... ok\ntest_same_output_same_score (tests.test_eval.ScorerTests.test_same_output_same_score)\nSCN-EVAL-002-3 ... ok\ntest_several_runs (tests.test_eval.ScorerTests.test_several_runs)\nSCN-EVAL-002-5 ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.305s\n\nOK",
+    "stdout_sha256": "bf7fa20533152725fdee7bcd7515f945b7a15c6e01caa0c286a7fdb307a5684a"
+  }
+}

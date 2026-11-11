@@ -22,10 +22,12 @@ The eval measures what an agent writes with the skill. The scorer calls no model
 python3 evals/eval.py list                             # the fixtures
 python3 evals/eval.py prompt ID --skill PATH_TO_SKILL  # the prompt for one run
 python3 evals/eval.py score OUTPUTS_DIR                # read OUTPUTS_DIR/<id>.md
+python3 evals/eval.py score RUN1 RUN2 RUN3 --only IDS  # several runs, some fixtures
 ```
 
 - Give each prompt to a new agent. Save its reply as `<id>.md` in one folder for each version of the skill.
 - Run the eval before and after a change in `SKILL.md` or `references/`. Compare the two scores.
+- Run a fixture three times or more. With several run folders, the report shows each failed check with the count of runs where it failed.
 - `evals/runs/` holds the outputs of earlier runs.
 - CI does not run the eval. It runs the tests of the scorer.
 

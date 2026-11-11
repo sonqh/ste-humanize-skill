@@ -4,7 +4,8 @@
 Usage:
     eval.py list
     eval.py prompt ID --skill DIR      # print the prompt for a runner
-    eval.py score OUTPUTS_DIR [--json] # read OUTPUTS_DIR/<id>.md for each fixture
+    eval.py score DIR [DIR ...] [--only IDS] [--json]
+                                       # one DIR for each run, with DIR/<id>.md
 
 A fixture is one JSON file in evals/fixtures/. A runner (an agent, or a person)
 writes one output file per fixture. The scorer applies the checks of the
@@ -25,6 +26,7 @@ ROOT = os.path.dirname(HERE)
 FIXTURES = os.path.join(HERE, "fixtures")
 
 # REQ-EVAL-001
+LONG_INPUT_WORDS = 600
 REQUIRED_KEYS = ("id", "mode", "task", "request", "input", "checks")
 MODES = ("Strict", "Human")
 TASKS = ("Rewrite", "Write")
@@ -176,37 +178,60 @@ def build_prompt(fx, skill_dir):
     )
 
 
-def cmd_score(outputs, as_json):
-    report, failed = [], 0
-    for fx in load_fixtures():
+def score_run(outputs, fixtures):
+    """Score one folder of outputs. Return a list with one entry per fixture."""
+    report = []
+    for fx in fixtures:
         path = os.path.join(outputs, fx["id"] + ".md")
         try:
             with open(path, encoding="utf-8") as fh:
                 text = fh.read()
         except OSError:
             report.append({"id": fx["id"], "missing": True, "checks": [], "words": 0})
-            failed += 1
             continue
         results, words = score_output(fx, text)
-        failed += sum(1 for _, ok, _ in results if not ok)
         report.append({"id": fx["id"], "missing": False, "words": words,
                        "checks": [{"name": n, "pass": ok, "detail": d} for n, ok, d in results]})
-    total = sum(len(r["checks"]) for r in report)
-    passed = sum(1 for r in report for c in r["checks"] if c["pass"])
+    return report
+
+
+# REQ-EVAL-002
+def cmd_score(folders, as_json, fixtures):
+    """Score one folder for each run. Report each check as passes out of runs."""
+    runs = [{"dir": d, "fixtures": score_run(d, fixtures)} for d in folders]
+    n = len(runs)
+    total = sum(len(r["checks"]) for run in runs for r in run["fixtures"])
+    passed = sum(1 for run in runs for r in run["fixtures"] for c in r["checks"] if c["pass"])
+    missing = sum(1 for run in runs for r in run["fixtures"] if r["missing"])
     if as_json:
-        print(json.dumps({"fixtures": report, "passed": passed, "total": total}, indent=2))
-    else:
-        for r in report:
-            if r["missing"]:
-                print(f"{r['id']}: missing output")
-                continue
-            ok = sum(1 for c in r["checks"] if c["pass"])
-            print(f"{r['id']}: {ok}/{len(r['checks'])} checks, {r['words']} words")
-            for c in r["checks"]:
+        print(json.dumps({"runs": runs, "passed": passed, "total": total}, indent=2))
+        return 1 if missing or passed < total else 0
+    for index, fx in enumerate(fixtures):
+        entries = [run["fixtures"][index] for run in runs]
+        present = [e for e in entries if not e["missing"]]
+        if len(present) < n:
+            where = "" if n == 1 else f" in {n - len(present)} of {n} runs"
+            print(f"{fx['id']}: missing output{where}")
+        if not present:
+            continue
+        ok = sum(1 for e in present for c in e["checks"] if c["pass"])
+        count = sum(len(e["checks"]) for e in present)
+        words = round(sum(e["words"] for e in present) / len(present))
+        if n == 1:
+            print(f"{fx['id']}: {ok}/{count} checks, {words} words")
+        else:
+            print(f"{fx['id']}: {ok}/{count} checks in {len(present)} runs, mean {words} words")
+        fails = {}
+        for e in present:
+            for c in e["checks"]:
                 if not c["pass"]:
-                    print(f"  fail {c['name']}" + (f" [{c['detail']}]" if c["detail"] else ""))
-        print(f"{passed}/{total} checks passed")
-    return 1 if failed else 0
+                    fails.setdefault(c["name"], []).append(c["detail"])
+        for name, details in fails.items():
+            detail = next((d for d in details if d), "")
+            times = "" if n == 1 else f" in {len(details)} of {len(present)} runs"
+            print(f"  fail {name}{times}" + (f" [{detail}]" if detail else ""))
+    print(f"{passed}/{total} checks passed" + ("" if n == 1 else f" in {n} runs"))
+    return 1 if missing or passed < total else 0
 
 
 # REQ-EVAL-002
@@ -219,7 +244,10 @@ def main(argv):
     p.add_argument("id")
     p.add_argument("--skill", required=True, metavar="DIR", help="Folder that holds SKILL.md.")
     s = sub.add_parser("score", help="Score one output file per fixture.")
-    s.add_argument("outputs", metavar="OUTPUTS_DIR")
+    s.add_argument("outputs", metavar="OUTPUTS_DIR", nargs="+",
+                   help="One folder for each run.")
+    s.add_argument("--only", default="", metavar="IDS",
+                   help="Score these fixtures only. Give ids with commas.")
     s.add_argument("--json", action="store_true")
     a = ap.parse_args(argv)
     try:
@@ -238,10 +266,18 @@ def main(argv):
                 return 0
         print(f"unknown fixture: {a.id}", file=sys.stderr)
         return 2
-    if not os.path.isdir(a.outputs):
-        print(f"not a folder: {a.outputs}", file=sys.stderr)
+    for folder in a.outputs:
+        if not os.path.isdir(folder):
+            print(f"not a folder: {folder}", file=sys.stderr)
+            return 2
+    only = [i.strip() for i in a.only.split(",") if i.strip()]
+    unknown = set(only) - {fx["id"] for fx in fixtures}
+    if unknown:
+        print(f"unknown fixture(s): {', '.join(sorted(unknown))}", file=sys.stderr)
         return 2
-    return cmd_score(a.outputs, a.json)
+    if only:
+        fixtures = [fx for fx in fixtures if fx["id"] in only]
+    return cmd_score(a.outputs, a.json, fixtures)
 
 
 if __name__ == "__main__":

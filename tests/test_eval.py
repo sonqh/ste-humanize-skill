@@ -50,6 +50,17 @@ class FixtureTests(unittest.TestCase):
         self.assertIn("bullets", shapes)
         self.assertIn("prose", shapes)
 
+    def test_long_fixtures(self):
+        """SCN-EVAL-001-3"""
+        # Covers: REQ-EVAL-001
+        long = [f for f in ev.load_fixtures()
+                if len(f["input"].split()) >= ev.LONG_INPUT_WORDS]
+        self.assertGreaterEqual(len(long), 3)
+        self.assertEqual({f["mode"] for f in long}, {"Strict", "Human"})
+        self.assertEqual({f["task"] for f in long}, {"Rewrite", "Write"})
+        for f in long:
+            self.assertGreaterEqual(len(f["checks"]["must_contain"]), 15, f["id"])
+
     def test_bad_fixture_rejected(self):
         """SCN-EVAL-001-2"""
         # Covers: REQ-EVAL-001
@@ -103,6 +114,25 @@ class ScorerTests(unittest.TestCase):
             r = run(["score", d])
             self.assertEqual(r.returncode, 1)
             self.assertIn("missing output", r.stdout)
+
+    def test_several_runs(self):
+        """SCN-EVAL-002-5"""
+        # Covers: REQ-EVAL-002
+        fx = ev.load_fixtures()[0]["id"]
+        with tempfile.TemporaryDirectory() as d:
+            for name, text in (("run1", "Delete it.\n"), ("run2", "Here is the text.\n")):
+                os.mkdir(os.path.join(d, name))
+                with open(os.path.join(d, name, fx + ".md"), "w", encoding="utf-8") as fh:
+                    fh.write(text)
+            runs = [os.path.join(d, "run1"), os.path.join(d, "run2")]
+            r = run(["score"] + runs + ["--only", fx])
+            self.assertEqual(r.returncode, 1)
+            self.assertIn("in 2 runs", r.stdout)
+            self.assertIn("fail no-preamble in 1 of 2 runs", r.stdout)
+            self.assertNotIn("missing output", r.stdout)
+            data = json.loads(run(["score"] + runs + ["--only", fx, "--json"]).stdout)
+            self.assertEqual(len(data["runs"]), 2)
+            self.assertEqual(run(["score", runs[0], "--only", "no-such"]).returncode, 2)
 
 
 if __name__ == "__main__":
