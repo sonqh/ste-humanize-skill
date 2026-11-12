@@ -39,7 +39,10 @@
     "asked_at": "2026-11-12T07:06:01.425Z",
     "task": "011-spec-ctx-upgrade",
     "text": "archive 011-spec-ctx-upgrade?",
-    "status": "open",
-    "stage": "archive"
+    "status": "resolved",
+    "stage": "archive",
+    "verdict": "approved",
+    "answer": "Owner merged PR #11 and asked to run the archive on 2026-11-12",
+    "resolved_at": "2026-11-12T07:48:53.060Z"
   }
 ]
