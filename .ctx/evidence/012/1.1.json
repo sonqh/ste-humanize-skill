@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-12T08:12:38.930Z",
+  "files": {
+    "tests/test_engine_pin.py": "5b8bcc9b3fbb6c7f9fe68eba1f32345bc4b3727353129086dff7066c51527fc0"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-014"
+  ],
+  "task": "012/1.1",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "python3 -m unittest tests.test_engine_pin -v && test \"$(bash scripts/openspec.sh --version)\" = 2.0.0",
+    "exit": 0,
+    "stderr_tail": "test_no_second_pin (tests.test_engine_pin.EnginePinTests)\nSCN-SKILL-013-2 ... ok\ntest_one_markdown_list (tests.test_engine_pin.EnginePinTests)\nSCN-SKILL-013-3 ... ok\ntest_one_pin (tests.test_engine_pin.EnginePinTests)\nSCN-SKILL-013-1 ... ok\ntest_no_second_openspec_pin (tests.test_engine_pin.OpenSpecPinTests)\nSCN-SKILL-014-2 ... ok\ntest_one_openspec_pin (tests.test_engine_pin.OpenSpecPinTests)\nSCN-SKILL-014-1 ... ok\ntest_stock_schema (tests.test_engine_pin.OpenSpecPinTests)\nSCN-SKILL-014-3 ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.035s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

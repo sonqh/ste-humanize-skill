@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-12T08:12:31.317Z",
+  "bundle_chars": 4142,
+  "files": {
+    "tests/test_engine_pin.py": "5b8bcc9b3fbb6c7f9fe68eba1f32345bc4b3727353129086dff7066c51527fc0"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-014"
+  ],
+  "started_at": "2026-11-12T08:11:38.268Z",
+  "task": "012/1.2",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "python3 -m unittest tests.test_engine_pin -v && bash scripts/openspec.sh validate --all --strict && bash scripts/openspec.sh instructions tasks --change 012-openspec-pin | grep -q \"REQ ID\"",
+    "exit": 0,
+    "stderr_tail": "test_no_second_pin (tests.test_engine_pin.EnginePinTests)\nSCN-SKILL-013-2 ... ok\ntest_one_markdown_list (tests.test_engine_pin.EnginePinTests)\nSCN-SKILL-013-3 ... ok\ntest_one_pin (tests.test_engine_pin.EnginePinTests)\nSCN-SKILL-013-1 ... ok\ntest_no_second_openspec_pin (tests.test_engine_pin.OpenSpecPinTests)\nSCN-SKILL-014-2 ... ok\ntest_one_openspec_pin (tests.test_engine_pin.OpenSpecPinTests)\nSCN-SKILL-014-1 ... ok\ntest_stock_schema (tests.test_engine_pin.OpenSpecPinTests)\nSCN-SKILL-014-3 ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.047s\n\nOK\n- Generating instructions...",
+    "stdout_sha256": "1afa6bed7bdaa2b196dcbd2d3508dc2d6127a8e4db01af5178b3c45bfc09fe20"
+  }
+}
