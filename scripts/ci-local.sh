@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # The CI jobs, run on this machine before a push. The pre-push hook calls it.
+# REQ-SKILL-013: spec-ctx runs through scripts/specctx.sh with the globs of spec-ctx.toml.
 set -uo pipefail
 cd "$(dirname "$0")/.."
 log=$(mktemp)

@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-12T07:03:45.649Z",
+  "bundle_chars": 4477,
+  "files": {
+    "scripts/ci-local.sh": "055cdf6e8f08fb1f0b8e5c27030dc00627cfd75230bdc83c10721f671bd4065d",
+    "tests/test_engine_pin.py": "ac8c89e3757ddc4d0c9eabf5e95c0966cb5d588f05c177ef3c649bc55b8610b8"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-013"
+  ],
+  "started_at": "2026-11-12T07:03:40.451Z",
+  "task": "011/1.2",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "test -f .claude/skills/specctx-run/SKILL.md && diff -r .claude/skills/specctx-run .agents/skills/specctx-run && grep -q specctx-run .claude/skills/specctx-bootstrap/SKILL.md",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

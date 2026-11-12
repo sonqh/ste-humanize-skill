@@ -34,3 +34,12 @@ depth = 1
 [verify]
 # Seconds before task done stops a Verify command.
 timeout_s = 600
+
+[gate]
+# Globs of the markdown files that gate lints. The default is an empty list.
+# scripts/ci-local.sh, the pre-commit hook, and the CI workflow pass the same list. REQ-SKILL-013
+markdown = [".claude/CLAUDE.md", "AGENTS.md", "decisions/*.md", "openspec/**/*.md", "docs/**/*.md"]
+
+[cli]
+# Prefix of every command that spec-ctx prints for you to run.
+run = "bash scripts/specctx.sh"

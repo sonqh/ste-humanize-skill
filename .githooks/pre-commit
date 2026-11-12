@@ -3,5 +3,5 @@
 set -euo pipefail
 here=$(cd "$(dirname "$0")/.." && pwd)
 cd "$here"
-bash scripts/specctx.sh gate --strict --markdown "CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md"
+bash scripts/specctx.sh gate --strict --markdown ".claude/CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md"
 python3 -m unittest discover -s tests

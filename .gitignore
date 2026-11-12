@@ -5,3 +5,6 @@ __pycache__/
 
 # The push gate appends to this file on every run.
 .ctx/gate-log.jsonl
+
+# task start writes the current task here.
+.ctx/current.json

@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-12T07:05:43.133Z",
+  "bundle_chars": 4307,
+  "files": {
+    "scripts/ci-local.sh": "055cdf6e8f08fb1f0b8e5c27030dc00627cfd75230bdc83c10721f671bd4065d",
+    "tests/test_engine_pin.py": "ac8c89e3757ddc4d0c9eabf5e95c0966cb5d588f05c177ef3c649bc55b8610b8"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-013"
+  ],
+  "started_at": "2026-11-12T07:04:57.056Z",
+  "task": "011/2.2",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "bash scripts/ci-local.sh && npx -y @fission-ai/openspec@latest validate --all --strict",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "2c2bcff661b9d5c77cf831fad37948eece7e8b2bc5bfd821057218f300214bca"
+  }
+}
