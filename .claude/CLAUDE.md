@@ -4,18 +4,18 @@ A Claude Code skill that rewrites English with ASD-STE100 structure and no AI te
 
 ## First thing in every session
 
-Run the `specctx-bootstrap` skill. The engine is [spec-ctx](https://www.npmjs.com/package/spec-ctx), called through `bash scripts/specctx.sh`, the one place that names its version. Write it as `specctx` below.
+Run the `specctx-run` skill. The engine is [spec-ctx](https://www.npmjs.com/package/spec-ctx), called through `bash scripts/specctx.sh`, the one place that names its version. Write it as `specctx` below. The skills `specctx-bootstrap`, `specctx-next`, and `specctx-done` are aliases of `specctx-run`.
 
 ```bash
-specctx status
-specctx task next
-specctx task start <task>
+specctx next               # the next action and the command for it
+specctx status             # the active change, the current task, the open questions
+specctx task start <task>  # the context of the task
 # work
-specctx task done <task>
+specctx task done <task>   # runs Verify, writes the evidence, sets the checkbox
 specctx handoff write
 ```
 
-Tick no checkbox by hand. Do not open `openspec/specs/` by hand. Use `bundle` or `task start`.
+`specctx next` stops at the plan and at the archive. Only the owner approves a stop. Tick no checkbox by hand. Do not open `openspec/specs/` by hand. Use `context`, `bundle`, or `task start`.
 
 ## Rules
 

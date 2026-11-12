@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-12T07:03:06.349Z",
+  "bundle_chars": 4719,
+  "files": {
+    "scripts/ci-local.sh": "055cdf6e8f08fb1f0b8e5c27030dc00627cfd75230bdc83c10721f671bd4065d",
+    "tests/test_engine_pin.py": "ac8c89e3757ddc4d0c9eabf5e95c0966cb5d588f05c177ef3c649bc55b8610b8"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-013"
+  ],
+  "started_at": "2026-11-12T07:02:27.106Z",
+  "task": "011/1.1",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "python3 -m unittest tests.test_engine_pin -v && test \"$(bash scripts/specctx.sh --version)\" = 0.6.0",
+    "exit": 0,
+    "stderr_tail": "test_no_second_pin (tests.test_engine_pin.EnginePinTests)\nSCN-SKILL-013-2 ... ok\ntest_one_markdown_list (tests.test_engine_pin.EnginePinTests)\nSCN-SKILL-013-3 ... ok\ntest_one_pin (tests.test_engine_pin.EnginePinTests)\nSCN-SKILL-013-1 ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.015s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
