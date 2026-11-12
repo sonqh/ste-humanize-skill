@@ -2,7 +2,7 @@
 
 A skill for Claude Code that makes your AI agent write text you understand on the first read, in the voice of a person.
 
-A skill is a folder of instructions that Claude Code loads when a task needs it. This one holds writing rules. Claude reads them when you ask for a document, a reply, or a rewrite.
+A skill is a folder of instructions that Claude Code loads when a task needs it. This one holds writing rules. Claude reads them when you ask for a document, a reply, or a rewrite. You ask in plain words, as you do now.
 
 ## The problem
 
@@ -42,10 +42,17 @@ More pairs are in [`examples/before-after.md`](examples/before-after.md).
 
 ## Try it
 
-1. Install the plugin in Claude Code 2.1.275 or newer.
+1. Install the plugin. In Claude Code 2.1.275 or newer, one command does it.
 
    ```
    /plugin install ste-humanize --marketplace sonqh/ste-humanize-skill
+   ```
+
+   On an older Claude Code, add the marketplace first.
+
+   ```
+   /plugin marketplace add sonqh/ste-humanize-skill
+   /plugin install ste-humanize@sonqh
    ```
 
 2. Ask for a text. Say who reads it.
@@ -55,6 +62,8 @@ More pairs are in [`examples/before-after.md`](examples/before-after.md).
    ```
 
 You get the text back and nothing else.
+
+To get a new version later, run `/plugin update ste-humanize@sonqh`. The update applies after a restart.
 
 ## What you can ask for
 
@@ -68,10 +77,10 @@ Rewrite this error message so an agent cannot misread it
 Show the diff
 ```
 
-- The plugin namespaces the skill, so the command is `/ste-humanize:ste-humanize`. Claude also picks the skill up from a plain request such as "humanize this".
-- For a README, an ADR, or a technical proposal, the skill orders the page by the questions of its readers. The request or the cost of a proposal comes first. The title of an ADR states the decision.
-- For a new page, the skill starts from the reader. It works out who reads the page, what they already know, and what they do next. Name the reader in your request when you can. If the skill cannot tell who the reader is, it asks you.
+- You do not need the command. Claude also picks the skill up from a plain request such as "humanize this". The plugin namespaces the skill, so the command is `/ste-humanize:ste-humanize`.
+- Name the reader in your request when you can. For a new page, the skill starts from the reader. It works out who reads the page, what they already know, and what they do next. If the skill cannot tell who the reader is, it asks you.
 - In a rewrite, the skill removes no idea of yours. It names a part the reader may not need on a `Cut candidates:` line. You decide.
+- For a README, an ADR, or a technical proposal, the skill orders the page by the questions of its readers. The request or the cost of a proposal comes first. The title of an ADR states the decision.
 - Add "show the diff" or "which rules did it break" to see each change in a table, with the rule behind it.
 - The skill picks one of two modes. Strict is for text that a program or an agent parses: tool descriptions, error messages, and agent instructions. Human is for text that a person reads: docs, READMEs, PR descriptions, and replies.
 
@@ -81,16 +90,9 @@ Show the diff
 - It is built for these texts: documentation, READMEs, design notes, PR descriptions, and changelogs. It is also built for replies in threads, tool descriptions, error messages, and agent-to-agent instructions.
 - It does not certify a text as ASD-STE100. It does not hold the 900-word dictionary of that standard. It applies the principle: the plainest common word, used the same way every time. For certified STE documentation, use the real standard.
 
-## Other ways to install
+## Install without the plugin
 
-On an older Claude Code, add the marketplace first.
-
-```
-/plugin marketplace add sonqh/ste-humanize-skill
-/plugin install ste-humanize@sonqh
-```
-
-`/plugin update ste-humanize@sonqh` gets a new version. The update applies after a restart.
+Codex and other agents read skills from `~/.agents/skills`. Use one of these ways for them.
 
 With the [skills CLI](https://skills.sh/). It needs Node 22.20 or newer.
 
@@ -105,12 +107,12 @@ git clone https://github.com/sonqh/ste-humanize-skill ~/.claude/skills/ste-human
 ```
 
 - The clone brings the whole repository: the skill, the tests, the specs in `openspec/`, and the maintainer hooks.
-- The zip on the GitHub release page holds the skill only.
 - Codex and other agents that read `~/.agents/skills` use the same clone, with that path.
+- The zip on the GitHub release page holds the skill only.
 
 ## Check a file without the agent
 
-The repository holds a linter. It finds the rule breaks that a pattern can find, and it needs only Python 3.
+The skill comes with a linter. It finds the rule breaks that a pattern can find, and it needs only Python 3. Run it in the folder of the skill: a clone of this repository, or the folder where you installed the skill.
 
 ```bash
 python3 scripts/lint.py FILE
