@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-12T08:14:00.764Z",
+  "bundle_chars": 4106,
+  "files": {
+    "tests/test_engine_pin.py": "5b8bcc9b3fbb6c7f9fe68eba1f32345bc4b3727353129086dff7066c51527fc0"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-014"
+  ],
+  "started_at": "2026-11-12T08:13:38.014Z",
+  "task": "012/2.2",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "bash scripts/ci-local.sh && bash scripts/openspec.sh validate --all --strict",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "3d110b41ddcbe4274b1bce954fde9dacb4f18522c98ae372456b81f864e14de0"
+  }
+}

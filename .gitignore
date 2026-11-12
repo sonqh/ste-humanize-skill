@@ -8,3 +8,6 @@ __pycache__/
 
 # task start writes the current task here.
 .ctx/current.json
+
+# spec-ctx
+adopt-report.md

@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-12T08:13:37.219Z",
+  "bundle_chars": 4509,
+  "files": {
+    "tests/test_engine_pin.py": "5b8bcc9b3fbb6c7f9fe68eba1f32345bc4b3727353129086dff7066c51527fc0"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-014"
+  ],
+  "started_at": "2026-11-12T08:13:01.371Z",
+  "task": "012/2.1",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "python3 scripts/lint.py .claude/CLAUDE.md docs/CONTRIBUTING.md && grep -q scripts/openspec.sh .claude/CLAUDE.md && grep -q scripts/openspec.sh docs/CONTRIBUTING.md",
+    "exit": 0,
+    "stderr_tail": "0 hard finding(s), baseline 0",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

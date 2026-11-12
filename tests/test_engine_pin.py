@@ -1,5 +1,5 @@
-"""One pin of the spec engine and one list of markdown globs."""
-# Covers: REQ-SKILL-013
+"""One pin of the spec engine, one pin of OpenSpec, and one list of markdown globs."""
+# Covers: REQ-SKILL-013, REQ-SKILL-014
 import os
 import re
 import subprocess
@@ -21,11 +21,14 @@ def tracked():
     return [p for p in out.decode("utf-8").split("\0") if p]
 
 
-def toml_markdown():
-    text = read("spec-ctx.toml")
-    m = re.search(r"^\[gate\]\s*$(.*?)(?=^\[|\Z)", text, re.M | re.S)
+def gate_section():
+    m = re.search(r"^\[gate\]\s*$(.*?)(?=^\[|\Z)", read("spec-ctx.toml"), re.M | re.S)
     assert m, "spec-ctx.toml has no [gate] section"
-    line = re.search(r"^markdown\s*=\s*\[(.*?)\]", m.group(1), re.M | re.S)
+    return m.group(1)
+
+
+def toml_markdown():
+    line = re.search(r"^markdown\s*=\s*\[(.*?)\]", gate_section(), re.M | re.S)
     assert line, "[gate] has no markdown key"
     return re.findall(r'"([^"]*)"', line.group(1))
 
@@ -74,6 +77,48 @@ class EnginePinTests(unittest.TestCase):
         for rel, m in lists.items():
             self.assertIsNotNone(m, rel)
             self.assertEqual(m.group(1).split(), want, rel)
+
+
+OPENSPEC_PIN = "scripts/openspec.sh"
+SPECCTX_SKILLS = (".claude/skills/specctx-", ".agents/skills/specctx-")
+
+
+class OpenSpecPinTests(unittest.TestCase):
+    def test_one_openspec_pin(self):
+        """SCN-SKILL-014-1"""
+        # Covers: SCN-SKILL-014-1
+        text = read(OPENSPEC_PIN)
+        pins = re.findall(r"^OPENSPEC_VERSION=(\S+)$", text, re.M)
+        self.assertEqual(len(pins), 1, pins)
+        self.assertRegex(pins[0], r"^\d+\.\d+\.\d+$")
+        self.assertRegex(text, r'(?m)^exec npx -y "@fission-ai/openspec@\$OPENSPEC_VERSION" "\$@"$')
+        line = re.search(r'^openspec\s*=\s*"([^"]*)"', gate_section(), re.M)
+        self.assertIsNotNone(line, "[gate] has no openspec key")
+        self.assertEqual(line.group(1), "bash scripts/openspec.sh")
+
+    def test_no_second_openspec_pin(self):
+        """SCN-SKILL-014-2"""
+        # Covers: SCN-SKILL-014-2
+        offenders = []
+        for rel in tracked():
+            if rel.startswith(HISTORY) or rel.startswith(SPECCTX_SKILLS):
+                continue
+            try:
+                text = read(rel)
+            except (UnicodeDecodeError, FileNotFoundError, IsADirectoryError):
+                continue
+            if re.search(r"@fission-ai/openspec@(\d|latest)", text):
+                offenders.append(rel)
+        self.assertEqual(offenders, [])
+
+    def test_stock_schema(self):
+        """SCN-SKILL-014-3"""
+        # Covers: SCN-SKILL-014-3
+        self.assertRegex(read("openspec/config.yaml"), r"(?m)^schema: spec-driven$")
+        files = tracked()
+        self.assertEqual([p for p in files if p.startswith("openspec/schemas/")], [])
+        for name in ("spec.md", "tasks.md"):
+            self.assertIn("openspec/templates/spec-driven-ids/" + name, files)
 
 
 if __name__ == "__main__":

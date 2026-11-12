@@ -1,11 +1,12 @@
 # Contributing
 
-Specs live in `openspec/`. The engine is spec-ctx. `scripts/specctx.sh` names its install source.
+Specs live in `openspec/`. The engine is spec-ctx. `scripts/specctx.sh` names its version, and `scripts/openspec.sh` names the version of OpenSpec.
 
 ```bash
-git config core.hooksPath .githooks    # turn on the hooks
-python3 -m unittest discover -s tests  # run the tests
-bash scripts/ci-local.sh               # run the CI steps on this machine
+git config core.hooksPath .githooks                # turn on the hooks
+python3 -m unittest discover -s tests              # run the tests
+bash scripts/ci-local.sh                           # run the CI steps on this machine
+bash scripts/openspec.sh validate --all --strict   # validate the specs and the changes
 ```
 
 - The `pre-commit` hook runs `specctx gate --strict` and the tests.
@@ -43,6 +44,8 @@ Do the upgrade in an OpenSpec change. Change 011 is the model.
 5. Run `bash scripts/specctx.sh status` and `bash scripts/specctx.sh next`.
 
 To roll back, set `SPECCTX_VERSION` to the old version.
+
+An upgrade of OpenSpec uses the same steps with `OPENSPEC_VERSION` in `scripts/openspec.sh`. Change 012 is the model. After it, also run `bash scripts/openspec.sh status --change <change>` on an active change.
 
 ## Release
 

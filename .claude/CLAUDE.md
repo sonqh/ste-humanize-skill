@@ -4,7 +4,7 @@ A Claude Code skill that rewrites English with ASD-STE100 structure and no AI te
 
 ## First thing in every session
 
-Run the `specctx-run` skill. The engine is [spec-ctx](https://www.npmjs.com/package/spec-ctx), called through `bash scripts/specctx.sh`, the one place that names its version. Write it as `specctx` below. The skills `specctx-bootstrap`, `specctx-next`, and `specctx-done` are aliases of `specctx-run`.
+Run the `specctx-run` skill. The engine is [spec-ctx](https://www.npmjs.com/package/spec-ctx), called through `bash scripts/specctx.sh`, the one place that names its version. Write it as `specctx` below. The skills `specctx-bootstrap`, `specctx-next`, and `specctx-done` are aliases of `specctx-run`. Run OpenSpec as `bash scripts/openspec.sh`, the one place that names its version. A guide that says `openspec` means this script.
 
 ```bash
 specctx next               # the next action and the command for it

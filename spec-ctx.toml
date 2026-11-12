@@ -39,6 +39,8 @@ timeout_s = 600
 # Globs of the markdown files that gate lints. The default is an empty list.
 # scripts/ci-local.sh, the pre-commit hook, and the CI workflow pass the same list. REQ-SKILL-013
 markdown = [".claude/CLAUDE.md", "AGENTS.md", "decisions/*.md", "openspec/**/*.md", "docs/**/*.md"]
+# The command that gate and next run for OpenSpec. REQ-SKILL-014
+openspec = "bash scripts/openspec.sh"
 
 [cli]
 # Prefix of every command that spec-ctx prints for you to run.

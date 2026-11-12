@@ -1,4 +1,4 @@
-schema: spec-driven-ids
+schema: spec-driven
 
 # Project context (optional)
 # Add only constraints that should guide OpenSpec artifacts and workflows.
@@ -37,6 +37,7 @@ rules:
     - 'Every scenario header starts with its ID, e.g. "#### Scenario: SCN-ABC-001-1 Name".'
     - 'A requirement may end with a line "Refs: REQ-ABC-002, ADR-001" to link related IDs.'
     - Requirement text stays under 500 characters. Move detail into scenarios.
+    - 'The templates with the ID placeholders are in openspec/templates/spec-driven-ids/. Start a spec from spec.md and a task list from tasks.md there.'
   design:
     - Each decision is one bullet under "## Decisions". Add new decisions at the end.
   tasks:
@@ -48,9 +49,10 @@ operations:
     guidance:
       - Start each task with `specctx task start <id>` and read the bundle it prints before you read specs.
       - 'Tag code with the REQ ID it implements (a comment `// REQ-ABC-001`). Tag tests with `// Covers: REQ-ABC-001`.'
-      - Close each task with `specctx task done <id>`. Never tick a checkbox by hand.
       - Run `specctx check --strict` after each task group.
+      - 'Close each task only with `specctx task done <id>`. Never edit a checkbox. Never run `/opsx:apply`; run the `specctx-run` skill.'
   archive:
     guidance:
-      - Run `specctx check --strict` and `openspec validate --all --strict`. Both must pass before archive.
-      - Run `openspec validate --all --strict` again after archive and before push.
+      - In this file, `openspec` means `bash scripts/openspec.sh`, the command in `[gate] openspec` of `spec-ctx.toml`. Archive with `bash scripts/openspec.sh archive <change> -y`.
+      - 'Run `specctx check --strict` and `openspec validate --all --strict`. Both must pass before archive.'
+      - 'Run `openspec validate --all --strict` again after archive and before push.'

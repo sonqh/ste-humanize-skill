@@ -44,5 +44,24 @@
     "verdict": "approved",
     "answer": "Owner merged PR #11 and asked to run the archive on 2026-11-12",
     "resolved_at": "2026-11-12T07:48:53.060Z"
+  },
+  {
+    "n": 6,
+    "asked_at": "2026-11-12T08:10:59.719Z",
+    "task": "012-openspec-pin",
+    "text": "plan ready for 012-openspec-pin. Approve to start the tasks?",
+    "status": "resolved",
+    "stage": "plan",
+    "verdict": "approved",
+    "answer": "Owner approved the fix plan for the risks of 011 on 2026-11-12: ok dong y tat ca",
+    "resolved_at": "2026-11-12T08:11:00.202Z"
+  },
+  {
+    "n": 7,
+    "asked_at": "2026-11-12T08:14:11.268Z",
+    "task": "012-openspec-pin",
+    "text": "archive 012-openspec-pin?",
+    "status": "open",
+    "stage": "archive"
   }
 ]
