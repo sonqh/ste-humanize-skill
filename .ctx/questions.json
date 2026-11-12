@@ -61,7 +61,10 @@
     "asked_at": "2026-11-12T08:14:11.268Z",
     "task": "012-openspec-pin",
     "text": "archive 012-openspec-pin?",
-    "status": "open",
-    "stage": "archive"
+    "status": "resolved",
+    "stage": "archive",
+    "verdict": "approved",
+    "answer": "Owner merged PR #13 and asked to continue with the archive on 2026-11-12",
+    "resolved_at": "2026-11-12T08:20:03.163Z"
   }
 ]
