@@ -45,7 +45,9 @@ Do the upgrade in an OpenSpec change. Change 011 is the model.
 
 To roll back, set `SPECCTX_VERSION` to the old version.
 
-An upgrade of OpenSpec uses the same steps with `OPENSPEC_VERSION` in `scripts/openspec.sh`. Change 012 is the model. After it, also run `bash scripts/openspec.sh status --change <change>` on an active change.
+An upgrade of OpenSpec uses the same steps with `OPENSPEC_VERSION` in `scripts/openspec.sh`. Changes 012 and 013 are the model. In step 4, run `bash scripts/openspec.sh update`. It writes the OpenSpec skills into `.agents/skills/` and links `.claude/skills/` to them. A test fails until the skills come from the pinned version. After it, also run `bash scripts/openspec.sh status --change <change>` on an active change.
+
+On Windows, clone with `git config core.symlinks true`. Without it, the six OpenSpec skills in `.claude/skills/` are text files.
 
 ## Release
 

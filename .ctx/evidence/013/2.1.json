@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-12T08:59:07.683Z",
+  "bundle_chars": 3150,
+  "files": {
+    "tests/test_engine_pin.py": "6113e0c9df97bfd3d603a7a0fa46bfa07ad6849c401569ad1ad53a5841a72f5b"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-015"
+  ],
+  "started_at": "2026-11-12T08:59:02.392Z",
+  "task": "013/2.1",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "python3 scripts/lint.py docs/CONTRIBUTING.md docs/verification/013.md && grep -q \"openspec.sh update\" docs/CONTRIBUTING.md && bash scripts/ci-local.sh && bash scripts/openspec.sh validate --all --strict",
+    "exit": 0,
+    "stderr_tail": "0 hard finding(s), baseline 0",
+    "stdout_sha256": "189a286ec7ef9e34db1043adb092395a4c1ef5adbd3042ede4d20369316d9011"
+  }
+}

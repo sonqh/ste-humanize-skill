@@ -121,5 +121,38 @@ class OpenSpecPinTests(unittest.TestCase):
             self.assertIn("openspec/templates/spec-driven-ids/" + name, files)
 
 
+def openspec_skills(base):
+    folder = os.path.join(ROOT, base)
+    return sorted(n for n in os.listdir(folder) if n.startswith("openspec-"))
+
+
+class OpenSpecSkillTests(unittest.TestCase):
+    def test_skills_match_pin(self):
+        """SCN-SKILL-015-1"""
+        # Covers: REQ-SKILL-015, SCN-SKILL-015-1
+        pin = re.search(r"^OPENSPEC_VERSION=(\S+)$", read(OPENSPEC_PIN), re.M).group(1)
+        names = openspec_skills(".agents/skills")
+        self.assertTrue(names)
+        for name in names:
+            m = re.search(r'^\s*generatedBy:\s*"([^"]+)"', read(".agents/skills/%s/SKILL.md" % name), re.M)
+            self.assertIsNotNone(m, name)
+            self.assertEqual(m.group(1), pin, name)
+
+    def test_one_copy_of_each_skill(self):
+        """SCN-SKILL-015-2"""
+        # Covers: SCN-SKILL-015-2
+        links = openspec_skills(".claude/skills")
+        self.assertEqual(links, openspec_skills(".agents/skills"))
+        for name in links:
+            path = os.path.join(ROOT, ".claude/skills", name)
+            self.assertTrue(os.path.islink(path), name)
+            self.assertEqual(os.readlink(path), "../../.agents/skills/" + name)
+
+    def test_no_opsx_commands(self):
+        """SCN-SKILL-015-3"""
+        # Covers: SCN-SKILL-015-3
+        self.assertEqual([p for p in tracked() if p.startswith(".claude/commands/opsx/")], [])
+
+
 if __name__ == "__main__":
     unittest.main()

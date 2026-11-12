@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-12T08:58:41.428Z",
+  "bundle_chars": 2891,
+  "files": {
+    "tests/test_engine_pin.py": "6113e0c9df97bfd3d603a7a0fa46bfa07ad6849c401569ad1ad53a5841a72f5b"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-015"
+  ],
+  "started_at": "2026-11-12T08:58:29.033Z",
+  "task": "013/1.1",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "python3 -m unittest tests.test_engine_pin -v && test -L .claude/skills/openspec-propose && test ! -e .claude/commands/opsx",
+    "exit": 0,
+    "stderr_tail": "SCN-SKILL-013-3 ... ok\ntest_one_pin (tests.test_engine_pin.EnginePinTests)\nSCN-SKILL-013-1 ... ok\ntest_no_second_openspec_pin (tests.test_engine_pin.OpenSpecPinTests)\nSCN-SKILL-014-2 ... ok\ntest_one_openspec_pin (tests.test_engine_pin.OpenSpecPinTests)\nSCN-SKILL-014-1 ... ok\ntest_stock_schema (tests.test_engine_pin.OpenSpecPinTests)\nSCN-SKILL-014-3 ... ok\ntest_no_opsx_commands (tests.test_engine_pin.OpenSpecSkillTests)\nSCN-SKILL-015-3 ... ok\ntest_one_copy_of_each_skill (tests.test_engine_pin.OpenSpecSkillTests)\nSCN-SKILL-015-2 ... ok\ntest_skills_match_pin (tests.test_engine_pin.OpenSpecSkillTests)\nSCN-SKILL-015-1 ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 0.048s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
