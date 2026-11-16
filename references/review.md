@@ -10,7 +10,8 @@ Read this file when the user asks you to review a page, check whether it is read
 4. When the page is about work not built yet, apply `## Work not built yet` in `references/page-guides.md`. Look for a number with no kind, a gap with no `TBD`, a `TBD` with no owner, and a missing option to do nothing.
 5. Read the title, the first paragraph, and the headings only. Check that the reader can say what the page gives them or asks of them.
 6. Run `python3 scripts/lint.py FILE` on the page. Count the hard findings and note the three rules that occur most.
-7. Choose the other findings, up to 7, the most severe first.
+7. On an ADR, a proposal, or a design doc, look for the patterns of `## G. Decision pages` in `references/ai-tells.md`.
+8. Choose the other findings, up to 7, the most severe first.
 
 ## Output
 

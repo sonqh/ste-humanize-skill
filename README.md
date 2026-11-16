@@ -21,7 +21,7 @@ A skill is a folder of instructions that Claude Code loads when a task needs it.
 | Chatbot phrases and filler. | The skill removes them. Your details and opinions stay. |
 | A rewrite loses a condition. | Each condition, exception, and "may" stays. |
 
-The sentence rules come from ASD-STE100. It is the controlled English that aerospace uses so that nobody misreads a maintenance step. The list of chatbot habits comes from Wikipedia's "Signs of AI writing".
+The sentence rules come from ASD-STE100. It is the controlled English that aerospace uses so that nobody misreads a maintenance step. The list of chatbot habits comes from Wikipedia's "Signs of AI writing". On an ADR, a design doc, or a proposal, the skill also removes the habits of a model that avoids a choice. One example is a page that weighs each option and picks none. Others are a quality word with no number, and a risk answered with "we will watch it".
 
 ## An example
 

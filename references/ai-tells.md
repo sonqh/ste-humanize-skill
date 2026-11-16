@@ -214,6 +214,64 @@ Watch for: a reply that restates the problem, walks through the diagnosis, and l
 
 Problem: in a reply the reader already has the context. Lead with the decision. Keep only the one fact the reader lacks and the reasoning that would change whether the reader agrees.
 
+## G. Decision pages
+
+These patterns occur in an ADR, a design doc, a proposal, or any page whose reader must choose. The linter flags patterns 27, 30, 31, and 32 as advisory. Patterns 28 and 29 need judgement.
+
+### 27. False balance
+
+Watch for: both options have their merits, each approach has its trade-offs, it depends on your needs, there is no one-size-fits-all, no silver bullet, the right choice depends on.
+
+Problem: the page avoids the choice that its reader came for. State the recommendation and the condition that would change it. When the material gives no recommendation, say so and name what the decision waits for.
+
+Before: Both options have their merits, and the right choice depends on the needs of the team.
+After: We recommend pg-boss. Choose BullMQ instead if the team already runs Redis.
+
+### 28. Matched pros and cons
+
+Watch for: every option with the same number of pros and cons, often three and three; a pro that repeats a con of another option in other words.
+
+Problem: the list looks fair and hides which point decides. Give each option the points that the material gives, and mark the point that decides. *Weak alone.*
+
+Before: Option A. Pros: fast, simple, cheap. Cons: new, untested, small community. Option B. Pros: mature, tested, popular. Cons: slow, complex, costly.
+After: Option A costs $90 a month and needs no new system. Option B needs Redis, which we do not run. The new system decides it.
+
+### 29. Straw options
+
+Watch for: an option that nobody in the material proposed; an option that loses on every row of the table; "build our own" or a famous product added to fill the table.
+
+Problem: a weak option makes the chosen one look better and teaches the reader nothing. List the options that the material names. The option to do nothing is always real: it is what happens when nobody decides.
+
+Before: We compared pg-boss, BullMQ, SQS, Kafka, RabbitMQ, a custom queue, and a cron job.
+After: We compared pg-boss, BullMQ, and SQS, the three options the team raised, and doing nothing.
+
+### 30. Quality words with no number
+
+Watch for: scalable, scalability, performant, future-proof, flexible, maintainable, reliable, efficient, battle-tested, enterprise-grade, production-ready, best-in-class, in a sentence with no number.
+
+Problem: the word claims a result and gives no measure, so the reader cannot compare the options. Give the number and its kind, or cut the word.
+
+Before: pg-boss is scalable and reliable.
+After: We measured 350 jobs per second with pg-boss on staging. Our peak is 15.
+
+### 31. Empty mitigation
+
+Watch for: monitor closely, careful planning, carefully consider, ensure proper, thorough testing, follow best practices.
+
+Problem: the mitigation names care and no action, so the risk stays. Name the action, who does it, and the signal that starts it. In a Rewrite, when the source names no action, write `TBD` with the owner and name the phrase on the `Cut candidates:` line. Do not quote it in the text.
+
+Before: Risk: the jobs table grows. Mitigation: we will monitor closely.
+After: Risk: the jobs table grows. Mitigation: Dana checks its size each Monday and opens a ticket when it passes 5 GB.
+
+### 32. A decision with no actor
+
+Watch for: it was decided, it has been decided, a decision was made, it is recommended that, it is proposed that.
+
+Problem: the reader cannot tell who decided or who to ask. Name the person or the team, and the date.
+
+Before: It was decided that image jobs move to pg-boss.
+After: The backend team decided on 2026-10-14 to move image jobs to pg-boss.
+
 ## When not to act
 
 Leave a watched phrase alone inside a quotation, a title, a proper name, or a passage that discusses the phrase rather than uses it. Salutations on a letter predate chatbots. Keep the details that carry the writer's voice: a specific unusual detail, mixed feelings stated plainly, a real aside, a first-person choice the writer can explain.

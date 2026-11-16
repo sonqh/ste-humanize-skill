@@ -467,3 +467,28 @@ class PageGuidesTest(unittest.TestCase):
         self.assertIn("review", rows[0])
         with open(SKILL, encoding="utf-8") as fh:
             self.assertLess(len(fh.read().split()), 1900)
+
+    def test_decision_patterns(self):
+        # Covers: SCN-SKILL-020-1
+        # Covers: REQ-SKILL-020
+        sec = section("G. Decision pages", os.path.join(ROOT, "references", "ai-tells.md"))
+        parts = re.split(r"^### ", sec, flags=re.M)[1:]
+        self.assertEqual([p.split(".")[0] for p in parts], [str(n) for n in range(27, 33)])
+        for p in parts:
+            for want in ("\nWatch for:", "\nProblem:", "\nBefore:", "\nAfter:"):
+                self.assertIn(want, p, p[:20])
+
+    def test_decision_pointers(self):
+        # Covers: SCN-SKILL-020-2
+        # Covers: REQ-SKILL-020
+        for name in ("human.md", "page-guides.md", "review.md"):
+            with open(os.path.join(ROOT, "references", name), encoding="utf-8") as fh:
+                self.assertIn("G. Decision pages", fh.read(), name)
+
+    def test_route_says_32(self):
+        # Covers: SCN-SKILL-020-3
+        # Covers: REQ-SKILL-020
+        row = next(l for l in section("What to read").splitlines() if "references/ai-tells.md" in l)
+        self.assertIn("32 patterns", row)
+        with open(SKILL, encoding="utf-8") as fh:
+            self.assertLess(len(fh.read().split()), 1900)

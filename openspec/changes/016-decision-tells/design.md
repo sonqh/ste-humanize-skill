@@ -35,6 +35,7 @@
 - 016/D7 `unmeasured-quality` matches scalable, scalability, performant, future-proof, flexible, maintainable, reliable, efficient, battle-tested, enterprise-grade, production-ready, and best-in-class. It fires only when the sentence has no digit. A sentence ends at a period, a question mark, an exclamation mark, or a new line. Two words of pattern 12 that also describe quality stay with `stock-word`, a hard rule. Refs: REQ-TELLS-004
 - 016/D8 `references/human.md` adds the group to its list of tells. `references/page-guides.md` tells the writer of an ADR, a proposal, or a design doc to read the group. Step 7 of `references/review.md` tells the reviewer to check it. `SKILL.md` changes "26" to "32" and gains no word. Refs: REQ-SKILL-020
 - 016/D9 One eval fixture, `rewrite-decision-tells`, gives a proposal with all six tells. A Rewrite must keep each fact and remove each tell. It runs three times with version 0.8.0 and three times with version 0.9.0. Refs: REQ-SKILL-020
+- 016/D10 In the first run, 1 run of 0.9.0 quoted "monitor closely" in the text to say that it names no action. Pattern 31 now says what a Rewrite does when the source names no action. It writes `TBD` with the owner and names the phrase on the `Cut candidates:` line. The 3 runs of 0.9.0 ran again. Refs: REQ-SKILL-020
 
 ## Risks / Trade-offs
 

@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-16T15:43:59.267Z",
+  "bundle_chars": 7364,
+  "files": {
+    "scripts/tells-lint.py": "962567227fdbf87b7d9128bfd688654e201510e86c7c1ad2c6b7c48033caf1fd",
+    "tests/test_tells_lint.py": "a89a6072bc159b3573af51c5bb7638541ccc7ddbdb5218a3d40ca747814812d1"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-TELLS-002",
+    "REQ-TELLS-004"
+  ],
+  "started_at": "2026-11-16T15:43:25.101Z",
+  "task": "016/1.1",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "python3 scripts/tells-lint.py --selftest && python3 -m unittest tests.test_tells_lint -v",
+    "exit": 0,
+    "stderr_tail": "SCN-TELLS-001-4 ... ok\ntest_dash_as_glue (tests.test_tells_lint.TellsLintTests)\nSCN-TELLS-001-3 ... ok\ntest_empty_input (tests.test_tells_lint.TellsLintTests)\nSCN-TELLS-003-5 ... ok\ntest_hard_table (tests.test_tells_lint.TellsLintTests)\nSCN-TELLS-001-1 ... ok\ntest_help_strings (tests.test_tells_lint.TellsLintTests)\nSCN-TELLS-003-4 ... ok\ntest_inflected_stock_word (tests.test_tells_lint.TellsLintTests)\nSCN-TELLS-001-5 ... ok\ntest_json_shape (tests.test_tells_lint.TellsLintTests)\nSCN-TELLS-003-2 ... ok\ntest_unknown_rule (tests.test_tells_lint.TellsLintTests)\nSCN-TELLS-003-3 ... ok\n\n----------------------------------------------------------------------\nRan 17 tests in 0.246s\n\nOK",
+    "stdout_sha256": "8cdae19fafa1e644564f08896cfe9b60b8234a98229d7b594a881f5c2aab48d5"
+  }
+}
