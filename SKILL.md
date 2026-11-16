@@ -1,7 +1,7 @@
 ---
 name: ste-humanize
-description: "Write or rewrite English so a reader cannot misread it and still hears a person behind it. Starts from the reader: what they know and what they do next. Combines ASD-STE100 sentence discipline with AI-tell removal (no not-X-but-Y, no one-line closers, no dash glue, no stock AI words). Use to write or rewrite docs, READMEs, PR descriptions, replies, tool descriptions, error messages, and any prose written for a person. Triggers: write a doc, humanize, make this clear, plain rewrite, STE rewrite, remove AI tells. Not for fiction, marketing, or copy where voice is the point."
-version: 0.7.0
+description: "Write or rewrite English so a reader cannot misread it and still hears a person behind it. Starts from the reader: what they know and what they do next. Combines ASD-STE100 sentence discipline with AI-tell removal (no not-X-but-Y, no one-line closers, no dash glue, no stock AI words). Use to write or rewrite docs, READMEs, PR descriptions, replies, tool descriptions, error messages, and any prose written for a person. Triggers: write a doc, review a doc, humanize, make this clear, plain rewrite, STE rewrite, remove AI tells. Not for fiction, marketing, or copy where voice is the point."
+version: 0.8.0
 license: MIT
 ---
 
@@ -9,7 +9,7 @@ license: MIT
 
 This skill starts from the reader. Then it applies the sentence rules of ASD-STE100, the controlled English that aerospace built so a maintenance step cannot be misread. Last, it removes the habits that make text read as machine-written.
 
-Use it to write or rewrite a document, README, design note, PR description, or reply for a person. Use it also for a tool description, error message, or instruction that an agent must parse. Do not use it for fiction, marketing, or any text where voice and persuasion are the point.
+Use it for text that a person or an agent reads, and to review a page. Do not use it for fiction, marketing, or any text where voice and persuasion are the point.
 
 ## What to read
 
@@ -21,6 +21,7 @@ This file holds the rules for every text. Read one more file only when its row a
 | The task is Write, or a Rewrite of a whole page | `references/doc-shapes.md`: the usual reader of each kind of page, and the reader questions |
 | The page is a README, an ADR, or a technical proposal | `references/page-guides.md`: the questions of its readers, in order |
 | The page is a design doc, or about work not built yet | `references/page-guides.md` |
+| The user asks for a review of a page | `references/review.md` |
 | The text is not in English, or it holds domain terms or identifiers | `references/terms.md` |
 | A sentence rule is unclear | `references/ste-rules.md`: each rule with an example |
 | An AI tell is unclear | `references/ai-tells.md`: the 26 patterns with examples |

@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-16T15:27:40.784Z",
+  "bundle_chars": 6161,
+  "files": {
+    "tests/test_skill_contract.py": "8952ee3928e2df7e0851d42abd04d5f485e16c2ad060e38f640f032e4151e8a3"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-019"
+  ],
+  "started_at": "2026-11-16T15:27:39.426Z",
+  "task": "015/2.2",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "python3 -m unittest tests.test_skill_contract -v && test $(wc -w < SKILL.md) -lt 1900 && python3 scripts/lint.py README.md",
+    "exit": 0,
+    "stderr_tail": "SCN-SKILL-004-3 ... ok\ntest_output_format (tests.test_skill_contract.SkillContractTests)\nSCN-SKILL-003-1 ... ok\ntest_precedence_order (tests.test_skill_contract.SkillContractTests)\nSCN-SKILL-002-1 ... ok\ntest_readme_lints_clean (tests.test_skill_contract.SkillContractTests)\nSCN-SKILL-004-2 ... ok\ntest_two_modes (tests.test_skill_contract.SkillContractTests)\nSCN-SKILL-001-1 ... ok\ntest_word_cap (tests.test_skill_contract.SkillContractTests)\nSCN-SKILL-004-1 ... ok\ntest_header_and_names (tests.test_skill_contract.TwoTasksTest) ... ok\ntest_limits_of_a_write (tests.test_skill_contract.TwoTasksTest) ... ok\ntest_rewrite_keeps_source (tests.test_skill_contract.TwoTasksTest) ... ok\n\n----------------------------------------------------------------------\nRan 49 tests in 0.686s\n\nOK\n0 hard finding(s), baseline 0",
+    "stdout_sha256": "d0570153eaa527135aafa6185a19b1c757b966f6acc44b36f3a57419be805048"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "review-design-doc-gaps",
+  "mode": "Human",
+  "task": "Review",
+  "request": "Review this design doc. The readers are the backend team, who must agree on it before the work starts.",
+  "input": "# Design doc: invoice export\n\nStatus: draft, 2026-11-15.\n\n## Problem\n\nCustomers ask support for all their invoices in one file. Support got 40 tickets with the tag \"export\" in October 2026. Today a customer can only page through the API, 100 invoices per page. The largest accounts have 120,000 invoices.\n\n## Goals\n\n- A customer exports all invoices as one CSV file.\n- The export works for an account with 120,000 invoices.\n\n## Design\n\nThe customer clicks Export. A background job builds the CSV and puts it in S3. We email a link to the file. The link expires after 24 hours.\n\nThe job runs on the existing worker pool. It reads invoices in pages of 1,000 and writes each page to the file.\n\n## Options\n\n- A sync download button. It is fast for small accounts. It times out for large ones.\n\n## Cost\n\nThe S3 storage and the email cost about $4,000 a month.\n\n## Rollout\n\nWe release the feature to all customers on 2026-12-15.\n\n## Open questions\n\n- Does every invoice have a tax ID? Finance wants a column for it. TBD.\n",
+  "checks": {
+    "first_sentence": "not ready",
+    "must_contain": [
+      "non-goal",
+      "do nothing|doing nothing|keep .{0,30}API|status quo|no change",
+      "4,000",
+      "source|who (?:made|estimated)|estimate",
+      "way back|roll ?back|go back|turn .{0,30}off|\\bflag\\b|switch",
+      "owner",
+      "success|measure|target"
+    ],
+    "must_not_contain": [
+      "(?m)^#+\\s*Non-goals",
+      "(?m)^#+\\s*Design doc"
+    ],
+    "max_words": 500,
+    "shape": "any",
+    "trailers": []
+  }
+}

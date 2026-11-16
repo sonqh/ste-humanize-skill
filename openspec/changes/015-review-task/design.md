@@ -34,6 +34,9 @@
 - 015/D7 A review does not rewrite the page and does not add a fact. A fix may quote one short phrase. When the reviewer cannot check a fact, the finding says so. When the page is ready, the review says so and adds no finding to fill the space. Refs: REQ-SKILL-019
 - 015/D8 `SKILL.md` gains one route row and the word "review" in its triggers. Its second paragraph repeats the description in the front matter, and gets shorter to pay for both. Refs: REQ-SKILL-019
 - 015/D9 `evals/eval.py` adds `Review` to its tasks. A review is text for a person, so the scorer applies the same checks to it. These are the preamble, the first sentence, the word limit, and the lint. Refs: REQ-EVAL-005
+- 015/D10 The route row and the shorter second paragraph land in task 2.1, with `references/review.md`. A test asks that each file in `references/` has a route row, so the file cannot come first alone. Task 2.2 keeps the version, the triggers, and the README. Refs: REQ-SKILL-019
+- 015/D11 The test of SCN-EVAL-001-1 asked that the fixtures hold exactly the tasks Rewrite and Write. REQ-EVAL-001 asks only that they cover both. The test now asks that the set holds both, so a fixture with the task Review passes. Refs: REQ-EVAL-001, REQ-EVAL-005
+- 015/D12 The first eval run changed 015/D3 and a fixture. A verdict in one sentence ran to 30 to 48 words, and some runs wrote "nearly ready". The verdict now takes one or two short sentences. The first says "ready" or "not ready". The first ADR of `review-ready-adr` was not ready. The reviewers found a claim that may be wrong, numbers with no kind, and no option to do nothing. The fixture now gives an ADR that answers each of those. The ADR runs of both versions ran again. Refs: REQ-SKILL-019
 
 ## Risks / Trade-offs
 

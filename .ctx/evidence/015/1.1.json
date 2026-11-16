@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-16T15:33:16.799Z",
+  "files": {
+    "evals/eval.py": "263d2622f9aef0689827f53d78459c61cc2e599fab85804d703868c1a364a8f8",
+    "tests/test_eval.py": "cd454d19e0a2ea7f963452828d11ffe6fd212583a5a759b3ba1aa3b7e884bf6a"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-EVAL-005"
+  ],
+  "task": "015/1.1",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "python3 -m unittest tests.test_eval -v",
+    "exit": 0,
+    "stderr_tail": "SCN-EVAL-004-1 ... ok\ntest_review_task_accepted (tests.test_eval.ReviewTaskTests)\nSCN-EVAL-005-1 ... ok\ntest_set_holds_reviews (tests.test_eval.ReviewTaskTests)\nSCN-EVAL-005-2 ... ok\ntest_bad_output_fails_each_check (tests.test_eval.ScorerTests)\nSCN-EVAL-002-2 ... ok\ntest_cli (tests.test_eval.ScorerTests)\nSCN-EVAL-002-4 ... ok\ntest_good_output_passes (tests.test_eval.ScorerTests)\nSCN-EVAL-002-1 ... ok\ntest_same_output_same_score (tests.test_eval.ScorerTests)\nSCN-EVAL-002-3 ... ok\ntest_several_runs (tests.test_eval.ScorerTests)\nSCN-EVAL-002-5 ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.293s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
