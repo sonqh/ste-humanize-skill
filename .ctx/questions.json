@@ -105,7 +105,10 @@
     "asked_at": "2026-11-16T15:11:37.078Z",
     "task": "014-pre-dev-docs",
     "text": "archive 014-pre-dev-docs?",
-    "status": "open",
-    "stage": "archive"
+    "status": "resolved",
+    "stage": "archive",
+    "verdict": "approved",
+    "answer": "Owner approved archive of 014 on 2026-11-16.",
+    "resolved_at": "2026-11-16T15:13:29.593Z"
   }
 ]
