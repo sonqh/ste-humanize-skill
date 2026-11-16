@@ -159,7 +159,10 @@
     "asked_at": "2026-11-16T15:48:19.580Z",
     "task": "016-decision-tells",
     "text": "archive 016-decision-tells?",
-    "status": "open",
-    "stage": "archive"
+    "status": "resolved",
+    "stage": "archive",
+    "verdict": "approved",
+    "answer": "Owner approved archive of 016 on 2026-11-16.",
+    "resolved_at": "2026-11-16T15:50:16.975Z"
   }
 ]
