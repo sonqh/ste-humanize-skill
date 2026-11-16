@@ -110,5 +110,16 @@
     "verdict": "approved",
     "answer": "Owner approved archive of 014 on 2026-11-16.",
     "resolved_at": "2026-11-16T15:13:29.593Z"
+  },
+  {
+    "n": 12,
+    "asked_at": "2026-11-16T15:26:17.099Z",
+    "task": "015-review-task",
+    "text": "plan ready for 015-review-task. Approve to start the tasks?",
+    "status": "resolved",
+    "stage": "plan",
+    "verdict": "approved",
+    "answer": "Owner approved plan 015 on 2026-11-16.",
+    "resolved_at": "2026-11-16T15:26:45.216Z"
   }
 ]
