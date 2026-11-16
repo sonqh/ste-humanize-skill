@@ -1,13 +1,11 @@
 # Handoff
-change: 013-openspec-skills
+change: 014-pre-dev-docs
 current: none
-base: 2026-11-12T08:58:41.428Z
-as_of: 2026-11-12T08:59:07.683Z
+base: 2026-11-12T08:59:07.683Z
+as_of: none
 done:
-- 013/2.1
 reopened:
 open_questions:
-- Q9 archive 013-openspec-skills? (task 013-openspec-skills, 2026-11-12)
 resolved:
 - Q1 REQ-TELLS-003 and SCN-TELLS-003-2 say --json prints one object with file, findings, and the hard count. The script prints a JSON list of {file, findings} objects and no hard count. Fixing the script is a behavior change. Fix the spec to match the script, or approve a script change? (task 001/2.1, 2026-10-24) answer: spec changed in 89ffb68
 - Q2 SCN-SKILL-003-1 needs the word 'alone' in the SKILL.md Output format section. The section says 'the rewritten text and nothing else' and has no 'alone'. SKILL.md must not change. Change the scenario to require 'nothing else' (and Kept as-is:), or approve a SKILL.md edit? (task 001/4.1, 2026-10-24) answer: spec changed in acd94a4
@@ -17,5 +15,7 @@ resolved:
 - Q6 plan ready for 012-openspec-pin. Approve to start the tasks? (task 012-openspec-pin, 2026-11-12) answer: Owner approved the fix plan for the risks of 011 on 2026-11-12: ok dong y tat ca
 - Q7 archive 012-openspec-pin? (task 012-openspec-pin, 2026-11-12) answer: Owner merged PR #13 and asked to continue with the archive on 2026-11-12
 - Q8 plan ready for 013-openspec-skills. Approve to start the tasks? (task 013-openspec-skills, 2026-11-12) answer: Owner chose 'Do 013 as tested' on 2026-11-12
-next: no open task
-evidence: 2 task(s), 2 command, 0 manual
+- Q9 archive 013-openspec-skills? (task 013-openspec-skills, 2026-11-12) answer: Owner approved archive of 013 on 2026-11-16.
+- Q10 plan ready for 014-pre-dev-docs. Approve to start the tasks? (task 014-pre-dev-docs, 2026-11-16) answer: Owner approved plan 014 on 2026-11-16.
+next: 014/1.1  Apply 014/D9 in `evals/eval.py`. Add one test for each REQ-EVAL-004 scenario in `tests/test_eval.py`.
+evidence: 0 task(s), 0 command, 0 manual

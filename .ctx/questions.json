@@ -83,7 +83,21 @@
     "asked_at": "2026-11-12T08:59:31.973Z",
     "task": "013-openspec-skills",
     "text": "archive 013-openspec-skills?",
-    "status": "open",
-    "stage": "archive"
+    "status": "resolved",
+    "stage": "archive",
+    "verdict": "approved",
+    "answer": "Owner approved archive of 013 on 2026-11-16.",
+    "resolved_at": "2026-11-16T14:41:33.193Z"
+  },
+  {
+    "n": 10,
+    "asked_at": "2026-11-16T14:43:50.108Z",
+    "task": "014-pre-dev-docs",
+    "text": "plan ready for 014-pre-dev-docs. Approve to start the tasks?",
+    "status": "resolved",
+    "stage": "plan",
+    "verdict": "approved",
+    "answer": "Owner approved plan 014 on 2026-11-16.",
+    "resolved_at": "2026-11-16T14:56:52.155Z"
   }
 ]
