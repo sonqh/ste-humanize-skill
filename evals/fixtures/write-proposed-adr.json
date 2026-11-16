@@ -1,0 +1,39 @@
+{
+  "id": "write-proposed-adr",
+  "mode": "Human",
+  "task": "Write",
+  "request": "Write an ADR from this thread. The team has not decided yet.",
+  "input": "#platform channel, export of the thread, 2026-11-13\n\nThu: we need feature flags with percent rollouts for the invoice export beta. today we only have the env var flags, all or nothing\nHuy: three options I see. LaunchDarkly, self-hosted Unleash, or we build a flags table in our own Postgres\nThu: what does LaunchDarkly cost\nHuy: sales quoted $1,000 a month for our seat count, email from 2026-11-10\nMinh: Unleash is free self-hosted, but it's one more container and it needs its own Postgres database. we are 5 people and I don't want another thing in the on-call rota\nHuy: the homegrown table is a week of work maybe, but no percent rollout unless we build it, and no audit log\nThu: audit log matters. SOC 2 auditors asked who changed what flag and when, that's a hard requirement\nMinh: so the things that decide it are percent rollout, an audit log for SOC 2, cost, and no new on-call system\nHuy: LaunchDarkly has all of that except cost. Unleash has percent rollout, the audit log I'm not sure meets SOC 2, I need to check\nThu: I lean Unleash if the audit log is good enough, LaunchDarkly if not. homegrown is out, too much to build\nMinh: agree homegrown is out\nThu: ok write it up as a proposed ADR. Huy checks the Unleash audit log against the SOC 2 list. I decide by 2026-11-28\nMinh: anyone want coffee\nHuy: yes pls",
+  "checks": {
+    "early": [
+      {
+        "pattern": "Proposed",
+        "within_words": 60
+      }
+    ],
+    "must_contain": [
+      "Proposed",
+      "criteri",
+      "LaunchDarkly",
+      "Unleash",
+      "1,000|1000",
+      "SOC 2",
+      "audit",
+      "2026-11-28|28 November|November 28",
+      "\\bThu\\b",
+      "percent|%",
+      "on-call",
+      "homegrown|own Postgres|flags table|build"
+    ],
+    "must_not_contain": [
+      "(?im)^\\W*status\\W*accepted",
+      "coffee",
+      "yes pls",
+      "\\blol\\b"
+    ],
+    "shape": "any",
+    "trailers": [
+      "Missing:"
+    ]
+  }
+}

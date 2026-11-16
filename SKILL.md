@@ -1,7 +1,7 @@
 ---
 name: ste-humanize
 description: "Write or rewrite English so a reader cannot misread it and still hears a person behind it. Starts from the reader: what they know and what they do next. Combines ASD-STE100 sentence discipline with AI-tell removal (no not-X-but-Y, no one-line closers, no dash glue, no stock AI words). Use to write or rewrite docs, READMEs, PR descriptions, replies, tool descriptions, error messages, and any prose written for a person. Triggers: write a doc, humanize, make this clear, plain rewrite, STE rewrite, remove AI tells. Not for fiction, marketing, or copy where voice is the point."
-version: 0.6.0
+version: 0.7.0
 license: MIT
 ---
 
@@ -20,6 +20,7 @@ This file holds the rules for every text. Read one more file only when its row a
 | The mode is Human | `references/human.md`: voice, audience fit, and the AI tells |
 | The task is Write, or a Rewrite of a whole page | `references/doc-shapes.md`: the usual reader of each kind of page, and the reader questions |
 | The page is a README, an ADR, or a technical proposal | `references/page-guides.md`: the questions of its readers, in order |
+| The page is a design doc, or about work not built yet | `references/page-guides.md` |
 | The text is not in English, or it holds domain terms or identifiers | `references/terms.md` |
 | A sentence rule is unclear | `references/ste-rules.md`: each rule with an example |
 | An AI tell is unclear | `references/ai-tells.md`: the 26 patterns with examples |
@@ -84,7 +85,7 @@ Apply these in both modes. Each one is mechanical: you can point at the word or 
 - Simple tenses, unless the compound form carries meaning. "The job has completed" says that the output is ready now.
 - A verb, not a noun. "Analyze the log." Not "Perform an analysis of the log."
 - One topic per paragraph, 6 sentences or fewer.
-- The plainest common word, used the same way every time. This skill does not hold the STE dictionary. Do not claim compliance with it.
+- The plainest common word, used the same way every time. This skill does not hold the STE dictionary. Do not claim STE compliance.
 
 ## Shape: fit the content
 
@@ -127,11 +128,12 @@ Do not cut reasoning into bullets. When bullets need "because", "so", or "but" t
 
 **Default: the text and nothing else.** No preamble, no mode announcement, no count of changes, no closing offer.
 
-Three permitted additions, each one line after the text. Omit a line when there is nothing to report.
+Four permitted additions, each one line after the text. Omit a line when there is nothing to report.
 
 - `Kept as-is:` when step 4 kept a longer phrasing on purpose. Name the phrase and the precision it protects.
 - `Cut candidates:` in a Rewrite task, when a part does not help the reader. Name each part in a few words. Do not remove it.
 - `Reader:` only when the request does not name the reader and you chose one. Name the reader in one clause.
+- `Missing:` in a Write task, when the reader needs an input that the material does not give.
 
 **On request: the rule table.** When the user asks to "show the diff", "explain the changes", or "which rules did it break", output a table with the columns Rule, Original, and Rewrite. Add one line with the mode and the count of findings. Add one line on anything you did not change on purpose, and why.
 
@@ -143,14 +145,9 @@ Three permitted additions, each one line after the text. Omit a line when there 
 
 - Do not add a fact, cause, mechanism, name, or number the source did not give. Do not turn "could be caused by X" into "X is the cause".
 - Do not drop a safety condition or exception to shorten a sentence. Flag the trade-off.
-- Do not certify STE compliance. For aircraft documentation, use the real standard.
 - Do not make empty content useful. A hollow paragraph comes out short, clean, and still hollow. Say so.
 - Stop shortening when the sentence is unambiguous, not when it is shortest.
 - A number needs a scale the reader has. "7 percent of the tree" means more than "0.07". A count out of a total means more than a count.
-
-## Resources
-
-- `scripts/lint.py`: one linter command. It wraps `scripts/ste-lint.py` and `scripts/tells-lint.py`. Python 3 stdlib only.
 
 ## Credits
 

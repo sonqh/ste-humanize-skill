@@ -1,6 +1,6 @@
 # Page shapes: who reads each kind of page
 
-Read this file when the task is Write, or when a Rewrite covers a whole page. It fills the reader brief when the request names no reader. A reader that the user names overrides the table. After the table, read `## Reader questions`. For a README, an ADR, or a technical proposal, read `references/page-guides.md` too.
+Read this file when the task is Write, or when a Rewrite covers a whole page. It fills the reader brief when the request names no reader. A reader that the user names overrides the table. After the table, read `## Reader questions`. For a README, an ADR, a technical proposal, or a design doc, read `references/page-guides.md` too.
 
 ## The usual reader of each page
 
@@ -11,6 +11,7 @@ Read this file when the task is Write, or when a Rewrite covers a whole page. It
 | Reference page | A user who looks up one item | Find one fact and leave | What the item is. Then entries in one fixed form, in a table or a list | Narrative, lessons |
 | Concept page | A reader who wants to know why the thing works this way | Build a model, then choose | The idea in one or two sentences | Step lists |
 | Design note | A reviewer who must approve or challenge a decision | Decide | The decision and the recommendation. Then the options and the trade-offs | Detail the decision does not depend on |
+| Design doc | A reviewer who must agree on a feature before its code exists | Agree, ask for a change, or name an open question | The problem, the goals, and the non-goals. Then the proposed design | The steps of the build, the estimate of each task |
 | ADR | A maintainer who meets the result of the decision later and asks why | Keep the decision, or replace it with a new one | A title that states the decision, then the status and the date | Steps of the implementation, the history of the meetings |
 | Technical proposal | A person who approves time or money and has little time | Say yes, say no, or ask one question | The request, the cost, and the date of the decision | Detail the approver does not need. Put it after the plan |
 | PR description | A reviewer who knows the codebase and not this change | Review, test, merge | What changes and why. Then how to verify it | A tour of each file. The diff shows it |

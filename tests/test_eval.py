@@ -164,5 +164,28 @@ class EarlyCheckTests(unittest.TestCase):
                     ev.load_fixture(path)
 
 
+class MissingTrailerTests(unittest.TestCase):
+    # Covers: REQ-EVAL-004
+
+    def test_missing_permitted(self):
+        """SCN-EVAL-004-1"""
+        # Covers: REQ-EVAL-004
+        fx = {**FIXTURE, "checks": {**FIXTURE["checks"], "trailers": ["Cut candidates:", "Missing:"]}}
+        text = GOOD + "Missing: the cost; the owner of the migration\n"
+        body, trailers = ev.split_output(text)
+        self.assertNotIn("Missing:", body)
+        self.assertEqual(trailers, ["Cut candidates:", "Missing:"])
+        results, _ = ev.score_output(fx, text)
+        self.assertEqual({n for n, ok, _ in results if not ok}, set())
+
+    def test_missing_not_permitted(self):
+        """SCN-EVAL-004-2"""
+        # Covers: REQ-EVAL-004
+        results, _ = ev.score_output(FIXTURE, GOOD + "Missing: the cost\n")
+        detail = {n: d for n, ok, d in results if not ok}
+        self.assertEqual(set(detail), {"trailers"})
+        self.assertIn("Missing:", detail["trailers"])
+
+
 if __name__ == "__main__":
     unittest.main()

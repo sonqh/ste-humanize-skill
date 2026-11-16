@@ -366,3 +366,70 @@ class PageGuidesTest(unittest.TestCase):
         self.assertIn("Rewrite of a whole page", routes)
         self.assertIn("a README, an ADR, or a technical proposal", routes)
 
+
+    def test_work_not_built_kinds(self):
+        # Covers: SCN-SKILL-016-1
+        # Covers: REQ-SKILL-016
+        sec = section("Work not built yet", PAGE_GUIDES)
+        for want in ("measured", "estimate", "target", "assumption", "TBD"):
+            self.assertIn(want, sec)
+
+    def test_work_not_built_no_invention(self):
+        # Covers: SCN-SKILL-016-2
+        # Covers: REQ-SKILL-016
+        sec = section("Work not built yet", PAGE_GUIDES)
+        self.assertIn("Do not invent a number", sec)
+        self.assertIn("Open questions", sec)
+
+    def test_design_doc_guide(self):
+        # Covers: SCN-SKILL-017-1
+        # Covers: REQ-SKILL-017
+        sec = section("Design doc", PAGE_GUIDES)
+        self.assertIn("Readers:", sec)
+        self.assertGreaterEqual(len(re.findall(r"^\d+\.\s", sec, re.M)), 6)
+        self.assertIn("\nTest: ", sec)
+        for want in ("Non-goals", "do nothing", "open questions"):
+            self.assertIn(want, sec)
+
+    def test_proposed_adr(self):
+        # Covers: SCN-SKILL-017-2
+        # Covers: REQ-SKILL-017
+        sec = section("ADR", PAGE_GUIDES)
+        self.assertIn("Proposed", sec)
+        self.assertIn("criteria", sec)
+        self.assertLess(sec.index("criteria"), sec.index("What else did we look at"))
+
+    def test_design_doc_row(self):
+        # Covers: SCN-SKILL-017-3
+        # Covers: REQ-SKILL-017
+        with open(DOC_SHAPES, encoding="utf-8") as fh:
+            rows = [l.split("|")[1].strip() for l in fh if l.startswith("|")]
+        self.assertIn("Design doc", rows)
+
+    def test_route_work_not_built(self):
+        # Covers: SCN-SKILL-016-3
+        # Covers: REQ-SKILL-016
+        rows = [l for l in section("What to read").splitlines() if "not built yet" in l]
+        self.assertTrue(rows)
+        self.assertIn("references/page-guides.md", rows[0])
+
+    def test_four_trailers(self):
+        # Covers: SCN-SKILL-018-1
+        # Covers: REQ-SKILL-018
+        body = section("Output format")
+        for want in ("Kept as-is:", "Cut candidates:", "Reader:", "Missing:"):
+            self.assertIn(want, body)
+
+    def test_missing_is_write_only(self):
+        # Covers: SCN-SKILL-018-2
+        # Covers: REQ-SKILL-018
+        line = next(l for l in section("Output format").splitlines()
+                    if l.startswith("- `Missing:`"))
+        self.assertIn("Write task", line)
+        self.assertIn("does not give", line)
+
+    def test_cap_after_missing(self):
+        # Covers: SCN-SKILL-018-3
+        # Covers: REQ-SKILL-018
+        with open(SKILL, encoding="utf-8") as fh:
+            self.assertLess(len(fh.read().split()), 1900)

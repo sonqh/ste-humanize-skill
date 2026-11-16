@@ -1,0 +1,45 @@
+{
+  "id": "write-design-doc-no-cost",
+  "mode": "Human",
+  "task": "Write",
+  "request": "Write a design doc for this feature from my notes. The readers are the backend team, who review it before anyone starts the work.",
+  "input": "Notes for the invoice export feature, from the planning call and Slack, 2026-11-14\n\n- support: 40 tickets in October 2026 with the tag \"export\" (Zendesk report, Minh pulled it). customers ask for all their invoices in one file\n- today the only way is the API, 100 invoices per page. biggest customers have up to 120,000 invoices\n- idea: async export job. customer clicks Export, we build a CSV in the background, put it in S3, email a link. link expires after 24 hours\n- NOT doing: PDF export, scheduled exports, export of objects other than invoices\n- other ideas we talked about: a sync download button (fine for small accounts, will time out for big ones), or keep telling people to use the API\n- nobody knows how long a 120k export takes. Huy thinks it's fine but nobody tested it. we need a spike before we commit\n- we assume the S3 bucket in us-east-1 is ok for EU customers. nobody asked legal about data residency yet\n- target from Minh: export tickets below 10 per month after launch\n- cost and eng time: no idea yet, Minh will ask Huy\n- rollout: behind the flag invoice_export, beta with 5 customers first, then everyone. turn the flag off to go back\n- open: finance wants a tax ID column, unclear if every invoice has one\n- (Lan: who's in for pho on friday?)",
+  "checks": {
+    "early": [
+      {
+        "pattern": "export",
+        "within_words": 40
+      }
+    ],
+    "must_contain": [
+      "\\b40\\b",
+      "120,000|120000|120 000|120k",
+      "24 hours",
+      "invoice_export",
+      "PDF",
+      "schedul",
+      "\\bAPI\\b",
+      "non-goal",
+      "do nothing|doing nothing|no change|keep .{0,30}API",
+      "TBD",
+      "Huy",
+      "assum",
+      "spike",
+      "EU|residency",
+      "tax ID",
+      "\\b10\\b",
+      "\\b5\\b|five",
+      "us-east-1"
+    ],
+    "must_not_contain": [
+      "\\$\\s?\\d",
+      "\\b\\d+\\s*(?:engineer-|person-|dev-)?weeks?\\b",
+      "pho",
+      "\\bLan\\b"
+    ],
+    "shape": "any",
+    "trailers": [
+      "Missing:"
+    ]
+  }
+}

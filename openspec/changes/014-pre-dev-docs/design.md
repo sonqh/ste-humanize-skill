@@ -37,6 +37,7 @@ Change 010 added `references/page-guides.md` with a guide for a README, an ADR, 
 - 014/D7 An ADR with the status Proposed still says "We will". The status carries the doubt, so the decision sentence needs no hedge. The ADR names its criteria before the options, and a table scores each option on the same criteria. Refs: REQ-SKILL-017
 - 014/D8 `SKILL.md` loses `## Resources`. Step 3 of `## Process` already names `scripts/lint.py`. The room pays for one route row and the `Missing:` bullet. Refs: REQ-SKILL-018
 - 014/D9 `evals/eval.py` adds `Missing:` to its tuple of trailers. Without it, the scorer lints the line as part of the body. Refs: REQ-EVAL-004
+- 014/D10 `## Resources` freed too few words. `SKILL.md` also loses the Boundaries line on STE compliance, and the route row stays short. The rule on the STE dictionary in `## Sentence rules` now says "Do not claim STE compliance". The advice to use the real standard for aircraft documentation goes. The file has 1896 words. Refs: REQ-SKILL-018
 
 ## Risks / Trade-offs
 

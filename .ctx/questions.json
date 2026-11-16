@@ -99,5 +99,13 @@
     "verdict": "approved",
     "answer": "Owner approved plan 014 on 2026-11-16.",
     "resolved_at": "2026-11-16T14:56:52.155Z"
+  },
+  {
+    "n": 11,
+    "asked_at": "2026-11-16T15:11:37.078Z",
+    "task": "014-pre-dev-docs",
+    "text": "archive 014-pre-dev-docs?",
+    "status": "open",
+    "stage": "archive"
   }
 ]

@@ -70,6 +70,7 @@ To get a new version later, run `/plugin update ste-humanize@sonqh`. The update 
 ```
 Write a how-to guide for new users from these notes
 Write an ADR from this thread
+Write a design doc for this feature from my notes
 Rewrite this proposal for the director who approves the budget
 Rewrite this README section
 Humanize this PR description
