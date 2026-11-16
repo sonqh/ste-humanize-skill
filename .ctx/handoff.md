@@ -1,5 +1,5 @@
 # Handoff
-change: 015-review-task
+change: none
 current: none
 base: 2026-11-16T15:11:19.404Z
 as_of: none
@@ -20,5 +20,5 @@ resolved:
 - Q13 task 015/3.1 failed Verify 3 times. Last: ci-local: fail: bash scripts/specctx.sh gate --strict --markdown ".claude/CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md". What should change? (task 015/3.1, 2026-11-16) answer: Stale evidence after D11/D12 and one long sentence. Both fixed; ci-local passes. Close 3.1.
 - Q14 archive 015-review-task? (task 015-review-task, 2026-11-16) answer: Owner approved archive of 015 on 2026-11-16.
 - and 4 more in .ctx/questions.json
-next: 015/1.1  Apply 015/D9 in `evals/eval.py`. Add a test for SCN-EVAL-005-1 in `tests/test_eval.py`.
+next: no open task
 evidence: 0 task(s), 0 command, 0 manual
