@@ -33,7 +33,8 @@ TASKS = ("Rewrite", "Write")
 SHAPES = ("bullets", "numbered", "prose", "any")
 CHECK_KEYS = {"must_contain", "must_not_contain", "first_sentence", "max_words",
               "shape", "trailers", "early"}
-TRAILERS = ("Kept as-is:", "Cut candidates:", "Reader:")
+# REQ-EVAL-004
+TRAILERS = ("Kept as-is:", "Cut candidates:", "Reader:", "Missing:")
 PREAMBLE = re.compile(
     r"^(?:here(?:'s| is| are)|sure\b|certainly\b|of course\b|below is|i have |i've |okay\b)",
     re.I)
