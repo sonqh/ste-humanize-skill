@@ -1,0 +1,44 @@
+{
+  "id": "rewrite-decision-tells",
+  "mode": "Human",
+  "task": "Rewrite",
+  "request": "Rewrite this proposal for the engineering manager who approves it.",
+  "input": "# Proposal: background job queue\n\nIt was decided that we need a proper job queue for background work. Image resize jobs run inside the web request today, and users see timeouts on uploads larger than 5 MB.\n\nWe looked at three options: pg-boss, BullMQ, and SQS. Both options have their merits, and the right choice depends on the needs of the team.\n\n- pg-boss is scalable and reliable. In a staging test on 2026-10-10 it handled 350 jobs per second with 4 workers. It runs on our existing Postgres.\n- BullMQ is battle-tested and flexible. It needs Redis. The managed plan costs about $90 a month, and the platform team would need to run it.\n- SQS is enterprise-grade. Local development needs localstack or an AWS account for each developer, and our integration tests run offline in CI.\n\nOur load is about 2 jobs per second, and up to 15 per second during the nightly import.\n\nRisks: the jobs table may grow without limit. Mitigation: we will monitor closely and follow best practices. If Postgres is down, the queue is down.\n\nThe platform team leans toward pg-boss, because it adds no new system. A decision was made to look at this again if the load passes 200 jobs per second.\n\nThe platform team will review this proposal on 2026-11-20.\n",
+  "checks": {
+    "first_sentence": "pg-boss",
+    "must_contain": [
+      "pg-boss",
+      "BullMQ",
+      "SQS",
+      "\\b350\\b",
+      "\\b15\\b",
+      "\\$90",
+      "2026-11-20",
+      "\\b200\\b",
+      "localstack|offline",
+      "Redis",
+      "platform team",
+      "grow",
+      "Postgres is down|Postgres goes down|Postgres fails|Postgres stops",
+      "5 MB",
+      "2026-10-10"
+    ],
+    "must_not_contain": [
+      "both options have",
+      "depends on the needs",
+      "it was decided",
+      "a decision was made",
+      "monitor closely",
+      "best practices",
+      "is scalable",
+      "battle-tested",
+      "enterprise-grade",
+      "scalable and reliable"
+    ],
+    "shape": "any",
+    "trailers": [
+      "Kept as-is:",
+      "Cut candidates:"
+    ]
+  }
+}

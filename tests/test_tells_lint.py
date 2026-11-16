@@ -17,7 +17,8 @@ spec.loader.exec_module(tells)
 HARD = {"dash", "not-x-but-y", "not-x-its-y", "chat-residue", "run-up",
         "deep-saying", "stock-word", "bold-label", "emoji-heading"}
 ADVISORY = {"sales-word", "title-case-heading", "stacked-qualifier",
-            "serves-as", "closer", "repeated-closer"}
+            "serves-as", "closer", "repeated-closer", "false-balance",
+            "actorless-decision", "empty-mitigation", "unmeasured-quality"}
 
 
 def run(args, text=None):
@@ -136,6 +137,45 @@ class TellsLintTests(unittest.TestCase):
         r = run([], text="")
         self.assertEqual(r.returncode, 2)
         self.assertIn("no input", r.stderr + r.stdout)
+
+
+class DecisionTellTests(unittest.TestCase):
+    # Covers: REQ-TELLS-004
+
+    def _rules(self, text):
+        return [f["rule"] for f in tells.lint(text + "\n")]
+
+    def test_false_balance(self):
+        """SCN-TELLS-004-1"""
+        # Covers: REQ-TELLS-004
+        self.assertEqual(self._rules("Both options have their merits.").count("false-balance"), 1)
+
+    def test_actorless_decision(self):
+        """SCN-TELLS-004-2"""
+        # Covers: REQ-TELLS-004
+        self.assertEqual(self._rules("It was decided that the team uses pg-boss.").count("actorless-decision"), 1)
+        self.assertEqual(self._rules("The team decided to use pg-boss."), [])
+
+    def test_empty_mitigation(self):
+        """SCN-TELLS-004-3"""
+        # Covers: REQ-TELLS-004
+        self.assertEqual(self._rules("Mitigation: we will monitor closely.").count("empty-mitigation"), 1)
+
+    def test_unmeasured_quality(self):
+        """SCN-TELLS-004-4"""
+        # Covers: REQ-TELLS-004
+        self.assertEqual(self._rules("Option B is more scalable.").count("unmeasured-quality"), 1)
+        self.assertEqual(self._rules("Option B scales to 350 jobs per second."), [])
+
+    def test_decision_tells_are_advisory(self):
+        """SCN-TELLS-004-5"""
+        # Covers: REQ-TELLS-004
+        text = ("Both options have their merits.\n\nIt was decided that we use A.\n\n"
+                "Mitigation: we will monitor closely.\n\nOption B is more scalable.\n")
+        r = run_file(text)
+        self.assertEqual(r.returncode, 0)
+        for rule in ("false-balance", "actorless-decision", "empty-mitigation", "unmeasured-quality"):
+            self.assertEqual(r.stdout.count(rule), 1, rule)
 
 
 if __name__ == "__main__":

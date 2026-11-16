@@ -1,7 +1,7 @@
 ---
 name: ste-humanize
 description: "Write or rewrite English so a reader cannot misread it and still hears a person behind it. Starts from the reader: what they know and what they do next. Combines ASD-STE100 sentence discipline with AI-tell removal (no not-X-but-Y, no one-line closers, no dash glue, no stock AI words). Use to write or rewrite docs, READMEs, PR descriptions, replies, tool descriptions, error messages, and any prose written for a person. Triggers: write a doc, review a doc, humanize, make this clear, plain rewrite, STE rewrite, remove AI tells. Not for fiction, marketing, or copy where voice is the point."
-version: 0.8.0
+version: 0.9.0
 license: MIT
 ---
 
@@ -24,7 +24,7 @@ This file holds the rules for every text. Read one more file only when its row a
 | The user asks for a review of a page | `references/review.md` |
 | The text is not in English, or it holds domain terms or identifiers | `references/terms.md` |
 | A sentence rule is unclear | `references/ste-rules.md`: each rule with an example |
-| An AI tell is unclear | `references/ai-tells.md`: the 26 patterns with examples |
+| An AI tell is unclear | `references/ai-tells.md`: the 32 patterns with examples |
 
 ## Two modes
 

@@ -33,6 +33,7 @@ Remove these habits. Patterns 1 to 5 in `references/ai-tells.md` justify an edit
 - Inflation: stock AI words, inflated significance, shallow -ing riders, sales language, borrowed authority.
 - Decoration: bold labels, decorative headings.
 - Chat leftovers: chatbot residue, writing about the document, text that explains again what the reader knows.
+- Decision pages: false balance, matched pros and cons, straw options, quality words with no number, empty mitigation, a decision with no actor. See `## G. Decision pages` in `references/ai-tells.md`.
 
 Read `references/ai-tells.md` when the source sounds like a chatbot, or when you cannot tell whether a phrase is a tell.
 

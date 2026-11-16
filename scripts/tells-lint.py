@@ -73,6 +73,32 @@ DEEP_SAYINGS = [
     r"\bthe heart of the matter\b", r"\bis the (?:language|currency|architecture) of\b",
 ]
 
+
+# REQ-TELLS-004: tells of decision pages.
+FALSE_BALANCE = [
+    r"\b(?:both|all) (?:options|approaches|choices) have (?:their )?(?:own )?(?:merits|pros and cons|strengths|trade-?offs)",
+    r"\beach (?:option|approach|choice) has (?:its )?(?:own )?(?:merits|pros and cons|strengths|trade-?offs)",
+    r"\bit (?:all )?depends on (?:your|our|the team'?s|the) (?:needs|use case|requirements|context)",
+    r"\bthere is no one-size-fits-all", r"\bno silver bullet",
+    r"\bthe (?:right|best) (?:choice|option|approach) depends on",
+]
+
+ACTORLESS_DECISION = [
+    r"\bit (?:was|has been|is) decided\b", r"\ba decision (?:was|has been) (?:made|taken)\b",
+    r"\bit is (?:recommended|proposed|suggested|advised) (?:that|to)\b",
+]
+
+EMPTY_MITIGATION = [
+    r"\bmonitor(?:ed|ing|s)? (?:closely|carefully)\b", r"\bclosely monitor(?:ed|ing|s)?\b",
+    r"\bcareful(?:ly)? (?:planning|plan|consider\w*|evaluat\w*)\b", r"\bensure proper\b",
+    r"\bthorough(?:ly)? test\w*", r"\bfollow(?:s|ing)? best practices\b",
+]
+
+QUALITY_WORDS = [
+    "scalable", "scalability", "performant", "future-proof", "flexible", "maintainable",
+    "reliable", "efficient", "battle-tested", "enterprise-grade", "production-ready", "best-in-class",
+]
+
 # REQ-TELLS-001 REQ-TELLS-002
 RULES = {
     # hard rules
@@ -93,7 +119,22 @@ RULES = {
     "serves-as": ("advisory", re.compile(r"\b(?:serves as|stands as|functions as|boasts|represents a)\b", re.I)),
     "closer": ("advisory", re.compile(r"^(?:That is the real win|That distinction matters|Read that again|Let that sink in)\.?\s*$", re.M | re.I)),
     "repeated-closer": ("advisory", None),
+    # REQ-TELLS-004 advisory rules for decision pages
+    "false-balance": ("advisory", re.compile("|".join(FALSE_BALANCE), re.I)),
+    "actorless-decision": ("advisory", re.compile("|".join(ACTORLESS_DECISION), re.I)),
+    "empty-mitigation": ("advisory", re.compile("|".join(EMPTY_MITIGATION), re.I)),
+    "unmeasured-quality": ("advisory", re.compile(r"\b(?:" + "|".join(re.escape(w) for w in QUALITY_WORDS) + r")\b", re.I)),
 }
+
+SENTENCE_END = re.compile(r"[.?!\n]")
+
+
+def _sentence_has_digit(text, start, end):
+    """REQ-TELLS-004: True when the sentence around text[start:end] holds a digit."""
+    left = max(text.rfind(c, 0, start) for c in ".?!\n")
+    m = SENTENCE_END.search(text, end)
+    right = m.start() if m else len(text)
+    return bool(re.search(r"\d", text[left + 1:right]))
 
 FENCE = re.compile(r"^\s*(```|~~~)")
 INLINE_CODE = re.compile(r"`[^`\n]*`")
@@ -127,6 +168,8 @@ def lint(text, disabled=()):
         if name in disabled or rx is None:
             continue
         for m in rx.finditer(clean):
+            if name == "unmeasured-quality" and _sentence_has_digit(clean, m.start(), m.end()):
+                continue
             findings.append({
                 "rule": name, "level": level,
                 "line": line_of(clean, m.start()),
@@ -164,12 +207,21 @@ def selftest():
         ("It's not just a linter - it's a gate.", "not-x-its-y"),
         ("The team leverages the cache and leveraged it, leveraging more.", "stock-word"),
         ("Two deep dives and a tapestry of testaments.", "stock-word"),
+        ("Both options have their merits.", "false-balance"),
+        ("It was decided that the team uses pg-boss.", "actorless-decision"),
+        ("Mitigation: we will monitor closely.", "empty-mitigation"),
+        ("Option B is more scalable.", "unmeasured-quality"),
     ]:
         assert rule in {f["rule"] for f in lint(text)}, f"selftest: {rule} missed {text!r}"
     for text, rule in [
         ("It's not here. The tool works.", "not-x-its-y"),
         ("It's not a well-known fact, so we check.", "not-x-its-y"),
         ("Use a lever to lift the load.", "stock-word"),
+        ("Option A is cheaper, so we choose it.", "false-balance"),
+        ("The team decided to use pg-boss.", "actorless-decision"),
+        ("Mitigation: run the load test on staging before the release.", "empty-mitigation"),
+        ("Option B scales to 350 jobs per second.", "unmeasured-quality"),
+        ("The queue was reliable for 30 days.", "unmeasured-quality"),
     ]:
         assert rule not in {f["rule"] for f in lint(text)}, f"selftest: {rule} false positive on {text!r}"
     print("selftest ok")

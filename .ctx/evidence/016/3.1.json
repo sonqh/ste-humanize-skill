@@ -1,0 +1,23 @@
+{
+  "at": "2026-11-16T15:48:07.815Z",
+  "bundle_chars": 7906,
+  "files": {
+    "scripts/tells-lint.py": "962567227fdbf87b7d9128bfd688654e201510e86c7c1ad2c6b7c48033caf1fd",
+    "tests/test_skill_contract.py": "3c74bd555a1ee7813217e71a04c5ee9e374f4af11b799943a40136537537b4c4",
+    "tests/test_tells_lint.py": "a89a6072bc159b3573af51c5bb7638541ccc7ddbdb5218a3d40ca747814812d1"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-SKILL-020",
+    "REQ-TELLS-004"
+  ],
+  "started_at": "2026-11-16T15:45:16.183Z",
+  "task": "016/3.1",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "bash scripts/ci-local.sh",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "6bbe273727cb9a99ab37ca67ac7f5d4d36e7f77ac0a43bf6bd4fe66eb263a62d"
+  }
+}

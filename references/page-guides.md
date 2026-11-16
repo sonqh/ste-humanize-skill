@@ -1,6 +1,6 @@
 # Page guides: README, ADR, technical proposal, design doc
 
-Read this file when the page is a README, an ADR, a technical proposal, or a design doc. Read it also when the page is about work that is not built yet. Each guide lists the readers, the questions they bring in order, and one test. `## Reader questions` in `references/doc-shapes.md` holds the method for every other page.
+Read this file when the page is a README, an ADR, a technical proposal, or a design doc. Read it also when the page is about work that is not built yet. Each guide lists the readers, the questions they bring in order, and one test. For an ADR, a technical proposal, or a design doc, read `## G. Decision pages` in `references/ai-tells.md` too. `## Reader questions` in `references/doc-shapes.md` holds the method for every other page.
 
 ## README
 
