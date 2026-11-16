@@ -29,7 +29,8 @@ FIXTURES = os.path.join(HERE, "fixtures")
 LONG_INPUT_WORDS = 600
 REQUIRED_KEYS = ("id", "mode", "task", "request", "input", "checks")
 MODES = ("Strict", "Human")
-TASKS = ("Rewrite", "Write")
+# REQ-EVAL-005
+TASKS = ("Rewrite", "Write", "Review")
 SHAPES = ("bullets", "numbered", "prose", "any")
 CHECK_KEYS = {"must_contain", "must_not_contain", "first_sentence", "max_words",
               "shape", "trailers", "early"}

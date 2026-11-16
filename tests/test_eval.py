@@ -45,7 +45,7 @@ class FixtureTests(unittest.TestCase):
         fixtures = ev.load_fixtures()
         self.assertGreaterEqual(len(fixtures), 6)
         self.assertEqual({f["mode"] for f in fixtures}, {"Strict", "Human"})
-        self.assertEqual({f["task"] for f in fixtures}, {"Rewrite", "Write"})
+        self.assertLessEqual({"Rewrite", "Write"}, {f["task"] for f in fixtures})
         shapes = {f["checks"].get("shape") for f in fixtures}
         self.assertIn("bullets", shapes)
         self.assertIn("prose", shapes)
@@ -185,6 +185,29 @@ class MissingTrailerTests(unittest.TestCase):
         detail = {n: d for n, ok, d in results if not ok}
         self.assertEqual(set(detail), {"trailers"})
         self.assertIn("Missing:", detail["trailers"])
+
+
+class ReviewTaskTests(unittest.TestCase):
+    # Covers: REQ-EVAL-005
+
+    def test_review_task_accepted(self):
+        """SCN-EVAL-005-1"""
+        # Covers: REQ-EVAL-005
+        with tempfile.TemporaryDirectory() as d:
+            path = os.path.join(d, "t.json")
+            with open(path, "w", encoding="utf-8") as fh:
+                json.dump({**FIXTURE, "task": "Review"}, fh)
+            self.assertEqual(ev.load_fixture(path)["task"], "Review")
+            with open(path, "w", encoding="utf-8") as fh:
+                json.dump({**FIXTURE, "task": "Critique"}, fh)
+            with self.assertRaises(ev.FixtureError):
+                ev.load_fixture(path)
+
+    def test_set_holds_reviews(self):
+        """SCN-EVAL-005-2"""
+        # Covers: REQ-EVAL-005
+        reviews = [fx for fx in ev.load_fixtures() if fx["task"] == "Review"]
+        self.assertGreaterEqual(len(reviews), 2)
 
 
 if __name__ == "__main__":

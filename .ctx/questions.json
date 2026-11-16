@@ -110,5 +110,37 @@
     "verdict": "approved",
     "answer": "Owner approved archive of 014 on 2026-11-16.",
     "resolved_at": "2026-11-16T15:13:29.593Z"
+  },
+  {
+    "n": 12,
+    "asked_at": "2026-11-16T15:26:17.099Z",
+    "task": "015-review-task",
+    "text": "plan ready for 015-review-task. Approve to start the tasks?",
+    "status": "resolved",
+    "stage": "plan",
+    "verdict": "approved",
+    "answer": "Owner approved plan 015 on 2026-11-16.",
+    "resolved_at": "2026-11-16T15:26:45.216Z"
+  },
+  {
+    "n": 13,
+    "asked_at": "2026-11-16T15:33:01.567Z",
+    "task": "015/3.1",
+    "text": "task 015/3.1 failed Verify 3 times. Last: ci-local: fail: bash scripts/specctx.sh gate --strict --markdown \".claude/CLAUDE.md AGENTS.md decisions/*.md openspec/**/*.md docs/**/*.md\". What should change?",
+    "status": "resolved",
+    "stage": "cap",
+    "answer": "Stale evidence after D11/D12 and one long sentence. Both fixed; ci-local passes. Close 3.1.",
+    "resolved_at": "2026-11-16T15:35:53.398Z"
+  },
+  {
+    "n": 14,
+    "asked_at": "2026-11-16T15:36:06.993Z",
+    "task": "015-review-task",
+    "text": "archive 015-review-task?",
+    "status": "resolved",
+    "stage": "archive",
+    "verdict": "approved",
+    "answer": "Owner approved archive of 015 on 2026-11-16.",
+    "resolved_at": "2026-11-16T15:36:07.393Z"
   }
 ]

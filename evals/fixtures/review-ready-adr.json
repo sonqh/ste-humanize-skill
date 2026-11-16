@@ -1,0 +1,18 @@
+{
+  "id": "review-ready-adr",
+  "mode": "Human",
+  "task": "Review",
+  "request": "Review this ADR before we merge it. The readers are the maintainers of the job system.",
+  "input": "# ADR 7: Use pg-boss on Postgres for background jobs of 10 minutes or less\n\nStatus: Accepted, 2026-10-14. The backend team of four decided.\n\n## Context\n\nImage resize jobs run inside the web request today, and users see timeouts. We measured the load in the production logs of September 2026. It is about 2 jobs per second, and up to 15 per second during the nightly import. We run Postgres. We do not run Redis. The team has four people, and each new system adds to the on-call work.\n\n## Decision\n\nWe will use pg-boss, a job queue that stores its jobs in a Postgres table. Every background job of 10 minutes or less moves to pg-boss. The resize job moves first. Its owner is Dana.\n\nThe line is 10 minutes because pg-boss stops a job after 15 minutes by default. The video transcode takes about 25 minutes, so it stays on its own worker.\n\nTo go back, set `JOBS_BACKEND=inline`. The resize job then runs in the web request again, as it does today.\n\n## Criteria\n\n- No new system to run and to page for.\n- Room for at least 10 times the peak load of today, so 150 jobs per second.\n- Integration tests run offline in CI.\n\n## Options\n\n| Option | No new system | Room for 150 jobs per second | Offline tests |\n|---|---|---|---|\n| Do nothing | Yes | Not needed | Yes |\n| pg-boss | Yes | Yes. We measured 350 jobs per second with 4 workers on staging on 2026-10-10. Staging has the same Postgres size as production. | Yes |\n| BullMQ | No. It needs Redis. | Yes, from its documentation. We did not test it. | Yes |\n| SQS | No. It is an AWS service that we do not use today. | Yes, from its documentation. We did not test it. | No. It needs localstack or an AWS account for each developer. |\n| Kafka | No | Yes, from its documentation. We did not test it. | No |\n\nDoing nothing keeps the timeouts that started this decision. BullMQ lost only because it needs Redis. If we run Redis for another reason, look at it again.\n\n## Consequences\n\n- The jobs table grows. We tune autovacuum on that table. Dana checks its size each Monday and opens a ticket when it passes 5 GB.\n- The queue adds load to the Postgres of the app. At 350 jobs per second on staging, the p95 latency of the app stayed under 120 ms.\n- pg-boss has one number for the priority of a job. It has no separate lanes.\n- When Postgres is down, the queue is down. The app is down in that case too.\n- Decide again if the load stays above 200 jobs per second for 7 days, or if we need priority lanes. The target of 200 leaves room below the 350 that we measured.\n",
+  "checks": {
+    "first_sentence": "(?<!not )\\bready\\b",
+    "must_not_contain": [
+      "not ready",
+      "\\|\\s*(?:No|Partly)\\s*\\|",
+      "(?m)^#+\\s*ADR 7"
+    ],
+    "max_words": 350,
+    "shape": "any",
+    "trailers": []
+  }
+}

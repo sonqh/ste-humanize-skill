@@ -309,7 +309,7 @@ class RouterTest(unittest.TestCase):
 
     def test_reference_says_when_to_read_it(self):
         # Covers: SCN-SKILL-011-3
-        for name in ("human.md", "terms.md", "doc-shapes.md", "page-guides.md"):
+        for name in ("human.md", "terms.md", "doc-shapes.md", "page-guides.md", "review.md"):
             with open(os.path.join(ROOT, "references", name), encoding="utf-8") as fh:
                 head = "".join(fh.readlines()[:4])
             self.assertIn("Read this file when", head, name)
@@ -431,5 +431,39 @@ class PageGuidesTest(unittest.TestCase):
     def test_cap_after_missing(self):
         # Covers: SCN-SKILL-018-3
         # Covers: REQ-SKILL-018
+        with open(SKILL, encoding="utf-8") as fh:
+            self.assertLess(len(fh.read().split()), 1900)
+
+    def _review(self, name):
+        return section(name, os.path.join(ROOT, "references", "review.md"))
+
+    def test_review_steps(self):
+        # Covers: SCN-SKILL-019-1
+        # Covers: REQ-SKILL-019
+        sec = self._review("Steps")
+        self.assertGreaterEqual(len(re.findall(r"^\d+\.\s", sec, re.M)), 5)
+        for want in ("references/page-guides.md", "## Reader questions", "## Work not built yet"):
+            self.assertIn(want, sec)
+
+    def test_review_output(self):
+        # Covers: SCN-SKILL-019-2
+        # Covers: REQ-SKILL-019
+        sec = self._review("Output")
+        for want in ("| Question | Answered | Where | Gap |", "verdict", "7 or fewer", "scripts/lint.py"):
+            self.assertIn(want, sec)
+
+    def test_review_no_rewrite(self):
+        # Covers: SCN-SKILL-019-3
+        # Covers: REQ-SKILL-019
+        sec = self._review("Limits")
+        self.assertIn("Do not rewrite", sec)
+        self.assertIn("Do not add a fact", sec)
+
+    def test_review_route_and_cap(self):
+        # Covers: SCN-SKILL-019-4
+        # Covers: REQ-SKILL-019
+        rows = [l for l in section("What to read").splitlines() if "references/review.md" in l]
+        self.assertTrue(rows)
+        self.assertIn("review", rows[0])
         with open(SKILL, encoding="utf-8") as fh:
             self.assertLess(len(fh.read().split()), 1900)
