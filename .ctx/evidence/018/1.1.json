@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-17T00:48:05.890Z",
+  "bundle_chars": 7474,
+  "files": {
+    "scripts/ste-lint.py": "6425d992073adef92253e9923aa8cb56b429facb7c016c8c283292ecdfef7673",
+    "tests/test_ste_lint.py": "4774926c73820d38a10878ac2d536f4bc0a0a05f3c5c85773c78519e558339c9"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-STE-005"
+  ],
+  "started_at": "2026-11-17T00:47:40.793Z",
+  "task": "018/1.1",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "python3 scripts/ste-lint.py --selftest && python3 -m unittest tests.test_ste_lint -v",
+    "exit": 0,
+    "stderr_tail": "SCN-STE-002-1 ... ok\ntest_messages_bounded (tests.test_ste_lint.SteLintTests)\nSCN-STE-001-2 ... ok\ntest_summary_line (tests.test_ste_lint.SteLintTests)\nSCN-STE-003-2 ... ok\ntest_table_matches_record (tests.test_ste_lint.SteLintTests)\nSCN-STE-001-1 ... ok\ntest_unknown_rule_and_selftest (tests.test_ste_lint.SteLintTests)\nSCN-STE-003-3 CLI exits ... ok\ntest_english_keeps_cap (tests.test_ste_lint.VietnameseLengthTests)\nSCN-STE-005-3 ... ok\ntest_over_cap (tests.test_ste_lint.VietnameseLengthTests)\nSCN-STE-005-2 ... ok\ntest_under_cap (tests.test_ste_lint.VietnameseLengthTests)\nSCN-STE-005-1 ... ok\n\n----------------------------------------------------------------------\nRan 16 tests in 0.895s\n\nOK",
+    "stdout_sha256": "80856c9400fca3245f9a93fb6e732c48070ff16262d57e90355cbc270917e1d6"
+  }
+}

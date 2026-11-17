@@ -18,7 +18,9 @@ HARD = {"dash", "not-x-but-y", "not-x-its-y", "chat-residue", "run-up",
         "deep-saying", "stock-word", "bold-label", "emoji-heading"}
 ADVISORY = {"sales-word", "title-case-heading", "stacked-qualifier",
             "serves-as", "closer", "repeated-closer", "false-balance",
-            "actorless-decision", "empty-mitigation", "unmeasured-quality"}
+            "actorless-decision", "empty-mitigation", "unmeasured-quality",
+            "support-cliche", "vague-date", "blame-phrase", "negative-contraction",
+            "particle-repeat"}
 
 
 def run(args, text=None):
@@ -176,6 +178,46 @@ class DecisionTellTests(unittest.TestCase):
         self.assertEqual(r.returncode, 0)
         for rule in ("false-balance", "actorless-decision", "empty-mitigation", "unmeasured-quality"):
             self.assertEqual(r.stdout.count(rule), 1, rule)
+
+
+class MessageTellTests(unittest.TestCase):
+    # Covers: REQ-TELLS-005
+
+    def _rules(self, text):
+        return [f["rule"] for f in tells.lint(text + "\n")]
+
+    def test_support_cliche(self):
+        """SCN-TELLS-005-1"""
+        # Covers: REQ-TELLS-005
+        rules = self._rules("We apologize for any inconvenience.\nMong quý khách thông cảm.")
+        self.assertEqual(rules.count("support-cliche"), 2)
+
+    def test_vague_date(self):
+        """SCN-TELLS-005-2"""
+        # Covers: REQ-TELLS-005
+        self.assertIn("vague-date", self._rules("We will fix it soon."))
+        self.assertIn("vague-date", self._rules("Bên em sẽ xử lý trong thời gian sớm nhất."))
+        self.assertNotIn("vague-date", self._rules("We will fix it on 3 March."))
+
+    def test_blame_and_contraction(self):
+        """SCN-TELLS-005-3"""
+        # Covers: REQ-TELLS-005
+        rules = self._rules("You forgot to save, so we can't restore it.")
+        self.assertEqual(rules.count("blame-phrase"), 1)
+        self.assertEqual(rules.count("negative-contraction"), 1)
+
+    def test_particle_once_per_file(self):
+        """SCN-TELLS-005-4"""
+        # Covers: REQ-TELLS-005
+        rules = self._rules("Dạ, em gửi anh bảng giá ạ.\n\nAnh xem giúp em ạ.")
+        self.assertEqual(rules.count("particle-repeat"), 1)
+        self.assertNotIn("particle-repeat", self._rules("Em gửi anh bảng giá ạ."))
+
+    def test_vietnamese_contrast(self):
+        """SCN-TELLS-001-6"""
+        # Covers: REQ-TELLS-001
+        rules = self._rules("Không phải lỗi hệ thống mà là do cấu hình.")
+        self.assertEqual(rules.count("not-x-but-y"), 1)
 
 
 if __name__ == "__main__":

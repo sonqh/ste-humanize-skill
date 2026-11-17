@@ -30,9 +30,6 @@
     "trailers": [
       "Missing:"
     ],
-    "lint_disable": [
-      "long-sentence"
-    ],
     "early": [
       {
         "pattern": "\\bkhông\\b",

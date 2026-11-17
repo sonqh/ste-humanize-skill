@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-17T00:49:59.363Z",
+  "bundle_chars": 7547,
+  "files": {
+    "scripts/ste-lint.py": "6425d992073adef92253e9923aa8cb56b429facb7c016c8c283292ecdfef7673",
+    "scripts/tells-lint.py": "2b14a44eade1f646f6857c4f9e8220f67f9ea3c2740b3623afeecbc86fd56c65",
+    "tests/test_ste_lint.py": "4774926c73820d38a10878ac2d536f4bc0a0a05f3c5c85773c78519e558339c9",
+    "tests/test_tells_lint.py": "3df298fb8fabaf0e39e52cb005eca44a89cac2e69510be62244bbb7e845efafe"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-TELLS-005",
+    "REQ-STE-005"
+  ],
+  "started_at": "2026-11-17T00:49:00.785Z",
+  "task": "018/2.1",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "bash scripts/ci-local.sh",
+    "exit": 0,
+    "stderr_tail": "",
+    "stdout_sha256": "6bbe273727cb9a99ab37ca67ac7f5d4d36e7f77ac0a43bf6bd4fe66eb263a62d"
+  }
+}
