@@ -1,0 +1,39 @@
+{
+  "id": "write-refusal-en",
+  "mode": "Human",
+  "task": "Write",
+  "request": "Reply to this customer by email. We will not build this.",
+  "input": "Customer email, 2026-11-16:\nHi, we love the app. Can you add an offline mode to the mobile app? Our drivers lose signal in the countryside and can't log deliveries. - Tom, Ops lead at FreshRoute\n\nInternal, PM decision 2026-11-10: no offline mode in 2027. Handling sync conflicts costs too much to build. What exists today: the delivery form saves a draft on the phone when the network drops, and sends it when the signal returns. This works only for a form that the driver opened before the signal was lost (feature 'Draft save', on since app version 4.2). The customer can also print the route sheet of the day from the web dashboard (Routes > Print). Do not mention 2028. You are Priya.",
+  "checks": {
+    "must_contain": [
+      "draft",
+      "Print|print",
+      "open",
+      "4\\.2"
+    ],
+    "must_not_contain": [
+      "2028",
+      "in the future|later this|roadmap|(may|might|could) (add|build|revisit)",
+      "unfortunately",
+      "please note",
+      "inconvenience",
+      "rest assured",
+      "value your feedback",
+      "don't hesitate|do not hesitate|feel free to",
+      "hope this helps",
+      "\\b(can't|don't|won't|isn't|didn't)\\b",
+      "\\b(soon|shortly)\\b"
+    ],
+    "max_words": 200,
+    "shape": "any",
+    "trailers": [
+      "Missing:"
+    ],
+    "early": [
+      {
+        "pattern": "\\b(not|no)\\b",
+        "within_words": 16
+      }
+    ]
+  }
+}

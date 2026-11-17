@@ -1,0 +1,49 @@
+{
+  "id": "write-customer-note-vi",
+  "mode": "Human",
+  "task": "Write",
+  "request": "Chuyển ghi chú kỹ thuật này thành email gửi chị Mai, quản lý văn phòng của công ty An Phát. Chị không rành kỹ thuật.",
+  "input": "Ghi chú kỹ thuật, 17/11/2026, vụ export của An Phát, case CS-881.\nExport CSV bị timeout với tài khoản trên 50k dòng, vì query export scan toàn bảng invoices_lines, không dùng tenant index. An Phát có 72k dòng. Cách tạm: export từng tháng một bằng bộ lọc ngày ở trang Export. Mỗi tháng dưới 50k dòng. Fix: đã thêm composite index trong PR #3190, đang review. Nếu qua QA thì chắc lên bản release thứ Sáu (21/11), nhưng QA đang dồn việc nên có thể tuần sau. Đừng hứa thứ Sáu. - Đức",
+  "checks": {
+    "early": [
+      {
+        "pattern": "tháng",
+        "within_words": 110
+      }
+    ],
+    "must_contain": [
+      "tháng",
+      "lọc",
+      "Export",
+      "(dự kiến|có thể|ước tính|hy vọng|nhiều khả năng|chưa chắc|chưa thể chắc)"
+    ],
+    "must_not_contain": [
+      "sẽ (được )?(sửa|khắc phục|cập nhật|xong|hoạt động|phát hành)[^.]*(thứ Sáu|21/11)",
+      "\\bindex\\b",
+      "query",
+      "#?3190",
+      "invoices_lines",
+      "tenant",
+      "\\bQA\\b",
+      "(?s)(?=.*quý khách)(?=.*\\bchị\\b)",
+      "bất tiện",
+      "thời gian sớm nhất",
+      "thông cảm",
+      "hy vọng thông tin",
+      "ngần ngại",
+      "luôn lắng nghe",
+      "trân trọng ý kiến",
+      "thực hiện việc",
+      "(?s)\\bdạ\\b.*\\bdạ\\b",
+      "(?s)\\bạ\\b.*\\bạ\\b"
+    ],
+    "max_words": 300,
+    "shape": "any",
+    "trailers": [
+      "Missing:"
+    ],
+    "lint_disable": [
+      "long-sentence"
+    ]
+  }
+}

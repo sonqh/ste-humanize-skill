@@ -210,5 +210,27 @@ class ReviewTaskTests(unittest.TestCase):
         self.assertGreaterEqual(len(reviews), 2)
 
 
+class VietnameseFixtureTests(unittest.TestCase):
+    # Covers: REQ-EVAL-006
+    LONG = ("We will send the new invoice to the finance team of your company on the first "
+            "working day of the next month after the review of the old account is complete.\n")
+
+    def test_lint_disable(self):
+        """SCN-EVAL-006-1"""
+        # Covers: REQ-EVAL-006
+        plain = {**FIXTURE, "checks": {"shape": "any"}}
+        results, _ = ev.score_output(plain, self.LONG)
+        self.assertFalse(dict((n, ok) for n, ok, _ in results)["lint-hard"])
+        off = {**FIXTURE, "checks": {"shape": "any", "lint_disable": ["long-sentence"]}}
+        results, _ = ev.score_output(off, self.LONG)
+        self.assertTrue(dict((n, ok) for n, ok, _ in results)["lint-hard"])
+
+    def test_vietnamese_preamble(self):
+        """SCN-EVAL-006-2"""
+        # Covers: REQ-EVAL-006
+        results, _ = ev.score_output(FIXTURE, "Dưới đây là tin nhắn cho khách.\n\nBạn xoá 6 rows.\n")
+        self.assertFalse(dict((n, ok) for n, ok, _ in results)["no-preamble"])
+
+
 if __name__ == "__main__":
     unittest.main()

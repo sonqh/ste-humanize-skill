@@ -1,0 +1,42 @@
+{
+  "id": "reply-upset-user-en",
+  "mode": "Human",
+  "task": "Write",
+  "request": "Reply to this customer in the support chat. She is upset and not technical.",
+  "input": "Customer, chat, 2026-11-17:\nI've been charged TWICE for my March subscription!!! This is the second time this happens. I want my money back now or I'm cancelling.\n\nInternal note from billing, 2026-11-17:\nDuplicate charge confirmed, invoices INV-2291 and INV-2292, both 2026-11-15. Cause: the payment gateway retried after a timeout in our webhook handler (job billing-retry-worker). Refund of the duplicate ($29) issued today. The card network takes 5 to 10 business days to show it on her card. Engineering ticket ENG-4412 to stop the double retry, no date yet. You are Sam.",
+  "checks": {
+    "early": [
+      {
+        "pattern": "refund",
+        "within_words": 45
+      }
+    ],
+    "must_contain": [
+      "\\$?29",
+      "5.{1,4}10",
+      "refund"
+    ],
+    "must_not_contain": [
+      "webhook",
+      "gateway",
+      "billing-retry-worker",
+      "ENG-4412",
+      "timeout",
+      "(never|not) happen again|won't happen again",
+      "unfortunately",
+      "please note",
+      "inconvenience",
+      "rest assured",
+      "value your feedback",
+      "don't hesitate|do not hesitate|feel free to",
+      "hope this helps",
+      "\\b(can't|don't|won't|isn't|didn't)\\b",
+      "\\b(soon|shortly)\\b"
+    ],
+    "max_words": 110,
+    "shape": "any",
+    "trailers": [
+      "Missing:"
+    ]
+  }
+}

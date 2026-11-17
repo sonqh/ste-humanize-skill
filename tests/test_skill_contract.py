@@ -12,6 +12,7 @@ PAGE_GUIDES = os.path.join(ROOT, "references", "page-guides.md")
 
 HUMAN = os.path.join(ROOT, "references", "human.md")
 TERMS = os.path.join(ROOT, "references", "terms.md")
+MESSAGES = os.path.join(ROOT, "references", "messages.md")
 
 
 def section(name, path=SKILL):
@@ -309,7 +310,8 @@ class RouterTest(unittest.TestCase):
 
     def test_reference_says_when_to_read_it(self):
         # Covers: SCN-SKILL-011-3
-        for name in ("human.md", "terms.md", "doc-shapes.md", "page-guides.md", "review.md"):
+        for name in ("human.md", "terms.md", "doc-shapes.md", "page-guides.md", "review.md",
+                     "messages.md"):
             with open(os.path.join(ROOT, "references", name), encoding="utf-8") as fh:
                 head = "".join(fh.readlines()[:4])
             self.assertIn("Read this file when", head, name)
@@ -490,5 +492,41 @@ class PageGuidesTest(unittest.TestCase):
         # Covers: REQ-SKILL-020
         row = next(l for l in section("What to read").splitlines() if "references/ai-tells.md" in l)
         self.assertIn("32 patterns", row)
+        with open(SKILL, encoding="utf-8") as fh:
+            self.assertLess(len(fh.read().split()), 1900)
+
+    def test_message_order_and_promises(self):
+        # Covers: SCN-SKILL-021-1
+        # Covers: REQ-SKILL-021
+        with open(MESSAGES, encoding="utf-8") as fh:
+            text = fh.read()
+        for want in ("upset", "chat", "email", "Missing:", "promise"):
+            self.assertIn(want, text)
+        order = section("Order of a reply", MESSAGES)
+        self.assertEqual(re.findall(r"^(\d)\.", order, re.M), ["1", "2", "3", "4"])
+
+    def test_message_english(self):
+        # Covers: SCN-SKILL-021-2
+        # Covers: REQ-SKILL-021
+        sec = section("English", MESSAGES)
+        for want in ("you'll", "can't", "unfortunately"):
+            self.assertIn(want, sec)
+
+    def test_message_vietnamese(self):
+        # Covers: SCN-SKILL-021-3
+        # Covers: REQ-SKILL-021
+        sec = section("Vietnamese", MESSAGES)
+        for want in ("anh/chị", "quý khách", "Dạ", "rất tiếc vì sự bất tiện này"):
+            self.assertIn(want, sec)
+
+    def test_message_route_shapes_cap(self):
+        # Covers: SCN-SKILL-021-4
+        # Covers: REQ-SKILL-021
+        rows = [l for l in section("What to read").splitlines() if "references/messages.md" in l]
+        self.assertTrue(rows)
+        with open(DOC_SHAPES, encoding="utf-8") as fh:
+            table = [l for l in fh.read().splitlines() if l.startswith("|")]
+        names = {l.split("|")[1].strip() for l in table}
+        self.assertLessEqual({"Support reply", "Notice to customers"}, names)
         with open(SKILL, encoding="utf-8") as fh:
             self.assertLess(len(fh.read().split()), 1900)

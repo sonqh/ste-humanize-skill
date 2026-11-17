@@ -1,0 +1,43 @@
+{
+  "id": "write-refusal-vi",
+  "mode": "Human",
+  "task": "Write",
+  "request": "Trả lời khách này qua email. Bên mình sẽ không làm tính năng này.",
+  "input": "Email của khách, 16/11/2026:\nChào bên mình, team rất thích app. Bên mình thêm chế độ offline cho app mobile được không? Tài xế bên mình hay mất sóng ở vùng quê nên không ghi nhận giao hàng được. - Tuấn, trưởng vận hành FreshRoute\n\nNội bộ, quyết định của PM ngày 10/11/2026: không làm offline mode trong năm 2027. Xử lý xung đột đồng bộ tốn quá nhiều công. Cái đang có: form giao hàng tự lưu nháp trên điện thoại khi mất mạng và gửi đi khi có sóng lại. Cách này chỉ chạy với form mà tài xế đã mở trước khi mất sóng (tính năng 'Draft save', có từ app bản 4.2). Khách cũng có thể in bảng tuyến đường trong ngày từ web dashboard (Routes > Print). Đừng nhắc đến 2028. Bạn là Phương.",
+  "checks": {
+    "must_contain": [
+      "nháp",
+      "\\bin\\b|Print",
+      "(đã mở|mở trước|mở sẵn)",
+      "4\\.2"
+    ],
+    "must_not_contain": [
+      "2028",
+      "trong tương lai|sau này|lộ trình|xem xét lại",
+      "bất tiện",
+      "thời gian sớm nhất",
+      "thông cảm",
+      "hy vọng thông tin",
+      "ngần ngại",
+      "luôn lắng nghe",
+      "trân trọng ý kiến",
+      "thực hiện việc",
+      "(?s)\\bdạ\\b.*\\bdạ\\b",
+      "(?s)\\bạ\\b.*\\bạ\\b"
+    ],
+    "max_words": 280,
+    "shape": "any",
+    "trailers": [
+      "Missing:"
+    ],
+    "lint_disable": [
+      "long-sentence"
+    ],
+    "early": [
+      {
+        "pattern": "\\bkhông\\b",
+        "within_words": 18
+      }
+    ]
+  }
+}
