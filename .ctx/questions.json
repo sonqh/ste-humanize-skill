@@ -181,7 +181,10 @@
     "asked_at": "2026-11-17T00:36:57.250Z",
     "task": "017-messages",
     "text": "archive 017-messages?",
-    "status": "open",
-    "stage": "archive"
+    "status": "resolved",
+    "stage": "archive",
+    "verdict": "approved",
+    "answer": "Owner approved archive of 017 on 2026-11-17",
+    "resolved_at": "2026-11-17T00:40:42.319Z"
   }
 ]
