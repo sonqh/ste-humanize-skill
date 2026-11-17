@@ -1,0 +1,1 @@
+You were charged twice for your March subscription, and I'm sorry. We confirmed the second charge was a duplicate and refunded the $29 today. Your card network needs 5 to 10 business days to show the refund on your card.

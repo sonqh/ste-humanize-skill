@@ -1,0 +1,48 @@
+{
+  "id": "reply-upset-user-vi",
+  "mode": "Human",
+  "task": "Write",
+  "request": "Trả lời khách này trong chat hỗ trợ. Khách đang bực và không rành kỹ thuật.",
+  "input": "Khách, chat, 17/11/2026:\nSao tôi bị trừ tiền HAI LẦN cho gói tháng 3 vậy??? Lần thứ hai rồi đấy. Hoàn tiền ngay cho tôi không thì tôi huỷ.\n\nGhi chú nội bộ của team billing, 17/11/2026:\nXác nhận trừ trùng, hoá đơn INV-2291 và INV-2292, cùng ngày 15/11. Nguyên nhân: payment gateway retry sau khi webhook handler bị timeout (job billing-retry-worker). Đã hoàn 299.000đ phần trừ trùng hôm nay. Ngân hàng cần 5 đến 10 ngày làm việc để tiền hiện lại trên thẻ. Ticket ENG-4412 để chặn retry hai lần, chưa có ngày. Bạn là Hà.",
+  "checks": {
+    "early": [
+      {
+        "pattern": "hoàn",
+        "within_words": 60
+      }
+    ],
+    "must_contain": [
+      "299",
+      "5.{1,6}10",
+      "hoàn"
+    ],
+    "must_not_contain": [
+      "webhook",
+      "gateway",
+      "retry",
+      "billing-retry-worker",
+      "ENG-4412",
+      "timeout",
+      "(không|chẳng) (bao giờ )?(xảy ra|lặp lại) (nữa|lần nào)|sẽ không (bao giờ )?(xảy ra|lặp lại)",
+      "(?s)(?=.*quý khách)(?=.*anh/chị)",
+      "bất tiện",
+      "thời gian sớm nhất",
+      "thông cảm",
+      "hy vọng thông tin",
+      "ngần ngại",
+      "luôn lắng nghe",
+      "trân trọng ý kiến",
+      "thực hiện việc",
+      "(?s)\\bdạ\\b.*\\bdạ\\b",
+      "(?s)\\bạ\\b.*\\bạ\\b"
+    ],
+    "max_words": 150,
+    "shape": "any",
+    "trailers": [
+      "Missing:"
+    ],
+    "lint_disable": [
+      "long-sentence"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "write-customer-note-en",
+  "mode": "Human",
+  "task": "Write",
+  "request": "Turn this engineering note into an email to the customer, Maria, the office manager at Acme. She is not technical.",
+  "input": "Eng note, 2026-11-17, re: Acme export issue, case CS-881.\nCSV export times out for accounts with more than 50k rows, because the export query does a full scan on invoices_lines without the tenant index. Acme has 72k rows. Workaround: export one month at a time with the date filter on the Export page. Each month is under 50k rows. Fix: composite index added in PR #3190, in review. If it passes QA it should probably ship in the Friday release (2026-11-21), but QA is backed up, so maybe the week after. Don't promise Friday. - Duc",
+  "checks": {
+    "early": [
+      {
+        "pattern": "month",
+        "within_words": 80
+      }
+    ],
+    "must_contain": [
+      "month",
+      "date filter|filter",
+      "Export",
+      "\\b(expect|hope|may|might|probably|aim|estimate|likely|plan|not certain|not sure)"
+    ],
+    "must_not_contain": [
+      "will (be fixed|ship|be released|be live|go live|be ready|work)[^.]*(Friday|21)",
+      "\\bindex\\b",
+      "query",
+      "#?3190",
+      "invoices_lines",
+      "tenant",
+      "\\bQA\\b",
+      "full scan",
+      "unfortunately",
+      "please note",
+      "inconvenience",
+      "rest assured",
+      "value your feedback",
+      "don't hesitate|do not hesitate|feel free to",
+      "hope this helps",
+      "\\b(can't|don't|won't|isn't|didn't)\\b",
+      "\\b(soon|shortly)\\b"
+    ],
+    "max_words": 220,
+    "shape": "any",
+    "trailers": [
+      "Missing:"
+    ]
+  }
+}

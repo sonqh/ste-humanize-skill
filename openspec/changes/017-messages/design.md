@@ -65,6 +65,7 @@ The sources of this design:
   - a refusal of a feature request.
 
    Each version runs three times. One agent runs all six fixtures for one version, so six agents run in all. Refs: REQ-EVAL-006, REQ-SKILL-021
+- 017/D15 The first run changed the check of the two refusal fixtures. Each email opened with a subject line, and the scorer reads "Subject:" as the first sentence, so `answer-first` failed in every run of both versions. The fixtures now use `early`. The no must start in the first 16 words in English and the first 18 in Vietnamese. That leaves room for a subject line and a greeting. The limits were set after the author read the outputs. Refs: REQ-EVAL-006
 
 ## Risks / Trade-offs
 

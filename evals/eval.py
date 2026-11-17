@@ -33,11 +33,13 @@ MODES = ("Strict", "Human")
 TASKS = ("Rewrite", "Write", "Review")
 SHAPES = ("bullets", "numbered", "prose", "any")
 CHECK_KEYS = {"must_contain", "must_not_contain", "first_sentence", "max_words",
-              "shape", "trailers", "early"}
+              "shape", "trailers", "early", "lint_disable"}
 # REQ-EVAL-004
 TRAILERS = ("Kept as-is:", "Cut candidates:", "Reader:", "Missing:")
+# REQ-EVAL-006 the Vietnamese openers count as a preamble too
 PREAMBLE = re.compile(
-    r"^(?:here(?:'s| is| are)|sure\b|certainly\b|of course\b|below is|i have |i've |okay\b)",
+    r"^(?:here(?:'s| is| are)|sure\b|certainly\b|of course\b|below is|i have |i've |okay\b"
+    r"|dưới đây là|chắc chắn rồi)",
     re.I)
 BULLET = re.compile(r"^\s*[-*+]\s+\S", re.M)
 NUMBERED = re.compile(r"^\s*\d+[.)]\s+\S", re.M)
@@ -173,7 +175,9 @@ def score_output(fx, text):
         add("shape:numbered", has_numbers)
     elif shape == "prose":
         add("shape:prose", not has_bullets and not has_numbers)
-    findings = lint.lint_text(body, fx["id"])
+    # REQ-EVAL-006 a fixture can turn off rules that do not fit its language
+    disabled = set(checks.get("lint_disable", []))
+    findings = [f for f in lint.lint_text(body, fx["id"]) if f["rule"] not in disabled]
     hard = [f for f in findings if f["level"] == "hard"]
     add("lint-hard", not hard, ", ".join(sorted({f["rule"] for f in hard})))
     long_paragraphs = [f for f in findings if f["rule"] == "long-paragraph"]

@@ -1,7 +1,7 @@
 ---
 name: ste-humanize
-description: "Write or rewrite English so a reader cannot misread it and still hears a person behind it. Starts from the reader: what they know and what they do next. Combines ASD-STE100 sentence discipline with AI-tell removal (no not-X-but-Y, no one-line closers, no dash glue, no stock AI words). Use to write or rewrite docs, READMEs, PR descriptions, replies, tool descriptions, error messages, and any prose written for a person. Triggers: write a doc, review a doc, humanize, make this clear, plain rewrite, STE rewrite, remove AI tells. Not for fiction, marketing, or copy where voice is the point."
-version: 0.9.0
+description: "Write or rewrite English or Vietnamese so a reader cannot misread it and still hears a person behind it. Starts from the reader: what they know and what they do next. Combines ASD-STE100 sentence discipline with AI-tell removal (no not-X-but-Y, no one-line closers, no dash glue, no stock AI words). Use to write or rewrite docs, READMEs, PR descriptions, replies, tool descriptions, error messages, and any prose written for a person. Triggers: write a doc, review a doc, reply to a customer, humanize, make this clear, plain rewrite, STE rewrite, remove AI tells. Not for fiction, marketing, or copy where voice is the point."
+version: 0.10.0
 license: MIT
 ---
 
@@ -22,6 +22,7 @@ This file holds the rules for every text. Read one more file only when its row a
 | The page is a README, an ADR, or a technical proposal | `references/page-guides.md`: the questions of its readers, in order |
 | The page is a design doc, or about work not built yet | `references/page-guides.md` |
 | The user asks for a review of a page | `references/review.md` |
+| The text is a message to a user or a customer | `references/messages.md` |
 | The text is not in English, or it holds domain terms or identifiers | `references/terms.md` |
 | A sentence rule is unclear | `references/ste-rules.md`: each rule with an example |
 | An AI tell is unclear | `references/ai-tells.md`: the 32 patterns with examples |
@@ -152,6 +153,4 @@ Four permitted additions, each one line after the text. Omit a line when there i
 
 ## Credits
 
-- STE rules and examples: [danyuchn/asd-ste100-skill](https://github.com/danyuchn/asd-ste100-skill), MIT, by Dustin Yuchen Teng.
-- AI-tell patterns: the `humanizer` skill, MIT, based on Wikipedia's ["Signs of AI writing"](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing).
-- ASD-STE100: [asd-ste100.org](https://www.asd-ste100.org/). This skill paraphrases rule categories. It does not reproduce the standard.
+`LICENSE` names the sources of the STE rules and the AI tells. This skill paraphrases [ASD-STE100](https://www.asd-ste100.org/). It does not reproduce the standard.

@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-17T00:28:28.930Z",
+  "bundle_chars": 3160,
+  "files": {
+    "evals/eval.py": "3ea821d1ccc77dc81e78d081a43daa73fe8f4d708ed47a3c525c17a3a1071b05",
+    "tests/test_eval.py": "31970432cafd5bc5aef2a792d0e49ee225b262e5fad77ebcde3de67c7bb13cfb"
+  },
+  "kind": "command",
+  "reqs": [
+    "REQ-EVAL-006"
+  ],
+  "started_at": "2026-11-17T00:28:14.067Z",
+  "task": "017/1.1",
+  "tool_version": "0.6.0",
+  "verify": {
+    "command": "python3 -m unittest tests.test_eval -v",
+    "exit": 0,
+    "stderr_tail": "SCN-EVAL-005-2 ... ok\ntest_bad_output_fails_each_check (tests.test_eval.ScorerTests)\nSCN-EVAL-002-2 ... ok\ntest_cli (tests.test_eval.ScorerTests)\nSCN-EVAL-002-4 ... ok\ntest_good_output_passes (tests.test_eval.ScorerTests)\nSCN-EVAL-002-1 ... ok\ntest_same_output_same_score (tests.test_eval.ScorerTests)\nSCN-EVAL-002-3 ... ok\ntest_several_runs (tests.test_eval.ScorerTests)\nSCN-EVAL-002-5 ... ok\ntest_lint_disable (tests.test_eval.VietnameseFixtureTests)\nSCN-EVAL-006-1 ... ok\ntest_vietnamese_preamble (tests.test_eval.VietnameseFixtureTests)\nSCN-EVAL-006-2 ... ok\n\n----------------------------------------------------------------------\nRan 16 tests in 0.308s\n\nOK",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

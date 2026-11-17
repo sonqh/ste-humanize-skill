@@ -1,0 +1,1 @@
+You were charged twice for your March subscription, and I'm sorry it happened again. We refunded the extra $29 today. Your card should show it within 5 to 10 business days, because that is how long the card network takes. Our engineers have a ticket open to stop this, but I have no date for the fix yet.

@@ -1,0 +1,1 @@
+Bạn bị trừ tiền hai lần cho gói tháng 3, mình xin lỗi về lỗi này. Bên mình đã xác nhận khoản trừ thứ hai là trùng và hôm nay đã hoàn lại 299.000đ. Ngân hàng cần 5 đến 10 ngày làm việc để tiền hiện lại trên thẻ của bạn.

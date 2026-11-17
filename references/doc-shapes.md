@@ -1,6 +1,6 @@
 # Page shapes: who reads each kind of page
 
-Read this file when the task is Write, or when a Rewrite covers a whole page. It fills the reader brief when the request names no reader. A reader that the user names overrides the table. After the table, read `## Reader questions`. For a README, an ADR, a technical proposal, or a design doc, read `references/page-guides.md` too.
+Read this file when the task is Write, or when a Rewrite covers a whole page. It fills the reader brief when the request names no reader. A reader that the user names overrides the table. After the table, read `## Reader questions`. For a README, an ADR, a technical proposal, or a design doc, read `references/page-guides.md` too. For a support reply or a notice, read `references/messages.md` too.
 
 ## The usual reader of each page
 
@@ -18,6 +18,8 @@ Read this file when the task is Write, or when a Rewrite covers a whole page. It
 | Runbook | An on-call person with little time | Stop an incident | The symptom and the first action | Background. Link it |
 | Release note | A user who must decide whether to upgrade | Upgrade, or wait | What changes for the user, breaking changes first | Internal refactors |
 | Status update or reply | A person who has the context | Act or decide | The decision or the request | The problem, restated |
+| Support reply | A user with one problem, who may not know the product well | Fix the problem, or know what happens next | The answer or the fix. One sentence for the problem first, when something went wrong | How the system works inside, internal names |
+| Notice to customers | A customer who must learn of an outage, a change, or a refusal | Know what it means for them and what to do | What happened and what it means for the reader | The history of the decision, internal names |
 
 Rules that apply to every row:
 

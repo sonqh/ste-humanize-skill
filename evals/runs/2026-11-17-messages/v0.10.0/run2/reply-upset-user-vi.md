@@ -1,0 +1,1 @@
+Bạn bị trừ tiền hai lần cho gói tháng 3, và mình xin lỗi vì chuyện này lặp lại. Mình đã hoàn 299.000đ phần trừ trùng hôm nay. Ngân hàng cần 5 đến 10 ngày làm việc để tiền hiện lại trên thẻ của bạn. Đội kỹ thuật đã nhận việc chặn lỗi này, nhưng mình chưa có ngày sửa xong.
