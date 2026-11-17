@@ -85,4 +85,8 @@ Apply every sentence rule and every AI tell in Vietnamese. `references/terms.md`
 - Use "vui lòng" once at most, for a request the reader must do.
 - "Không phải X mà là Y" is the same tell as in English. State Y.
 - Write a date as "thứ Sáu, 3/3" or "3/3/2027", not "sắp tới" or "trong vài ngày tới".
-- Count a sentence by its meaning, not by its syllables. One sentence holds one idea. The linter counts each syllable as a word, so its `long-sentence` count is too high for Vietnamese.
+- One sentence holds one idea. The linter counts a Vietnamese sentence by syllables, with a cap of 35.
+
+## What the linter finds
+
+`python3 scripts/lint.py FILE` reports five advisory rules for messages, in both languages: `support-cliche`, `vague-date`, `blame-phrase`, `negative-contraction`, and `particle-repeat`. It reports "Không phải X mà là Y" as the hard rule `not-x-but-y`. It cannot tell if the pronouns stay the same from start to end. Check that yourself.

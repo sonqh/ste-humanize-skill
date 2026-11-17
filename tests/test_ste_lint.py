@@ -155,5 +155,35 @@ class ShapeAdvisoryTests(unittest.TestCase):
         self.assertNotIn("long-paragraph", r.stdout)
 
 
+class VietnameseLengthTests(unittest.TestCase):
+    # Covers: REQ-STE-005
+
+    def _long(self, text):
+        findings, _ = ste.lint(text)
+        return [f for f in findings if f["rule"] == "long-sentence"]
+
+    def test_under_cap(self):
+        """SCN-STE-005-1"""
+        # Covers: REQ-STE-005
+        text = "Bên em đã hoàn " + " ".join(["tiền"] * 24) + " cho chị."
+        self.assertEqual(len(text.split()), 30)
+        self.assertEqual(self._long(text), [])
+
+    def test_over_cap(self):
+        """SCN-STE-005-2"""
+        # Covers: REQ-STE-005
+        text = "Bên em đã hoàn " + " ".join(["tiền"] * 37) + " cho chị."
+        found = self._long(text)
+        self.assertEqual(len(found), 1)
+        self.assertIn("syllables", found[0]["message"])
+
+    def test_english_keeps_cap(self):
+        """SCN-STE-005-3"""
+        # Covers: REQ-STE-005
+        found = self._long("Ask " + " ".join(["word"] * 24) + " Đức.")
+        self.assertEqual([f["match"] for f in found], ["26 words"])
+        self.assertIn("cap 25", found[0]["message"])
+
+
 if __name__ == "__main__":
     unittest.main()

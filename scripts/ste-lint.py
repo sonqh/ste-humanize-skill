@@ -81,6 +81,10 @@ SYNONYM_GROUPS = [
 MAX_WORDS = 25  # descriptions cap; instructions cap is 20 but undetectable without context
 
 # REQ-STE-004
+# REQ-STE-005 a Vietnamese sentence is counted by syllables, with its own cap
+MAX_SYLLABLES_VI = 35
+VI_SHARE = 0.3
+VI_LETTER = re.compile("[ăâđêôơưàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵ]", re.I)
 MAX_SENTENCES = 6  # STE paragraph cap
 MIN_LIST_ITEMS = 5
 MIN_SEQUENCE_WORDS = 3
@@ -141,6 +145,15 @@ def _count_words(text):
     return sum(1 for token in text.split() if WORD_CHAR.search(token))
 
 
+# REQ-STE-005
+def _is_vietnamese(text):
+    """True when 30 percent or more of the words hold a letter that English does not use."""
+    words = [t for t in text.split() if WORD_CHAR.search(t)]
+    if not words:
+        return False
+    return sum(1 for t in words if VI_LETTER.search(t)) / len(words) >= VI_SHARE
+
+
 def _mask_inline_code(text):
     """Blank code spans with equal-length spaces so columns stay true."""
     return INLINE_CODE.sub(lambda match: " " * len(match.group(0)), text)
@@ -186,8 +199,11 @@ def _long_sentence_findings(pieces, filename):
     findings = []
     starts = _sentence_starts(joined)
     for start, end in zip(starts, starts[1:] + [len(joined)]):
-        n = _count_words(joined[start:end])
-        if n <= MAX_WORDS:
+        sentence = joined[start:end]
+        n = _count_words(sentence)
+        vietnamese = _is_vietnamese(sentence)
+        cap, unit = (MAX_SYLLABLES_VI, "syllables") if vietnamese else (MAX_WORDS, "words")
+        if n <= cap:
             continue
         index = bisect.bisect_right(offsets, start) - 1
         offset = offsets[index]
@@ -195,8 +211,8 @@ def _long_sentence_findings(pieces, filename):
         findings.append({"file": filename, "line": lineno,
                          "col": source_column + start - offset + 1,
                          "rule": "long-sentence", "level": "advisory-free",
-                         "match": f"{n} words",
-                         "message": f"Sentence has {n} words (cap {MAX_WORDS}). Split it."})
+                         "match": f"{n} {unit}",
+                         "message": f"Sentence has {n} {unit} (cap {cap}). Split it."})
     return findings
 
 
@@ -720,6 +736,15 @@ def selftest():
     assert not any(f["rule"] == "long-sentence" for f in findings), findings
     findings, _ = lint(f"See **e.g.** the {twenty} linter here now.")
     assert any(f["rule"] == "long-sentence" for f in findings), findings
+    # REQ-STE-005 a Vietnamese sentence counts syllables against a cap of 35
+    vi30 = "Bên em đã hoàn " + " ".join(["tiền"] * 24) + " cho chị."
+    findings, _ = lint(vi30)
+    assert not any(f["rule"] == "long-sentence" for f in findings), findings
+    vi43 = "Bên em đã hoàn " + " ".join(["tiền"] * 37) + " cho chị."
+    findings, _ = lint(vi43)
+    assert [f["match"] for f in findings if f["rule"] == "long-sentence"] == ["43 syllables"], findings
+    findings, _ = lint("Lan " + " ".join(["word"] * 24) + " Đức.")
+    assert [f["match"] for f in findings if f["rule"] == "long-sentence"] == ["26 words"], findings
     # a dotted abbreviation ends a sentence before a capitalized word
     findings, _ = lint(f"The team shipped it in the U.S. Then {twenty} today.")
     assert not any(f["rule"] == "long-sentence" for f in findings), findings

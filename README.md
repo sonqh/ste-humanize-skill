@@ -252,6 +252,8 @@ python3 scripts/lint.py FILE
 - `--json` prints the findings as JSON.
 - Three advisory rules look at the shape: `long-paragraph`, `inline-list`, and `buried-sequence`.
 - Four advisory rules look at decision pages: `false-balance`, `actorless-decision`, `empty-mitigation`, and `unmeasured-quality`.
+- Five advisory rules look at messages, in English and Vietnamese: `support-cliche`, `vague-date`, `blame-phrase`, `negative-contraction`, and `particle-repeat`.
+- In Vietnamese, the linter counts a sentence by syllables, with a cap of 35.
 - The linter flags no hedges and checks no meaning. A clean run means the regex checks found nothing.
 
 ## What is in the repository

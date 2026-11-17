@@ -41,9 +41,6 @@
     "shape": "any",
     "trailers": [
       "Missing:"
-    ],
-    "lint_disable": [
-      "long-sentence"
     ]
   }
 }

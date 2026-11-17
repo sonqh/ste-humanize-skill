@@ -197,5 +197,13 @@
     "verdict": "approved",
     "answer": "Owner approved plan 018 on 2026-11-17",
     "resolved_at": "2026-11-17T00:47:36.625Z"
+  },
+  {
+    "n": 20,
+    "asked_at": "2026-11-17T00:50:13.913Z",
+    "task": "018-message-lint",
+    "text": "archive 018-message-lint?",
+    "status": "open",
+    "stage": "archive"
   }
 ]

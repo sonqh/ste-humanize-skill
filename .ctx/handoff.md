@@ -1,11 +1,16 @@
 # Handoff
 change: 018-message-lint
 current: none
-base: 2026-11-17T00:36:47.542Z
-as_of: none
+base: none
+as_of: 2026-11-17T00:49:59.363Z
 done:
+- 018/1.1
+- 018/1.2
+- 018/2.1
 reopened:
+- 018/1.2 particle-repeat match now carries context so the column is right (at 2026-11-17T00:49:42.554Z)
 open_questions:
+- Q20 archive 018-message-lint? (task 018-message-lint, 2026-11-17)
 resolved:
 - Q10 plan ready for 014-pre-dev-docs. Approve to start the tasks? (task 014-pre-dev-docs, 2026-11-16) answer: Owner approved plan 014 on 2026-11-16.
 - Q11 archive 014-pre-dev-docs? (task 014-pre-dev-docs, 2026-11-16) answer: Owner approved archive of 014 on 2026-11-16.
@@ -18,5 +23,5 @@ resolved:
 - Q18 archive 017-messages? (task 017-messages, 2026-11-17) answer: Owner approved archive of 017 on 2026-11-17
 - Q19 plan ready for 018-message-lint. Approve to start the tasks? (task 018-message-lint, 2026-11-17) answer: Owner approved plan 018 on 2026-11-17
 - and 9 more in .ctx/questions.json
-next: 018/1.1  Apply 018/D8 in `scripts/ste-lint.py`. Add selftest examples, and a test for SCN-STE-005-1, SCN-STE-005-2, and SCN-STE-005-3 in `tests/test_ste_lint.py`.
-evidence: 0 task(s), 0 command, 0 manual
+next: no open task
+evidence: 3 task(s), 3 command, 0 manual

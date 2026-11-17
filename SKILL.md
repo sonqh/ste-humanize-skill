@@ -1,7 +1,7 @@
 ---
 name: ste-humanize
 description: "Write or rewrite English or Vietnamese so a reader cannot misread it and still hears a person behind it. Starts from the reader: what they know and what they do next. Combines ASD-STE100 sentence discipline with AI-tell removal (no not-X-but-Y, no one-line closers, no dash glue, no stock AI words). Use to write or rewrite docs, READMEs, PR descriptions, replies, tool descriptions, error messages, and any prose written for a person. Triggers: write a doc, review a doc, reply to a customer, humanize, make this clear, plain rewrite, STE rewrite, remove AI tells. Not for fiction, marketing, or copy where voice is the point."
-version: 0.10.0
+version: 0.11.0
 license: MIT
 ---
 

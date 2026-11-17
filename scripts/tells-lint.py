@@ -99,12 +99,43 @@ QUALITY_WORDS = [
     "reliable", "efficient", "battle-tested", "enterprise-grade", "production-ready", "best-in-class",
 ]
 
+# REQ-TELLS-005: tells of messages to users and customers, in English and Vietnamese.
+SUPPORT_CLICHE = [
+    r"\bunfortunately\b", r"\bplease note\b", r"\b(?:we )?apologi[sz]e for any inconvenience",
+    r"\bsorry for (?:any|the) inconvenience", r"\brest assured\b",
+    r"\bwe value your (?:feedback|business)\b", r"\bwe understand your frustration\b",
+    r"\b(?:don'?t|do not) hesitate to\b", r"\bfeel free to (?:contact|reach)\b",
+    r"(?:sự )?bất tiện này", r"\bxin lỗi vì sự bất tiện",
+    r"\bmong (?:anh/chị|quý khách|anh|chị|bạn) (?:thông cảm|thông cảm cho)",
+    r"\bhy vọng thông tin (?:trên|này) (?:hữu ích|có ích)", r"\b(?:đừng|không) ngần ngại\b",
+    r"\bluôn lắng nghe\b", r"\btrân trọng ý kiến\b",
+]
+
+VAGUE_DATE = [
+    r"\bsoon\b", r"\bshortly\b", r"\bin the coming days\b", r"\bas soon as possible\b", r"\basap\b",
+    r"thời gian sớm nhất", r"\bsớm nhất có thể\b", r"\btrong (?:vài|mấy|những) ngày tới\b", r"\bsắp tới\b",
+]
+
+BLAME_PHRASE = [
+    r"\byou (?:failed|forgot|neglected) to\b", r"\byou should have\b", r"\bdue to your (?:error|mistake)\b",
+    r"\b(?:anh|chị|bạn|quý khách) (?:đã )?(?:quên|nhập sai)\b",
+]
+
+NEGATIVE_CONTRACTION = (r"\b(?:can|don|won|isn|aren|wasn|weren|doesn|didn|shouldn|wouldn|couldn"
+                        r"|haven|hasn|hadn|mustn)['’]t\b")
+
+# REQ-TELLS-005: "dạ" and "ạ" as whole words.
+PARTICLE = re.compile(r"(?<!\w)d?ạ(?!\w)", re.I)
+
+# REQ-TELLS-001: the Vietnamese form of not-x-but-y.
+NOT_X_BUT_Y_VI = r"\bkhông phải\b[^.?!;:]{1,60}?\bmà\b"
+
 # REQ-TELLS-001 REQ-TELLS-002
 RULES = {
     # hard rules
     "dash": ("hard", re.compile(r"—|–|(?<=\S) -- (?=\S)|\s--\s")),
     "not-x-but-y": ("hard", re.compile(
-        r"\b(?:not|isn'?t|aren'?t|wasn'?t|it'?s not)\s+(?:just|only|merely|simply|about)?\s*[^.?!;:]{1,60}?[,;]?\s+but\s+(?:rather\s+)?(?:also\s+)?", re.I)),
+        r"\b(?:not|isn'?t|aren'?t|wasn'?t|it'?s not)\s+(?:just|only|merely|simply|about)?\s*[^.?!;:]{1,60}?[,;]?\s+but\s+(?:rather\s+)?(?:also\s+)?|" + NOT_X_BUT_Y_VI, re.I)),
     "not-x-its-y": ("hard", re.compile(r"\b(?:it'?s|this is|that'?s) not [^.?!]{1,60}?(?:[,.:;]|\s-(?=\s)|\s*[—–])\s*(?:it'?s|it is|this is|that'?s)\b", re.I)),
     "chat-residue": ("hard", re.compile("|".join(CHAT_RESIDUE), re.I)),
     "run-up": ("hard", re.compile("|".join(RUN_UP), re.I)),
@@ -124,6 +155,12 @@ RULES = {
     "actorless-decision": ("advisory", re.compile("|".join(ACTORLESS_DECISION), re.I)),
     "empty-mitigation": ("advisory", re.compile("|".join(EMPTY_MITIGATION), re.I)),
     "unmeasured-quality": ("advisory", re.compile(r"\b(?:" + "|".join(re.escape(w) for w in QUALITY_WORDS) + r")\b", re.I)),
+    # REQ-TELLS-005 advisory rules for messages
+    "support-cliche": ("advisory", re.compile("|".join(SUPPORT_CLICHE), re.I)),
+    "vague-date": ("advisory", re.compile("|".join(VAGUE_DATE), re.I)),
+    "blame-phrase": ("advisory", re.compile("|".join(BLAME_PHRASE), re.I)),
+    "negative-contraction": ("advisory", re.compile(NEGATIVE_CONTRACTION, re.I)),
+    "particle-repeat": ("advisory", None),
 }
 
 SENTENCE_END = re.compile(r"[.?!\n]")
@@ -185,6 +222,14 @@ def lint(text, disabled=()):
             if n >= 2:
                 findings.append({"rule": "repeated-closer", "level": "advisory",
                                  "line": line_of(clean, clean.find(p)), "match": p})
+    # REQ-TELLS-005 one finding per file, at the second "dạ" or "ạ"
+    if "particle-repeat" not in disabled:
+        particles = list(PARTICLE.finditer(clean))
+        if len(particles) > 1:
+            findings.append({"rule": "particle-repeat", "level": "advisory",
+                             "line": line_of(clean, particles[1].start()),
+                             "match": clean[max(clean.rfind("\n", 0, particles[1].start()) + 1,
+                                                particles[1].start() - 20):particles[1].end()].strip()})
     findings.sort(key=lambda f: (f["line"], f["rule"]))
     return findings
 
@@ -211,6 +256,14 @@ def selftest():
         ("It was decided that the team uses pg-boss.", "actorless-decision"),
         ("Mitigation: we will monitor closely.", "empty-mitigation"),
         ("Option B is more scalable.", "unmeasured-quality"),
+        ("Không phải lỗi hệ thống mà là do cấu hình.", "not-x-but-y"),
+        ("We apologize for any inconvenience.", "support-cliche"),
+        ("Mong quý khách thông cảm.", "support-cliche"),
+        ("We will fix it soon.", "vague-date"),
+        ("Bên em sẽ xử lý trong thời gian sớm nhất.", "vague-date"),
+        ("You forgot to save the file.", "blame-phrase"),
+        ("We can't restore it.", "negative-contraction"),
+        ("Dạ, em gửi anh ạ.", "particle-repeat"),
     ]:
         assert rule in {f["rule"] for f in lint(text)}, f"selftest: {rule} missed {text!r}"
     for text, rule in [
@@ -222,6 +275,12 @@ def selftest():
         ("Mitigation: run the load test on staging before the release.", "empty-mitigation"),
         ("Option B scales to 350 jobs per second.", "unmeasured-quality"),
         ("The queue was reliable for 30 days.", "unmeasured-quality"),
+        ("Lỗi không phải do hệ thống.", "not-x-but-y"),
+        ("We refunded the extra $29 today.", "support-cliche"),
+        ("We will fix it on 3 March.", "vague-date"),
+        ("The file was larger than 10 MB.", "blame-phrase"),
+        ("We cannot restore it, and you'll get a refund.", "negative-contraction"),
+        ("Dạ, em gửi anh bảng giá.", "particle-repeat"),
     ]:
         assert rule not in {f["rule"] for f in lint(text)}, f"selftest: {rule} false positive on {text!r}"
     print("selftest ok")
