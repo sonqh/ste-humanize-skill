@@ -203,7 +203,10 @@
     "asked_at": "2026-11-17T00:50:13.913Z",
     "task": "018-message-lint",
     "text": "archive 018-message-lint?",
-    "status": "open",
-    "stage": "archive"
+    "status": "resolved",
+    "stage": "archive",
+    "verdict": "approved",
+    "answer": "Owner approved archive of 018 on 2026-11-17",
+    "resolved_at": "2026-11-17T01:00:15.510Z"
   }
 ]
